@@ -642,7 +642,6 @@ switch ($request) {
                     'message' => 'Please enter otp.'
                 ]);
             } else {
-                // setcookie('token', "Tok", time()+3600, '/');
                 echo $authController->Login($data["mobile"], $data["otp"]);
             }
         }
