@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+<body>
+    <div class="main">
+        <div class="head">
+            <img src="../assets/icons/logoBlack.png" alt="ezts logo" id="logo">
+            <div id="searchDiv">
+                <input type="text" placeholder="What do you want to learn?" id="txtSearch">
+                <img src="../assets/icons/search.png" alt="search">
+            </div>
+            <img src="../assets/images/profilePic.png" alt="profile photo" id="profilePic">
+        </div>
+        <div class="body">
+            <div class="categories">
+                <div class="categoriesChild">
+                    
+                </div>
+            </div>
+
+            <div class="greet">
+                <img src="../assets/images/wave.png" alt="wave">
+            </div>
+
+            <div class="statistics">
+                <div class="totalCourses">
+                    <div class="courseHead">
+                        <h2>Total</h2>
+                    </div>
+                    <div class="courseBody">
+                        <h1>0</h1>
+                    </div>
+                </div>
+                <div class="activeCourses">
+                    <div class="courseHead">
+                        <h2>Active</h2>
+                    </div>
+                    <div class="courseBody">
+                        <h1>0</h1>
+                    </div>
+                </div>
+                <div class="completedCourses">
+                    <div class="courseHead">
+                        <h2>Completed</h2>
+                    </div>
+                    <div class="courseBody">
+                        <h1>0</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="enrollment">
+                <div class="heading" style="grid-column: span 6;">
+                    <h4 style="grid-column: 2;">Training</h4>
+                    <h4 style="grid-column: 3;">Start Date</h4>
+                    <h4 style="grid-column: 4;">End Date</h4>
+                </div>
+                <div class="body">
+                    <!-- <div class="courseInfo">
+                        <img src="../assets/icons/course.png" alt="course">
+                        <h4>Course Name</h4>
+                        <h4>20 July 2024</h4>
+                        <h4>20 July 2025</h4>
+                        <button>Go To Training</button>
+                    </div> -->
+                </div>
+            </div>
+            
+            <div class="banner">
+                <img src="../assets/images/banner.png" alt="banner">
+            </div>
+            
+            <div class="popular">
+                <div class="coursesDivTitle">
+                    <h2>Popular Courses</h2>
+                </div>
+                <div class="coursesDivList">
+                    
+                </div>
+            </div>
+            
+            <!-- <div class="featured">
+                <div class="coursesDivTitle">
+                    <h2>Featured Courses for you</h2>
+                </div>
+                <div class="coursesDivList">
+                    <div class="courseDiv">
+                        <div class="courseThumbnail">
+                            <img src="../assets/images/course.png" alt="">
+                        </div>
+                        <div class="courseInformation">
+                            <h3>Python</h3>
+                            <p>By Daniel Walter</p>
+                            <div>
+                                <img src="../assets/icons/clock.png" alt="clock">
+                                <p>6 week course</p>
+                                <p>|</p>
+                                <img src="../assets/icons/star.png" alt="star">
+                                <p>4.5</p>
+                            </div>
+                            <h3>₹2,999 <s>3,999</s></h3>
+                            <button class="enrollBtn">
+                                Enroll now
+                            </button>
+                        </div>
+                    </div>
+                    <div class="courseDiv">
+                        <div class="courseThumbnail">
+                            <img src="../assets/images/course.png" alt="">
+                        </div>
+                        <div class="courseInformation">
+                            <h3>Python</h3>
+                            <p>By Daniel Walter</p>
+                            <div>
+                                <img src="../assets/icons/clock.png" alt="clock">
+                                <p>6 week course</p>
+                                <p>|</p>
+                                <img src="../assets/icons/star.png" alt="star">
+                                <p>4.5</p>
+                            </div>
+                            <h3>₹2,999 <s>3,999</s></h3>
+                            <button class="enrollBtn">
+                                Enroll now
+                            </button>
+                        </div>
+                    </div>
+                    <div class="courseDiv">
+                        <div class="courseThumbnail">
+                            <img src="../assets/images/course.png" alt="">
+                        </div>
+                        <div class="courseInformation">
+                            <h3>Python</h3>
+                            <p>By Daniel Walter</p>
+                            <div>
+                                <img src="../assets/icons/clock.png" alt="clock">
+                                <p>6 week course</p>
+                                <p>|</p>
+                                <img src="../assets/icons/star.png" alt="star">
+                                <p>4.5</p>
+                            </div>
+                            <h3>₹2,999 <s>3,999</s></h3>
+                            <button class="enrollBtn">
+                                Enroll now
+                            </button>
+                        </div>
+                    </div>
+                    <div class="courseDiv">
+                        <div class="courseThumbnail">
+                            <img src="../assets/images/course.png" alt="">
+                        </div>
+                        <div class="courseInformation">
+                            <h3>Python</h3>
+                            <p>By Daniel Walter</p>
+                            <div>
+                                <img src="../assets/icons/clock.png" alt="clock">
+                                <p>6 week course</p>
+                                <p>|</p>
+                                <img src="../assets/icons/star.png" alt="star">
+                                <p>4.5</p>
+                            </div>
+                            <h3>₹2,999 <s>3,999</s></h3>
+                            <button class="enrollBtn">
+                                Enroll now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Make the below code dynamic and generate in js with api response -->
+            <!-- <div class="selectedCategoryMain">
+                <div class="selectedCategoryHead">
+                    <img src="../assets/icons/backSingle.png" alt="back">
+                    <h2 id="selectedCategoryName">Category Name</h2>
+                </div>
+
+                <div class="selectedPopularCourses">
+                    <h2 class="headline">Popular Courses in Category Name</h2>
+                    <div class="coursesContainer">
+                    </div>
+                </div>
+
+                <div class="selectedFeaturedCourses">
+                    <h2 class="headline">Featured Courses in Category Name</h2>
+                    <div class="coursesContainer">
+                        
+                    </div>
+                </div>
+
+                <div class="selectedAllCourses">
+                    <h2 class="headline">All Courses in Category Name</h2>
+                    <div class="coursesContainer">
+                        
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Bookmarked courses -->
+            <!-- <div class="bookMarkedCourses">
+                <h2 class="headline">Bookmarked Courses</h2>
+                <div class="coursesContainer">
+                </div>
+            </div> -->
+
+            <!-- <div class="ordersMain">
+                <h2>Your orders</h2>
+            </div> -->
+
+            <!-- <div class="certificatesMain">
+                <h2>Certificates</h2>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+                <div class="certificateDetails">
+                    <img src="../assets/icons/certificateThumbnail.png" alt="certificate">
+                    <h2 id="txtCertificateCourseName">Course Name</h2>
+                    <button id="btnDownloadCertificate">Download Certificate</button>
+                </div>
+            </div>  -->
+        
+            <!-- <div class="leadershipMain">
+                <div class="leadershipHead">
+                    <div class="totalStudents">
+
+                    </div>
+                    <div class="yourPoints">
+
+                    </div>
+                    <div class="yourPosition">
+
+                    </div>
+                </div>
+
+                <div class="leadershipBody">
+                    <div class="leadershipColumn">
+                        <h2>Rank</h2>
+                        <h2>Student's name</h2>
+                        <h2>Learning Point</h2>
+                    </div>
+                    <div class="leadershipList">
+                        <img src="/assets/icons/rank1.png" alt="Rank 1">
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <img src="/assets/icons/rank2.png" alt="Rank 1">
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <img src="/assets/icons/rank3.png" alt="Rank 1">
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <img src="/assets/icons/starCircleG.png" alt="Rank 1">
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <p>#4</p>
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <p>#5</p>
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <p>#6</p>
+                        <p>Student name</p>
+                        <p>Points</p>
+                        <p>#7</p>
+                        <p>Student name</p>
+                        <p>Points</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script src="../js/call.js"></script>
+    <script src="../js/DOM.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

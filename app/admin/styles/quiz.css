@@ -1,0 +1,279 @@
+html,
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    width: 60vw;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.selection select{
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+}
+
+#btnProceed{
+    align-self: flex-end;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.selection > div input{
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#txtTime{
+    width: 60px;
+    height: 30px;
+}
+
+.head{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.head > div{
+    display: flex;
+    gap: 10px;
+}
+
+#btnCreateQuiz{
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+}
+
+#btnAdd, #btnBack{
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+}
+
+.quizesMain{
+    width: 80vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display : none;
+}
+
+.questionsList{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    overflow-y: scroll;
+}
+
+.questionsList::-webkit-scrollbar {
+    display: none;
+}
+
+.courseType{
+    display: flex;
+    align-items: center;
+}
+
+.info {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.info:hover {
+    background-color: #cfcfcf;
+}
+
+.info:active {
+    background-color: #f1f1f1;
+}
+
+.info p {
+    margin-left: 10px;
+}
+
+.controls {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.controlsChild {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.controlsChild button {
+    cursor: pointer;
+}
+
+.dialogMain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    visibility: hidden;
+}
+
+.dialog{
+    height: 90%;
+    width: 50%;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#dialogBody{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.newQuizDOM{
+    width: 90%;
+    height: 100%;
+}
+
+.newQuizDOM div *{
+    margin-left: 20px;
+}
+
+#dialogFoot{
+    height: 20%;
+    display: flex;
+    justify-items: flex-end;
+    align-items: center;
+    margin-left: auto;
+}
+
+#dialogFoot button{
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.newQuestionDOM{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.questionDiv{
+    width: 100%;
+    height: 150px;
+}
+
+.questionDiv input{
+    width: 95%;
+    height: 80px;
+}
+
+.questionDiv textarea{
+    height: 60px;
+    width: 95%;
+    font-size: 18px;
+    resize: none;
+}
+
+.newQuestionDOM div:nth-child(2){
+    margin-top: 20px;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.newQuestionDOM div:nth-child(2) input{
+    cursor: pointer;
+}
+
+.newQuestionDOM div:nth-child(3){
+    margin-top: 20px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.newQuestionDOM div:nth-child(3) select{
+    cursor: pointer;
+    width: 70%;
+    height: 30px;
+}
+
+.newQuestionDOM div:nth-child(4) *{
+    margin: 0;
+}
+
+.newQuestionDOM div:nth-child(4){
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.newQuestionDOM div:nth-child(4) textarea{
+    width: 70%;
+    height: 130px;
+    resize: none;
+}
+
+.optionsDiv{
+    width: 90%;
+    height: 70%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.option{
+    display: flex;
+    flex-direction: column;
+}
+
+#btnAddAnswer{
+    visibility: hidden;
+}

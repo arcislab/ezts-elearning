@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information</title>
+    <link rel="stylesheet" href="../styles/courseInformation.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="head">
+            <img src="../assets/icons/back.png" id="btnBack" alt="back">
+            <img src="../assets/images/profilePic.png" id="profilePic" alt="profile pic">
+        </div>
+        <div class="body">
+            <div class="bodyLeft">
+                <div class="banner">
+                    <div class="bannerLeft">
+                        <p>Hi <span id="nameOfUser"></span>, hope you are doing well.</p>
+                        <h3 id="courseName"></h3>
+                        <p>Access will end on <span id="endDate"></span></p>
+                    </div>
+                    <div class="bannerRight">
+                        <button id="btnContinue">Continue</button>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <h3>Progress Report</h3>
+                    <div id="progressReport">
+                        <!-- <div id="progressReportChild">
+                            <div class="topicInfo">
+                                <div class="topicInfoLeft">
+                                    <p class="topicName">Topic Name</p>
+                                </div>
+                                <div class="topicInfoRight">
+                                    <div id="topicDurationGroup">
+                                        <img src="../assets/icons/clock.png" alt="clock">
+                                        <p id="txtTopicDuration">x min</p>
+                                    </div>
+                                    <div id="topicsNumberGroup">
+                                        <img src="../assets/icons/chart.png" alt="chart">
+                                        <p id="txtNoOfTopics">5 Topics</p>
+                                    </div>
+                                    <div id="topicDemoGroup">
+                                        <img src="../assets/icons/play.png" alt="play">
+                                        <p id="txtNoOfDemos">2 Demo videos inside</p>
+                                    </div>
+                                    <img src="../assets/icons/arrowDown.png" alt="arrow down">
+                                </div>
+                            </div>
+                            <div id="courseContainer">
+                                <div class="course">
+                                    <div class="courseMain">
+                                    </div>
+                                    <div class="title">
+                                        <p>Video title</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="certificate">
+                    <div class="certificateBody">
+                        <div class="certificateBodyLeft">
+                            <div class="certificateHead">
+                                <img src="../assets/icons/certificate.png" alt="certificate">
+                                <h3>Certificate</h3>
+                            </div>
+                            <p>Certificate of completion</p>
+                            <p><span style="font-weight: bold;">Eligibility</span>: Minimum 33% marks in the final test
+                            </p>
+                        </div>
+                        <div class="certificateBodyRight">
+                            <div class="downloadCertificate">
+                                <img src="../assets/icons/download.png" alt="download">
+                                <p>Download Interhunt Certificate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyRight">
+                <div class="infoConsolidate">
+                    <p class="consolidateHeadline">This course includes:</p>
+                    <div>
+                        <img src="../assets/icons/clock.png" alt="clock">
+                        <p id="duration"></p>
+                    </div>
+                    <div>
+                        <img src="../assets/icons/play.png" alt="play">
+                        <p id="totalVideos"></p>
+                    </div>
+                    <div>
+                        <img src="../assets/icons/chart.png" alt="chart">
+                        <p id="totalProjects"></p>
+                    </div>
+                    <div id="downloadableContent">
+                        <img src="../assets/icons/download.png" alt="download">
+                        <p>Downloadable content</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/call.js"></script>
+    <script src="../js/DOM.js"></script>
+    <script src="../js/courseInformation.js"></script>
+</body>
+
+</html>

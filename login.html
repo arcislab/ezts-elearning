@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGNUP/LOGIN</title>
-    <link rel="stylesheet" href="styles/loginSignup.css">
+    <link rel="stylesheet" href="styles/login.css">
 </head>
 <body>
     <div class="main">
@@ -15,7 +15,7 @@
             <h1>SINGUP/LOGIN</h1>
             <div>
                 <p>Mobile Number</p>
-                <input type="text">
+                <input id="txtMobile" type="text" maxlength="10">
             </div>
             <p>By continuing, you agree to our <span style="font-weight: bold; cursor: pointer;"><u>Terms of Service<br>Privacy Policy</u></span></p>
             <button class="btnContinue">Continue</button>
@@ -25,5 +25,7 @@
             <button class="btnGoogle">Sign in via Google</button>
         </div>
     </div>
+    <script src="./js/call.js"></script>
+    <script src="./js/functionality.js"></script>
 </body>
 </html>
