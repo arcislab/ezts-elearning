@@ -8,6 +8,7 @@ const btnBack = document.querySelector('.head #btnBack');
 const dialogMain = document.querySelector('.dialogMain');
 let dialogHeading = document.querySelector('.dialogHeading');
 let elementsholder = document.querySelector('.dialogMain .body .child');
+const title = document.querySelector('.head h2');
 
 //Selections ids
 let courseTypeSelected;
@@ -162,6 +163,7 @@ async function CoursesTypeLoad() {
 
 function CoursesTypeClickControl(div, uuid) {
     div.addEventListener('click', async function (event) {
+        title.innerHTML = "Select Course";
         if (event.target.classList.contains('info')) {
             // console.log(`Clicked for UUID: ${uuid}`);
             courseTypeSelected = uuid;
@@ -204,6 +206,7 @@ async function CoursesLoad() {
 
 function CoursesClickControl(div, uuid) {
     div.addEventListener('click', async function (event) {
+        title.innerHTML = "Select Topic";
         if (event.target.classList.contains('info')) {
             // console.log(`Clicked for UUID: ${uuid}`);
             courseSelected = uuid;
@@ -230,9 +233,9 @@ async function TopicsLoad() {
         if (response.data.topics?.length > 0) {
             response.data.topics.forEach(topic => {
                 //Populate topics in stack control
-                htmlContent = GetStackControl(topic.topic_name);
+                htmlContent = GetStackControl(topic.name);
                 if (htmlContent) {
-                    CoursesTopicControl(htmlContent, topic.uuid);
+                    CoursesTopicControl(htmlContent, topic.id);
                     bodyElement.appendChild(htmlContent);
                 }
             });
@@ -246,8 +249,9 @@ async function TopicsLoad() {
 
 function CoursesTopicControl(div, uuid) {
     div.addEventListener('click', async function (event) {
+        title.innerHTML = "Select Sub-Topic";
         if (event.target.classList.contains('info')) {
-            // console.log(`Clicked for UUID: ${uuid}`);
+            console.log(`Clicked for UUID: ${uuid}`);
             topicSelected = uuid;
             SubTopicsLoad();
         } else if (event.target.classList.contains('btnEdit')) {
@@ -418,12 +422,16 @@ function Refresh() {
 
 function Back() {
     if (currentSelection === "course types") {
+        title.innerHTML = "Select Course Type";
         currentSelection = "course types";
     } else if (currentSelection === "course") {
+        title.innerHTML = "Select Course Type";
         currentSelection = "course types";
     } else if (currentSelection === "topics") {
+        title.innerHTML = "Select Course";
         currentSelection = "course";
     } else if (currentSelection === "sub topics") {
+        title.innerHTML = "Select Topic";
         currentSelection = "topics";
     }
 

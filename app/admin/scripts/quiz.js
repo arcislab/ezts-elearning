@@ -268,8 +268,7 @@ async function FetchCourses() {
             let htmlContent = '';
             if (response) {
                 if (response.data.data?.length > 0) {
-                    response.data.data.forEach(item => {
-                        const course = item.course;
+                    response.data.data.forEach(course => {
                         //Populate courses in stack control
                         htmlContent = GetCourses(course.uuid, course.name);
                         if (htmlContent) {
@@ -304,12 +303,12 @@ async function FetchCourseTopics(id) {
                 if (response.data.topics?.length > 0) {
                     response.data.topics.forEach(topic => {
                         //Populate courses in stack control
-                        htmlContent = GetCourses(topic.uuid, topic.topic_name);
+                        htmlContent = GetCourses(topic.id, topic.name);
                         if (htmlContent) {
                             courseTopics.innerHTML += htmlContent;
                             // const btnEnroll = htmlContent.querySelector(".enrollBtn");
                             // btnEnroll.addEventListener('click', async () => {
-
+                                
                             // });
                         }
                     });

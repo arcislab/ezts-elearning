@@ -5,7 +5,7 @@ async function CallApi(url, jsonBody = null, met = null) {
         url = `${API_BASE_URL}${url}`;
         console.log(`Calling: ${met} : ${url}\nbody: ${jsonBody}`)
         const response = await fetch(url, {
-            credentials: 'same-origin', // the fix
+            credentials: 'include', // the fix
             method: met == null ? 'POST' : met,
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ async function CallApi(url, jsonBody = null, met = null) {
         //         status: response.status,
         //     };
         // }
-        
+
         const rawResponseBody = await response.text();
         // console.log(`Raw Res: ${rawResponseBody}`);
         const data = JSON.parse(rawResponseBody);
