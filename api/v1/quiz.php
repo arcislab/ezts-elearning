@@ -61,7 +61,7 @@ class Quiz
         $query = "SELECT id AS id, question FROM quizes_q WHERE id = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $questionId);
-
+        
         if ($stmt === false) {
             return Response::json(500, [
                 'status' => 'error',

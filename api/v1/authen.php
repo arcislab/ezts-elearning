@@ -18,9 +18,9 @@ class Authentication
         global $userController;
         if (ValidateOtp($mobileNumber, $otp)) {
             $userid = $userController->GetUserId($mobileNumber);
-            if($userid != -1){
+            if ($userid != -1) {
                 $token = generateToken($userid);
-                
+
                 setcookie("token", $token, [
                     'expires' => time() + 3600,
                     'path' => '/',
@@ -30,14 +30,12 @@ class Authentication
                     'samesite' => 'Lax'        // Use 'Lax' for typical scenarios
                 ]);
 
-                
                 return Response::json(200, [
                     'status' => 'success',
                     'message' => 'Login successful',
-                    'token' => $token
+                    // 'token' => $token
                 ]);
-            }
-            else{
+            } else {
                 $userController->CreateNewUser($mobileNumber);
                 // return Response::json(401, [
                 //     'status' => 'error',
@@ -52,7 +50,20 @@ class Authentication
         }
     }
 
-    function RequestOtp($mobileNumber){
+    function RedirectUser($userid)
+    {
+        global $userController;
+        if ($userController->IsUserAdmin($userid)) {
+            header("Location: http://localhost/app/admin/home.html");
+            exit();
+        } else {
+            header("Location: http://localhost/app/dashboard.html");
+            exit();
+        }
+    }
+
+    function RequestOtp($mobileNumber)
+    {
         return Response::json(200, [
             'status' => 'success',
             'message' => 'OTP requested'

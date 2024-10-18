@@ -646,6 +646,14 @@ switch ($request) {
             }
         }
         break;
+    case '/api/v1/redirect':
+        if ($method == 'GET') {
+            $userId = Authenticate();
+            if (is_numeric($userId)) {
+                echo $authController->RedirectUser($userId);
+            }
+        }
+        break;
     case '/api/v1/otp':
         if ($method == 'POST') {
             if (!isset($data["mobile"])) {
@@ -685,7 +693,8 @@ switch ($request) {
     default:
         return Response::json(404, [
             'status' => 'error',
-            'message' => 'Path not found.'
+            'message' => 'Path not found.',
+            // 'req' => $request
         ]);
 }
 

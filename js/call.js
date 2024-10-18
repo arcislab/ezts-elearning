@@ -1,11 +1,11 @@
 const API_BASE_URL = 'http://localhost/api/v1';
 
-async function CallApi(url, jsonBody = null) {
+async function CallApi(url, jsonBody = null, method = 'POST') {
     try {
         url = `${API_BASE_URL}${url}`;
         const response = await fetch(url, {
-            method: 'POST',
-            credentials: 'include', // the fix
+            method: method !== 'POST' ? method : 'POST',
+            credentials: 'include', // the fix  
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -28,8 +28,10 @@ async function CallApi(url, jsonBody = null) {
         // }
         
         const rawResponseBody = await response.text();
-        if(url.includes('login')){
+        if (url.includes('redirect') && response.redirected) {
             // alert(rawResponseBody);
+            window.location.href = response.url; // Redirect to the response URL
+            return;
         }
         const data = JSON.parse(rawResponseBody);
         console.log(data)

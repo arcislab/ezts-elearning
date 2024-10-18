@@ -186,7 +186,7 @@ function BindOtpEvents() {
     async function CallL($mobile, $otp){
         let url = `/login`
         const body = JSON.stringify({ mobile: $mobile, otp: $otp });
-    
+        
         try {
             const response = await CallApi(url, body);
             console.log(response)
@@ -198,9 +198,10 @@ function BindOtpEvents() {
                 return;
             }
 
-            await CallApi(`/courses`, body);
-            localStorage.removeItem('mob');
-            window.location.assign("./app/dashboard.html");
+            await CallApi(`/redirect`, null, 'GET');
+            // await CallApi(`/courses`, body);
+            // localStorage.removeItem('mob');
+            // window.location.assign("./app/dashboard.html");
     
         } catch (error) {
             console.error('Error fetching login:', error);
