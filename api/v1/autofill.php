@@ -24,7 +24,7 @@ class Autofill
         $result = $this->db->query($sql);
         $tables = [];
         $message = [];
-
+        
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_array()) {
                 $tables[] = $row[0]; //Collect all table names

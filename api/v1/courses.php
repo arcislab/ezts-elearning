@@ -1,5 +1,10 @@
 <?php
 require_once './api/helpers/MySqlCommands.php';
+require_once './api/v1/quiz.php';
+require_once './api/v1/user.php';
+
+$quizController = new Quiz();
+$userController = new User();
 
 class Courses
 {
@@ -119,8 +124,9 @@ class Courses
         }
     }
 
-    function Topics($courseId, $uuid, $returnArray = false)
+    function Topics($courseId, $uuid, $userId, $returnArray = false)
     {
+        global $quizController;
         if ($courseId !== null) {
             // $query = "SELECT id AS uuid, topic_name, content_url FROM courses_topics WHERE courses_id = ?";
             $query = "SELECT ct.id, 
@@ -133,7 +139,7 @@ class Courses
                             FROM courses_sub_topics 
                             WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
                     FROM courses_topics ct 
-                    INNER JOIN courses_sub_topics cst 
+                    LEFT JOIN courses_sub_topics cst 
                            ON cst.courses_topics_id = ct.id 
                     WHERE ct.courses_id = ? 
                     GROUP BY ct.id, ct.topic_name;";
@@ -156,7 +162,7 @@ class Courses
                     WHERE ct.id = ? 
                     GROUP BY ct.id, ct.topic_name;";
         }
-        
+
         $stmt = $this->db->prepare($query);
 
         if ($stmt === false) {
@@ -177,20 +183,35 @@ class Courses
         if ($stmt->execute()) {
             $result = $stmt->get_result();
             $topics = $result->fetch_all(MYSQLI_ASSOC);
-            if($returnArray){
-                return $topics;
-            }
-            else{
+            if ($returnArray) {
+                $data = [];
+                foreach ($topics as $topic) {
+                    $data[] = [
+                        "uuid" => $topic['id'],
+                        "name" => $topic['name'],
+                        "duration" => $topic['duration'],
+                        "total_sub_topics" => $topic['total_sub_topics'],
+                        "demo_videos" => $topic['demo_videos'],
+                        "access" => $this->IsTopicLocked($topic['id'], $userId) == true ? false : true,
+                        "provide_quiz" => $quizController->CheckIfQuizAllowed($topic['id'], $userId, false)
+                    ];
+                }
+
+                // return Response::json(200, [
+                //     'status' => 'success',
+                //     'topics' => $data
+                // ]);
+                return $data;
+            } else {
                 return Response::json(200, [
                     'status' => 'success',
                     'topics' => $topics
                 ]);
             }
         } else {
-            if($returnArray){
+            if ($returnArray) {
                 return null;
-            }
-            else{
+            } else {
                 return Response::json(500, [
                     'status' => 'error',
                     'message' => 'Failed to retrieve courses.'
@@ -199,46 +220,54 @@ class Courses
         }
     }
 
-    function SubTopics($courseTopicId, $uuid)
+    function SubTopics($courseTopicId, $uuid, $userId)
     {
-        if ($courseTopicId !== null) {
-            $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE courses_topics_id = ?";
-        }
-
-        if ($uuid !== null) {
-            $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE id = ?";
-        }
-
-        $stmt = $this->db->prepare($query);
-
-        if ($stmt === false) {
-            return Response::json(500, [
+        global $userController;
+        if ($this->IsTopicLocked($courseTopicId, $userId) && !$userController->IsUserAdmin($userId)) {
+            return Response::json(403, [
                 'status' => 'error',
-                'message' => 'Query preparation failed: ' . $this->db->error
-            ]);
-        }
-
-        if ($courseTopicId !== null) {
-            $stmt->bind_param('i', $courseTopicId);
-        }
-
-        if ($uuid !== null) {
-            $stmt->bind_param('i', $uuid);
-        }
-
-        if ($stmt->execute()) {
-            $result = $stmt->get_result();
-            $topics = $result->fetch_all(MYSQLI_ASSOC);
-
-            return Response::json(200, [
-                'status' => 'success',
-                'sub_topics' => $topics
+                'message' => 'Topic is locked.'
             ]);
         } else {
-            return Response::json(500, [
-                'status' => 'error',
-                'message' => 'Failed to retrieve courses.'
-            ]);
+            if ($courseTopicId !== null) {
+                $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE courses_topics_id = ?";
+            }
+
+            if ($uuid !== null) {
+                $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE id = ?";
+            }
+
+            $stmt = $this->db->prepare($query);
+
+            if ($stmt === false) {
+                return Response::json(500, [
+                    'status' => 'error',
+                    'message' => 'Query preparation failed: ' . $this->db->error
+                ]);
+            }
+
+            if ($courseTopicId !== null) {
+                $stmt->bind_param('i', $courseTopicId);
+            }
+
+            if ($uuid !== null) {
+                $stmt->bind_param('i', $uuid);
+            }
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                $topics = $result->fetch_all(MYSQLI_ASSOC);
+
+                return Response::json(200, [
+                    'status' => 'success',
+                    'sub_topics' => $topics
+                ]);
+            } else {
+                return Response::json(500, [
+                    'status' => 'error',
+                    'message' => 'Failed to retrieve courses.'
+                ]);
+            }
         }
     }
 
@@ -347,11 +376,10 @@ class Courses
             ]);
         }
     }
-
+    
     function GetCourseInfo($userId, $courseId)
     {
         if ($this->CheckIfPurchased($userId, $courseId)) {
-
             $query = "SELECT c.id As id, c.name AS name, c.duration AS duration, 
             (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id AND cst.video_url IS NOT NULL AND cst.video_url <> '') AS total_videos,
             (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.courses_id = c.id WHERE cst.courses_topics_id = ct.id AND cst.project_url IS NOT NULL AND cst.project_url <> '') AS total_projects,
@@ -381,7 +409,8 @@ class Courses
                             'duration' => $info["duration"],
                             'downloadable_content' => $info["downloadable_content"],
                             'expiry' => $this->GetExpiry($userId),
-                            'topics' => $this->Topics($courseId, null, true)
+                            'topics' => $this->Topics($courseId, null, $userId, true)
+                            
                         ]
                     ]);
                 }
@@ -396,6 +425,54 @@ class Courses
                 'status' => 'success',
                 'message' => 'Course not purchased'
             ]);
+        }
+    }
+
+    function IsTopicLocked($topicId, $userId)
+    {
+        global $quizController;
+        if ($this->IsTopicFirst($topicId)) {
+            return false;
+        } else {
+            //TODO: Remove the below logic and add logic to check if user has passed a quiz or not in this topic
+            if ($quizController->CheckIfQuizAllowed($topicId, $userId, false)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    //Check if topic is first in the list of topics so that we can prevent it from being locked as the first topic should be accessible to user
+    function IsTopicFirst($topicId)
+    {
+        $query = "SELECT MIN(ct.id) AS `LowestTopicId`
+          FROM courses_topics ct
+          INNER JOIN courses c ON c.id = ct.courses_id
+          WHERE ct.courses_id = (
+              SELECT courses_id FROM courses_topics WHERE id = ?
+          )";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $topicId);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc();
+                $lowestTopicId = $data['LowestTopicId'];
+                return $topicId == $lowestTopicId ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -446,7 +523,7 @@ class Courses
             return false;
         }
     }
-
+    
     // Admin section
     // CRUD Courses Type
     function AddCourseType($courseType)

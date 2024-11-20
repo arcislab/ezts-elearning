@@ -186,6 +186,10 @@ async function QuizDialogEvent() {
                 time: time.value = (time == null || time == "") ? 1 : time
             };
             response = await CallApi('/quiz/manage', JSON.stringify(jsonBody));
+            // alert(response.data.uuid)
+            if(response.data.uuid !== null){
+                quizSelected = response.data.uuid;
+            }
         } else {
             const jsonBody = {
                 uuid: quizSelected,
@@ -219,8 +223,8 @@ async function BindGetQuizzes() {
 }
 
 async function AutoFillQuizDetails() {
-    let url = `/quiz`
-    const body = JSON.stringify({ topic: topicSelected });
+    let url = `/quiz/request`
+    const body = JSON.stringify({ course_topic: topicSelected });
     const response = await CallApi(url, body);
 
     try {
@@ -360,8 +364,8 @@ async function FetchCourseSubTopics(id) {
 
 async function GetQuestions(id) {
     currentSelection = "Questions";
-    let url = `/quiz`
-    const body = JSON.stringify({ topic: id });
+    let url = `/quiz/request`
+    const body = JSON.stringify({ course_topic: id });
     const response = await CallApi(url, body);
 
     try {

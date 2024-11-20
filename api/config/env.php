@@ -1,2 +1,2 @@
 <?php
-$MainUrl = 'http://localhost/';
+$MainUrl = 'http://ezts.local/';

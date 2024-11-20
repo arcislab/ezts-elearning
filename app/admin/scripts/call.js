@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost/api/v1';
+const API_BASE_URL = 'http://ezts.local/api/v1';
 
 async function CallApi(url, jsonBody = null, met = null) {
     try {

@@ -59,7 +59,6 @@ class User
         $query = "SELECT * FROM users WHERE id = ?";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $userid);
 
         if ($stmt === false) {
             return Response::json(500, [
@@ -67,6 +66,8 @@ class User
                 'message' => 'Query preparation failed: ' . $this->db->error
             ]);
         }
+
+        $stmt->bind_param('i', $userid);
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();
@@ -101,7 +102,6 @@ class User
         $query = "SELECT * FROM users WHERE id = ?";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $userId);
 
         if ($stmt === false) {
             return Response::json(500, [
@@ -109,6 +109,7 @@ class User
                 'message' => 'Query preparation failed: ' . $this->db->error
             ]);
         }
+        $stmt->bind_param('i', $userId);
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();
@@ -124,6 +125,16 @@ class User
         $query = "SELECT id FROM users WHERE mobile = ?";
 
         $stmt = $this->db->prepare($query);
+
+        if ($stmt === false) {
+            $errorInfo = $this->db->error;
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Database query preparation failed',
+                'error' => $errorInfo // Specific error message from the database
+            ]);
+        }
+
         $stmt->bind_param('s', $mobileNumber);
 
         if ($stmt->execute()) {
@@ -137,7 +148,8 @@ class User
         return -1;
     }
 
-    function CreateNewUser($mobileNumber){
+    function CreateNewUser($mobileNumber)
+    {
         $sqlHelp = new SqlHelper();
         $query = "INSERT INTO users (`mobile`, `otp_verified`) VALUES (?, ?)";
         $result = $sqlHelp->executeQuery($query, 'si', array($mobileNumber, true));
@@ -149,7 +161,14 @@ class User
         $query = "SELECT `type` FROM users WHERE id = ?";
 
         $stmt = $this->db->prepare($query);
-        
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Database query preparation failed'
+            ]);
+        }
+
         $stmt->bind_param('i', $userId);
 
         if ($stmt->execute()) {

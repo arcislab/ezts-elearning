@@ -111,8 +111,7 @@ function GetSubTopicsCard(title) {
     div.className = 'course';
 
     div.innerHTML = `
-        <div class="courseMain">
-        </div>
+        <div class="courseMain"></div>
         <div class="title">
             <p>${title}</p>
         </div>`;
@@ -123,5 +122,64 @@ function GetSubTopicsCard(title) {
 function GetCourseContainer() {
     const div = document.createElement('div');
     div.className = 'courseContainer';
+    return div;
+}
+
+function GetMcq($option) {
+    const div = document.createElement('div');
+    div.className = 'mcq';
+
+    div.innerHTML = `<h3>${$option}</h3>`;
+
+    return div;
+}
+
+function GetBtnNext() {
+    const div = document.createElement('div');
+    div.id = 'btnNextDiv';
+
+    div.innerHTML = `<button id="btnNext">Next</button>`;
+
+    return div;
+}
+
+function GetResultCard(question, answers) {
+    const div = document.createElement('div');
+    div.id = 'main-containers';
+    let correctAnswer = '-';
+    let explaination = '-';
+
+    let htmlContent = `<div id="questions">
+                    <div id="q-container">
+                        <div id="question">
+                            <p>${question}</p>
+                        </div>
+                        <div id="options">`;
+
+    answers.forEach(item => {
+        if(item.correct === 1){
+            correctAnswer = item.answer;
+            explaination = item.explaination;
+        }
+        htmlContent += `<div ${(item.correct === 0 && item.selected !== undefined) ? `style="border-color: red"` : ``} ${item.correct === 1 ? `style="border-color: green;"` : ``} id="option">
+            <p ${(item.correct === 0 && item.selected !== undefined) ? `style="color: red"` : ``} ${item.correct === 1 ? `style="color: green;"` : ``} >${item.answer}</p>
+        </div>`
+    });
+
+    htmlContent += `</div>
+                    </div>
+                </div>
+                <div id="explainations">
+                    <div id="e-container">
+                        <p style="color: green; font-size: 22px;">Correct Answer</p>
+                        <p>${correctAnswer}</p>
+                        <p style="color: green; font-size: 22px;">Explaination</p>
+                        <p>${explaination}</p>
+                        <button id="btnConceptVid">Concept Video</button>
+                    </div>
+                </div>`;
+
+    div.innerHTML = htmlContent;
+
     return div;
 }

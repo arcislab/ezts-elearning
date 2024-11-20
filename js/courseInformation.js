@@ -7,6 +7,10 @@ const totalProjects = document.getElementById('totalProjects');
 const downloadableContent = document.getElementById('downloadableContent');
 const btnBack = document.getElementById('btnBack');
 const progressReport = document.getElementById('progressReport');
+const btnQuizProceed = document.getElementById('btnQuizProceed');
+const dialogMain = document.getElementsByClassName('dialogMain')[0];
+
+let selectedTopic;
 
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -17,8 +21,78 @@ addEventListener("DOMContentLoaded", (event) => {
     btnBack.addEventListener('click', function () {
         history.back();
     });
+    btnQuizProceed.addEventListener('click', function(){
+        RequestQuiz();
+    });
+    if (dialogMain != undefined) {
+        dialogMain.addEventListener('click', function () {
+            dialogMain.style.visibility = 'hidden';
+        });
+    }
     LoadInfo();
 });
+
+async function CheckQuiz(){
+    let url = `/quiz/check`
+
+    try {
+        const body = JSON.stringify({ course_topic: selectedTopic });
+        const response = await CallApi(url, body);
+        if (response.status === 401) {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+            return;
+        }
+
+        if (response) {
+            if (response.data.allowed !== undefined) {
+                const qAllow = response.data.allowed;
+                if(qAllow){
+                    if (dialogMain.style.visibility == 'hidden' || dialogMain.style.visibility == '') {
+                        dialogMain.style.visibility = 'visible';
+                    }
+                    console.log(response.data.time);
+                    if(response.data.time !== null){
+                        const txtQuizTime = dialogMain.querySelector('#txtQuizTime');
+                        txtQuizTime.innerHTML = response.data.time;
+                    }
+                }
+                else{
+                    if (dialogMain != undefined) {
+                        dialogMain.style.visibility = 'hidden';
+                    }
+                }
+            } else {
+                console.log('No information found.');
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching course types:', error);
+        return null;
+    }
+}
+
+async function RequestQuiz(){
+    let url = `/quiz/request`
+
+    try {
+        const body = JSON.stringify({ course_topic: selectedTopic });
+        const response = await CallApi(url, body);
+        if (response.status === 401) {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+            return;
+        }
+
+        if (response.status === 200) {
+            if(response.data.uuid != null){
+                localStorage.setItem('qId', response.data.uuid);
+            }
+            window.location.assign('quiz.html');
+        }
+    } catch (error) {
+        console.error('Error fetching course types:', error);
+        return null;
+    }
+}
 
 async function LoadInfo() {
     if (nameOfUser !== undefined) {
@@ -27,7 +101,7 @@ async function LoadInfo() {
     let url = `/courses/info`
 
     try {
-        const body = JSON.stringify({ course: getQueryParam('course'), user: getQueryParam('user') });
+        const body = JSON.stringify({ course: getQueryParam('course') });
         const response = await CallApi(url, body);
         if (response.status === 401) {
             console.error(`Error: ${response.status} - ${response.statusText}`);
@@ -58,7 +132,6 @@ async function LoadInfo() {
                         downloadableContent.style.display = 'none';
                     }
                 }
-
                 if (response.data.data?.topics?.length > 0) {
                     response.data.data.topics.forEach(topic => {
                         const topicInfo = GetCourseInfoCard(topic.name, topic.duration, topic.total_sub_topics, topic.demo_videos);
@@ -66,12 +139,25 @@ async function LoadInfo() {
                             progressReport.appendChild(topicInfo);
                             const btnExpand = topicInfo.querySelector('#btnExpand');
                             if (btnExpand !== undefined) {
-                                btnExpand.addEventListener('click', async() => {
-                                    LoadCourse(topic.id, topicInfo);
-                                });
+                                if(topic.access !== null){
+                                    if(topic.access){
+                                        btnExpand.style.cursor = 'pointer';
+                                        btnExpand.addEventListener('click', async() => {
+                                            LoadCourse(topic.uuid, topicInfo, topic.provide_quiz);
+                                        });
+                                    }
+                                    else{
+                                        btnExpand.style.cursor = 'no-drop';
+                                        const cardTitle = topicInfo.querySelector('.topicName');
+                                        cardTitle.style.color = '#969696';
+                                    }
+                                }
                             }
                         }
                     });
+                }
+                else{
+                    console.log('No topics found')
                 }
             } else {
                 console.log('No information found.');
@@ -83,7 +169,7 @@ async function LoadInfo() {
     }
 }
 
-async function LoadCourse(uuid, topicInfo) {
+async function LoadCourse(uuid, topicInfo, qAllow) {
     let url = `/courses/sub-topics`
 
     try {
@@ -108,6 +194,22 @@ async function LoadCourse(uuid, topicInfo) {
                         courseContainer.appendChild(topicInfo);
                     }
                 });
+                
+                const btnQuiz = document.createElement('button');
+                btnQuiz.id = 'btnTakeQuiz'
+                btnQuiz.innerHTML = 'Take Quiz';
+                courseContainer.appendChild(btnQuiz);
+                if(!qAllow){
+                    btnQuiz.style.cursor = 'not-allowed';
+                    btnQuiz.disabled = true;
+                }
+                else{
+                    btnQuiz.addEventListener('click', function(){
+                        selectedTopic = uuid;
+                        localStorage.setItem('t', selectedTopic);
+                        CheckQuiz();
+                    });
+                }
 
                 if (courseContainer !== undefined) {
                     console.log(courseContainer.style.display)
@@ -126,8 +228,4 @@ async function LoadCourse(uuid, topicInfo) {
         console.error('Error fetching course types:', error);
         return null;
     }
-}
-
-function LoadTopics() {
-
 }

@@ -48,7 +48,8 @@ class SqlHelper
                     [
                         'status' => 'success',
                         'message' => 'Operation successful',
-                        'affected_rows' => $stmt->affected_rows
+                        'uuid' => $stmt->insert_id
+                        // 'affected_rows' => $stmt->affected_rows
                     ]
                 ];
             } else {

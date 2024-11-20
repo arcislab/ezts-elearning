@@ -11,7 +11,7 @@ require_once './api/v1/leader.php';
 require_once './api/v1/authen.php';
 
 //headers
-header("Access-Control-Allow-Origin: http://localhost");
+header("Access-Control-Allow-Origin: http://ezts.local");
 header("Access-Control-Allow-Credentials: true");
 // header("Access-Control-Allow-Origin: *"); // Allow all origins, or specify your front-end origin
 header("Access-Control-Allow-Methods: POST, PUT, GET, DELETE, OPTIONS");
@@ -19,11 +19,11 @@ header("Access-Control-Allow-Headers: Content-Type"); // Allow specific headers
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
-    header("Access-Control-Allow-Headers: Content-Type");
+    // header("Access-Control-Allow-Headers: Content-Type"); //Already declared above
     exit(0); // End the response for the preflight request
 }
 
-$request = $_SERVER['REQUEST_URI'];
+$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 $data = null;
 if ($method === 'POST' || $method === 'PUT' || $method === 'DELETE') {
@@ -136,7 +136,6 @@ switch ($request) {
             $count = isset($data["count"]) ? $data["count"] : null;
             $course_type_id = isset($data["type"]) ? $data["type"] : null;
             $course_id = isset($data["uuid"]) ? $data["uuid"] : null;
-            $cook = $_COOKIE['token'];
             echo $coursesController->GetCourses($count, $course_type_id, $course_id);
         }
         break;
@@ -202,7 +201,7 @@ switch ($request) {
             $course = isset($data["course"]) ? $data["course"] : null;
             $userId = Authenticate();
             if (is_numeric($userId)) {
-                echo $coursesController->Topics($course, $uuid);
+                echo $coursesController->Topics($course, $uuid, $userId);
             }
         }
         break;
@@ -243,7 +242,7 @@ switch ($request) {
             $uuid = isset($data["uuid"]) ? $data["uuid"] : null;
             $userId = Authenticate();
             if (is_numeric($userId)) {
-                echo $coursesController->SubTopics($course_topic, $uuid);
+                echo $coursesController->SubTopics($course_topic, $uuid, $userId);
             }
         }
         break;
@@ -341,8 +340,41 @@ switch ($request) {
         break;
         //Quiz routes
     case '/api/v1/quiz':
+        //Get quiz questions 
         if ($method == 'POST') {
-            if (!isset($data["topic"])) {
+            if (!isset($data["course_topic"])) {
+                return Response::json(501, [
+                    'status' => 'error',
+                    'message' => 'Topic not selected.'
+                ]);
+            } else {
+                $userId = Authenticate();
+                if (is_numeric($userId)) {
+                    echo $quizController->SendAssignedQuestions($data["course_topic"], $userId);
+                }
+            }
+        }
+        break;
+    case '/api/v1/quiz/info':
+        //Get quiz questions 
+        if ($method == 'POST') {
+            if (!isset($data["course_topic"])) {
+                return Response::json(501, [
+                    'status' => 'error',
+                    'message' => 'Topic not selected.'
+                ]);
+            } else {
+                $userId = Authenticate();
+                if (is_numeric($userId)) {
+                    echo $quizController->GetQuizInfo($data["course_topic"]);
+                }
+            }
+        }
+        break;
+    case '/api/v1/quiz/request':
+        //Create a quiz of x questions for user
+        if ($method == 'POST') {
+            if (!isset($data["course_topic"])) {
                 return Response::json(501, [
                     'status' => 'error',
                     'message' => 'Topic not selected.'
@@ -351,9 +383,9 @@ switch ($request) {
                 $userId = Authenticate();
                 if (is_numeric($userId)) {
                     if ($userController->IsUserAdmin($userId)) {
-                        echo $quizController->GetQuizDetails($data["topic"]);
+                        echo $quizController->GetQuizDetails($data["course_topic"]);
                     } else {
-                        echo $quizController->GetQuiz($data["topic"]);
+                        echo $quizController->CreateQuiz($data["course_topic"], $userId);
                     }
                 }
             }
@@ -437,8 +469,16 @@ switch ($request) {
     case '/api/v1/quiz/exit':
         if ($method == 'POST') {
             $userId = Authenticate();
-            if (is_numeric($userId)) {
-                echo $quizController->ExitQuiz($data["quiz"], $userId);
+            if (!isset($data["quiz"])) {
+                return Response::json(404, [
+                    'status' => 'error',
+                    'message' => 'Quiz is not selected.'
+                ]);
+            } else {
+                $userId = Authenticate();
+                if (is_numeric($userId)) {
+                    echo $quizController->ExitQuiz($data["quiz"], $userId);
+                }
             }
         }
         break;
@@ -617,7 +657,26 @@ switch ($request) {
         if ($method == 'POST') {
             $userId = Authenticate();
             if (is_numeric($userId)) {
-                echo $quizController->SaveAnswer($data["quizQ"], $data["quizA"], $userId);
+                if (!isset($data["data"])) {
+                    return Response::json(404, [
+                        'status' => 'error',
+                        'message' => 'Quiz is empty.'
+                    ]);
+                } else {
+                    $userId = Authenticate();
+                    if (is_numeric($userId)) {
+                        // $data = json_decode($body, true);
+
+                        if (!isset($data["data"]) || !is_array($data["data"])) {
+                            return Response::json(404, [
+                                'status' => 'error',
+                                'message' => 'Quiz is empty.'
+                            ]);
+                        } else {
+                            echo $quizController->CheckResult($data["data"], $userId);
+                        }
+                    }
+                }
             }
         }
         break;
@@ -626,6 +685,21 @@ switch ($request) {
             $userId = Authenticate();
             if (is_numeric($userId)) {
                 echo $quizController->CheckResult($data["quiz"], $userId);
+            }
+        }
+        break;
+    case '/api/v1/quiz/check':
+        if ($method == 'POST') {
+            if (!isset($data["course_topic"])) {
+                return Response::json(404, [
+                    'status' => 'error',
+                    'message' => 'Topic is null.'
+                ]);
+            } else {
+                $userId = Authenticate();
+                if (is_numeric($userId)) {
+                    echo $quizController->CheckIfQuizAllowed($data["course_topic"], $userId);
+                }
             }
         }
         break;

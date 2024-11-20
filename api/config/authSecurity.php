@@ -64,7 +64,7 @@ function validateToken()
 function GetUserIdFromToken()
 {
     global $key;
-    
+
     if (!isset($_COOKIE['token'])) {
         return [
             'status' => false,

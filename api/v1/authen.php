@@ -22,10 +22,10 @@ class Authentication
                 $token = generateToken($userid);
 
                 setcookie("token", $token, [
-                    'expires' => time() + 3600,
+                    'expires' => time() + 86400,
                     'path' => '/',
-                    'domain' => 'localhost',  // Use 'localhost' in development
-                    'secure' => true,         // No HTTPS in local development
+                    'domain' => 'ezts.local',
+                    'secure' => false,         // No HTTPS in local development
                     'httponly' => true,        // Still keep HttpOnly for security
                     'samesite' => 'Lax'        // Use 'Lax' for typical scenarios
                 ]);
@@ -54,10 +54,10 @@ class Authentication
     {
         global $userController;
         if ($userController->IsUserAdmin($userid)) {
-            header("Location: http://localhost/app/admin/home.html");
+            header("Location: http://ezts.local/app/admin/home.html");
             exit();
         } else {
-            header("Location: http://localhost/app/dashboard.html");
+            header("Location: http://ezts.local/app/dashboard.html");
             exit();
         }
     }
