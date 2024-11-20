@@ -246,11 +246,19 @@ switch ($request) {
             }
         }
         break;
+    case '/api/v1/courses/video': //Test endpoint for aws video upload
+        if ($method == 'POST') {
+            if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
+                $awsController = new AwsS3();
+                $awsController->Upload($_FILES['video']);
+            }
+        }
+        break;
     case '/api/v1/courses/sub-topics/add': //Sub Topics add
         if ($method == 'POST') {
             $topic = isset($data["topic"]) ? $data["topic"] : null;
             $name = isset($data["name"]) ? $data["name"] : null;
-            $video = isset($data["video"]) ? $data["video"] : null;
+            $video = isset($_FILES["video"]) ? $_FILES["video"] : null;
             $project = isset($data["project"]) ? $data["project"] : null;
             $duration = isset($data["duration"]) ? $data["duration"] : null;
             $demo = isset($data["demo"]) ? $data["demo"] : null;

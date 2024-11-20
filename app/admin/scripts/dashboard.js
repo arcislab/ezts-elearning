@@ -1,7 +1,7 @@
 
 let currentSelection;
 const bodyElement = document.getElementsByClassName('body')[0];
-const API_BASE_URL = 'http://localhost/api/v1';
+const API_BASE_URL = 'http://ezts.local/api/v1';
 
 const btnAdd = document.querySelector('.head #btnAdd');
 const btnBack = document.querySelector('.head #btnBack');
@@ -34,6 +34,9 @@ async function CallApi(url, jsonBody, method = null) {
         });
 
         console.log(`Calling: ${url}\nbody: ${jsonBody}`)
+        if(response.status === 401){
+            window.location.href = 'ezts.local/login.html';
+        }
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -288,6 +291,7 @@ async function SubTopicsLoad() {
                         const response = await GetSubTopics(subtopic.uuid);
                         uuidSelectedForAction = subtopic.uuid;
                         ViewCRUD(response);
+                        // BindCourseFile(elementsholder.innerHTML);
                     });
 
                     btnDelete.addEventListener('click', () => {
@@ -375,15 +379,15 @@ function GetCRUDElements(response = null) {
                     </div>
                     <div>
                         <p>Video</p>
-                        <input type="text" id="txtVideo" placeholder="Enter video url" value="${response?.video_url ?? ''}">
+                        <input type="file" id="txtVideo" onchange="BindCourseFile(event)" value="${response?.video_url ?? ''}" accept=".mp4">
                     </div>
                     <div>
                         <p>Project</p>
-                        <input type="text" id="txtProject" placeholder="Enter project url" value="${response?.project_url ?? ''}">
+                        <input type="file" id="txtProject" placeholder="Enter project url" value="${response?.project_url ?? ''}">
                     </div>
                     <div>
                         <p>Duration</p>
-                        <input type="number" id="txtDuration" placeholder="Enter duration in hours" value="${response?.duration ?? ''}">
+                        <input type="text" id="txtDuration" placeholder="Enter duration in hours" value="${response?.duration ?? ''}">
                     </div>
                     <div>
                         <p>Demo</p>
@@ -393,7 +397,38 @@ function GetCRUDElements(response = null) {
     }
 }
 
-async function Delete(){
+function BindCourseFile(event) {
+    // console.log(code);
+    // code.querySelector("#fileInput").addEventListener("change", function(event) {
+    // });
+    const file = event.target.files[0];
+    if (file && file.type === "video/mp4") {
+        const video = document.createElement("video");
+        video.preload = "metadata";
+
+        video.onloadedmetadata = function () {
+            window.URL.revokeObjectURL(video.src); // Release the object URL after getting metadata
+            const duration = video.duration;
+            const hours = Math.floor(duration / 3600).toString().padStart(2, '0');
+            const minutes = Math.floor((duration % 3600) / 60).toString().padStart(2, '0');
+            const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+            const parent = event.target.parentElement.parentElement;
+            if (parent) {
+                console.log(parent);
+                if (parent.querySelector("#txtDuration")) {
+                    parent.querySelector("#txtDuration").value = `${hours}:${minutes}:${seconds}`;
+                }
+            }
+        };
+
+        video.src = URL.createObjectURL(file); // Set the video source
+    } else {
+        event.target.value = null;
+        alert("Please select a valid .mp4 file.");
+    }
+}
+
+async function Delete() {
     const jsonBody = {
         uuid: uuidSelectedForAction
     };
@@ -440,20 +475,24 @@ function Back() {
 
 let btnAction = 'Add';
 const btnSendData = document.querySelector('#btnSendData');
-btnSendData.addEventListener('click', function () {
-    SendData();
+btnSendData.addEventListener('click', function (event) {
+    SendData(event);
 });
 
-async function SendData() {
+async function SendData(event) {
     const jsonBody = SerializeData();
     const response = await CallApi(GetEP(btnAction === 'Add' ? 'i' : 'u'), JSON.stringify(jsonBody));
+    const before = event.target.innerHTML;
+    event.target.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     if (response.status === 200) {
         Refresh();
+        event.target.innerHTML = before;
         alert(`Success`);
     }
     else {
         console.log(`Code: ${response.status}\nResponse: ${response.data.message}`);
         // alert(`Failed`);
+        event.target.innerHTML = before;
     }
 }
 
@@ -464,12 +503,12 @@ function SerializeData() {
         const result = {
             type: courseType
         };
-        
+
         // Conditionally add the UUID if btnAction is "Update"
         if (btnAction === "Update") {
             result.uuid = uuidSelectedForAction;
         }
-    
+
         return result;
     } else if (currentSelection === "course") {
         const nameInput = document.getElementById("txtCourseName");
@@ -510,10 +549,11 @@ function SerializeData() {
         const projectInput = document.getElementById("txtProject");
         const durationInput = document.getElementById("txtDuration");
         const demoInput = document.getElementById("demoYes").checked ? true : false;
+        console.log(videoInput);
         const result = {
             topic: topicSelected,
             name: nameInput.value,
-            video: videoInput.value,
+            video: videoInput.files[0],
             project: projectInput.value,
             duration: durationInput.value,
             demo: demoInput

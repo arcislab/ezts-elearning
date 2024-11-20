@@ -16,6 +16,9 @@ async function CallApi(url, jsonBody = null, met = null) {
         if (response.status !== null && response.status >= 400) {
             // Handle the error response if needed
             console.error(`Error: ${response.status}`);
+            if(response.status === 401){
+                window.location.href = 'ezts.local/login.html';
+            }
         }
         // if (!response.ok) {
         //     const errorData = await response.json();

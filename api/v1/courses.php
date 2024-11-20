@@ -2,9 +2,11 @@
 require_once './api/helpers/MySqlCommands.php';
 require_once './api/v1/quiz.php';
 require_once './api/v1/user.php';
+require_once './api/v1/aws-s3-manage.php';
 
 $quizController = new Quiz();
 $userController = new User();
+$awsController = new AwsS3();
 
 class Courses
 {
@@ -376,7 +378,7 @@ class Courses
             ]);
         }
     }
-    
+
     function GetCourseInfo($userId, $courseId)
     {
         if ($this->CheckIfPurchased($userId, $courseId)) {
@@ -410,7 +412,7 @@ class Courses
                             'downloadable_content' => $info["downloadable_content"],
                             'expiry' => $this->GetExpiry($userId),
                             'topics' => $this->Topics($courseId, null, $userId, true)
-                            
+
                         ]
                     ]);
                 }
@@ -523,7 +525,7 @@ class Courses
             return false;
         }
     }
-    
+
     // Admin section
     // CRUD Courses Type
     function AddCourseType($courseType)
@@ -602,9 +604,15 @@ class Courses
     function AddSubTopic($topic, $name, $video, $project, $duration, $demo)
     {
         $sqlHelp = new SqlHelper();
-        $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `video_url`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?, ?)";
-        $result = $sqlHelp->executeQuery($query, 'ssssss', array($topic, $name, $video, $project, $duration, $demo));
+        $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?)";
+        $result = $sqlHelp->executeQuery($query, 'sssss', array($topic, $name, $project, $duration, $demo));
+        $this->UploadCourseVideo($video);
         return Response::json($result[0], $result[1]);
+    }
+
+    function UploadCourseVideo($video) {
+        global $awsController;
+        $awsController->Upload($video);
     }
 
     function UpdateSubTopic($id, $name, $video, $project, $duration, $demo)

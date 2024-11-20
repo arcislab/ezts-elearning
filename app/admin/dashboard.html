@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
     <link rel="stylesheet" href="styles/dashboard.css">
 </head>
 
@@ -37,30 +38,28 @@
             </div>
             <div class="body">
                 <div class="child">
-                    <!-- <div>
+                    <div>
                         <p>Name</p>
-                        <input type="number" placeholder="Enter course name" required>
+                        <input type="text" id="txtName" placeholder="Enter name of sub topic">
                     </div>
                     <div>
-                        <p>Author</p>
-                        <input type="text" placeholder="Enter author">
+                        <p>Video</p>
+                        <input type="file" id="txtVideo" onchange="BindCourseFile(event)" accept=".mp4">
+                        <p id="txtVideoMessage"></p>
+                    </div>
+                    <div>
+                        <p>Project</p>
+                        <input type="file" id="txtProject" placeholder="Enter project url">
                     </div>
                     <div>
                         <p>Duration</p>
-                        <input type="text"  placeholder="Enter duration in hours">
+                        <input type="text" id="txtDuration" placeholder="Enter duration in hours">
                     </div>
                     <div>
-                        <p>Actual price</p>
-                        <input type="text" placeholder="Enter actual price">
+                        <p>Demo</p>
+                        <input type="radio" name="rad" id="demoYes">Yes</input>
+                        <input type="radio" name="rad" id="demoNo" checked>No</input>
                     </div>
-                    <div>
-                        <p>Discount price</p>
-                        <input type="radio" checked placeholder="Enter discount price">
-                    </div>
-                    <div>
-                        <p>Expiry(in days)</p>
-                        <input type="text" placeholder="Enter expiry">
-                    </div> -->
                 </div>
             </div>
             <div class="foot">
