@@ -1,5 +1,6 @@
-html, body {
-    height:100%;
+html,
+body {
+    height: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -7,7 +8,7 @@ html, body {
 }
 
 /* Main */
-.main{
+.main {
     display: flex;
     flex-direction: row;
     width: 100vw;
@@ -15,7 +16,7 @@ html, body {
 }
 
 /* Bars */
-.mainBar{
+.mainBar {
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -23,48 +24,65 @@ html, body {
     width: 5%;
     cursor: pointer;
     overflow: hidden;
-    top: 0; /* Adjust top position as needed */
-    z-index: 1; /* Ensures the bar stays on top of the content */
+    top: 0;
+    /* Adjust top position as needed */
+    z-index: 1;
+    /* Ensures the bar stays on top of the content */
     position: sticky;
+    transition: width 0.3s ease;
 }
 
-.coursesBar{
+.bar {
+    width: 0%;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.bar.expanded {
+    width: 90%;
+}
+
+.mainBar.expanded {
+    width: 90%;
+}
+
+.coursesBar {
     background-color: #00A98F;
     overflow: hidden;
 }
 
-.coursesBar:hover{
+.coursesBar:hover {
     background-color: #01816e;
 }
 
-.aboutBar{
-    background-color: #A5E9E1;  
+.aboutBar {
+    background-color: #A5E9E1;
     overflow: hidden;
 }
 
-.aboutBar:hover{
+.aboutBar:hover {
     background-color: #b7f1eb;
 }
 
-.homeBar{
+.homeBar {
     background-color: #2E2B2B;
     width: 0px;
 }
 
-.homeBar:hover{
+.homeBar:hover {
     background-color: #423e3e;
 }
 
 /* Home */
-.homeMain{
+.homeMain {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    /* width: 90%; */
     height: 700vh;
     /* display: none; */
 }
 
-.header{
+.header {
     display: flex;
     width: 100%;
     height: 20vh;
@@ -74,12 +92,12 @@ html, body {
     top: 0;
 }
 
-.logo{
+.logo {
     margin-left: 20px;
     height: 60%;
 }
 
-.getStartedBtn{
+.getStartedBtn {
     border-radius: 20px;
     border: none;
     width: 130px;
@@ -91,19 +109,19 @@ html, body {
     cursor: pointer;
 }
 
-.getStartedBtn:hover{
+.getStartedBtn:hover {
     background-color: #534f4f;
 }
 
-.introDiv{
+.introDiv {
     display: flex;
     height: 80vh;
-    width: 100%; 
+    width: 100%;
     align-items: center;
     justify-content: center;
 }
 
-.informationDiv{
+.informationDiv {
     width: 50%;
     height: 100%;
     padding: 0;
@@ -113,7 +131,7 @@ html, body {
     justify-content: center;
 }
 
-.informationDivChild{
+.informationDivChild {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -122,7 +140,7 @@ html, body {
     height: 100%;
 }
 
-.informationDivChild > button{
+.informationDivChild>button {
     border-radius: 20px;
     border: none;
     width: 130px;
@@ -132,7 +150,7 @@ html, body {
     cursor: pointer;
 }
 
-.informationImage{
+.informationImage {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,12 +158,12 @@ html, body {
     width: 50%;
 }
 
-.developerImage{
+.developerImage {
     height: 160px;
     width: 280px;
 }
 
-.aboutDiv{
+.aboutDiv {
     background-color: #2E2B2B;
     height: 100vh;
     width: 100%;
@@ -153,7 +171,7 @@ html, body {
     box-sizing: border-box;
 }
 
-.aboutDivImage{
+.aboutDivImage {
     width: 30%;
     display: flex;
     justify-content: center;
@@ -161,13 +179,13 @@ html, body {
     height: 100%;
 }
 
-.aboutLogo{
+.aboutLogo {
     color: white;
     width: 300px;
     height: 200px;
 }
 
-.aboutDivInformation{
+.aboutDivInformation {
     width: 70%;
     height: 100%;
     display: flex;
@@ -175,14 +193,14 @@ html, body {
     align-items: center;
 }
 
-.aboutDivInformationChild{
+.aboutDivInformationChild {
     height: 50%;
     width: 70%;
     color: white;
     /* display: flex; */
 }
 
-.aboutDivInformationChild > button{
+.aboutDivInformationChild>button {
     border-radius: 20px;
     border: none;
     width: 130px;
@@ -192,7 +210,7 @@ html, body {
     cursor: pointer;
 }
 
-.clientsDiv{
+.clientsDiv {
     margin-top: 20px;
     display: flex;
     width: 90%;
@@ -202,12 +220,12 @@ html, body {
     align-self: center;
 }
 
-.clientsDivTitle{
+.clientsDivTitle {
     width: 25%;
     font-size: 30px;
 }
 
-.clientsLogos{
+.clientsLogos {
     display: flex;
     align-items: center;
     gap: 10%;
@@ -216,11 +234,11 @@ html, body {
     overflow: hidden;
 }
 
-.clientsLogos > li > img{
+.clientsLogos>li>img {
     height: 100px;
 }
 
-.statisticsDiv{
+.statisticsDiv {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -233,7 +251,7 @@ html, body {
     color: white;
 }
 
-.statisticsDiv > div{
+.statisticsDiv>div {
     width: 33.33%;
     display: flex;
     height: 100%;
@@ -245,12 +263,12 @@ html, body {
 }
 
 
-.statisticsDiv > div > h3{
+.statisticsDiv>div>h3 {
     z-index: 1;
     line-height: 60px;
 }
 
-.circles{
+.circles {
     background-color: #00A98F;
     border-radius: 100%;
     height: 70px;
@@ -258,7 +276,7 @@ html, body {
     position: absolute;
 }
 
-.coursesDiv{
+.coursesDiv {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -268,18 +286,18 @@ html, body {
     width: 90%;
 }
 
-.coursesDivTitle{
+.coursesDivTitle {
     height: 20%;
 }
 
-.emptyLine{
+.emptyLine {
     width: 60px;
     height: 5px;
     background-color: #00A98F;
     border-radius: 20px;
 }
 
-.coursesDivAction{
+.coursesDivAction {
     width: 100%;
     height: 5%;
     display: flex;
@@ -287,7 +305,7 @@ html, body {
     justify-content: center;
 }
 
-.seeAllBtn{
+.seeAllBtn {
     border: 1px solid #00A98F;
     border-radius: 20px;
     height: 30px;
@@ -299,18 +317,18 @@ html, body {
     margin-right: 20px;
 }
 
-.seeAllBtn:hover{
+.seeAllBtn:hover {
     background-color: #00A98F;
     color: white;
 }
 
-.seeAllBtn:active{
+.seeAllBtn:active {
     border: 1px solid #00A98F;
     color: #00A98F;
     background-color: transparent;
 }
 
-.coursesDivList{
+.coursesDivList {
     margin-top: 10px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -321,7 +339,7 @@ html, body {
     gap: 20px;
 }
 
-.courseDiv{
+.courseDiv {
     border: 0.5px solid #2E2B2B26;
     border-radius: 20px;
     /* padding: 20px; */
@@ -331,7 +349,7 @@ html, body {
     align-self: center;
 }
 
-.courseThumbnail{
+.courseThumbnail {
     background-color: #2E2B2B;
     width: 100%;
     height: 30%;
@@ -339,11 +357,11 @@ html, body {
     border-top-right-radius: 20px;
 }
 
-.courseThumbnail img{
+.courseThumbnail img {
     height: 100%;
 }
 
-.courseInformation{
+.courseInformation {
     display: flex;
     flex-direction: column;
     width: 90%;
@@ -352,7 +370,7 @@ html, body {
     padding-right: 10px;
 }
 
-.courseInformation > div{
+.courseInformation>div {
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -361,7 +379,7 @@ html, body {
     gap: 10px;
 }
 
-.enrollBtn{
+.enrollBtn {
     background-color: #333743;
     border-radius: 20px;
     border: none;
@@ -373,28 +391,28 @@ html, body {
     margin-bottom: 10px;
 }
 
-.enrollBtn:hover{
+.enrollBtn:hover {
     background-color: #505566;
 }
 
-.enrollBtn:active{
+.enrollBtn:active {
     background-color: #202229;
 }
 
-.barHeading{
+.barHeading {
     transform: rotate(-90deg);
     color: white;
     margin-bottom: 60px;
     width: 40%;
 }
 
-.aboutHeading{
+.aboutHeading {
     color: black;
 }
 
 /* Join us */
 
-.joinus{
+.joinus {
     margin-top: 80px;
     background-color: #2E2B2B;
     height: 70vh;
@@ -405,22 +423,22 @@ html, body {
     color: white;
 }
 
-.joinusHead{
+.joinusHead {
     width: 100%;
-    height: 30%;    
+    height: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
 }
 
-.joinusBody{
+.joinusBody {
     height: 70%;
     width: 100%;
     display: flex;
 }
 
-.bodyLeft{
+.bodyLeft {
     width: 50%;
     display: flex;
     justify-content: center;
@@ -428,22 +446,22 @@ html, body {
     height: 100%;
 }
 
-.bodyLeft img{
+.bodyLeft img {
     height: 100%;
 }
 
-.bodyRight{
+.bodyRight {
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.bodyRight p{
+.bodyRight p {
     width: 80%;
 }
 
-.bodyRight button{
+.bodyRight button {
     border-radius: 20px;
     border: none;
     width: 130px;
@@ -455,27 +473,27 @@ html, body {
 
 /* Blogs */
 
-.readMoreBtn{
+.readMoreBtn {
     margin-top: auto;
     margin-bottom: 10px;
 }
 
 /* footer */
-.footer{
+.footer {
     margin-top: 50px;
     height: 100vh;
     width: 100%;
     color: white;
 }
 
-.footerTop{
+.footerTop {
     height: 50%;
     width: 100%;
     background-color: #2E2B2B;
     display: flex;
 }
 
-.footerTopLeft{
+.footerTopLeft {
     width: 50%;
     height: 100%;
     display: flex;
@@ -483,14 +501,14 @@ html, body {
     align-items: center;
 }
 
-.footerTopRight{
+.footerTopRight {
     width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-.footerTopRightButtons{
+.footerTopRightButtons {
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -498,7 +516,7 @@ html, body {
     height: 20%;
 }
 
-.footerTopRightButtons button{
+.footerTopRightButtons button {
     background-color: #00A98F;
     cursor: pointer;
     color: white;
@@ -507,24 +525,24 @@ html, body {
     border-radius: 10px;
 }
 
-.footerTopRightButtons button:hover{
+.footerTopRightButtons button:hover {
     background-color: #1fbda5;
 }
 
-.footerTopRightButtons button:active{
+.footerTopRightButtons button:active {
     background-color: #00A98F;
 }
 
-.footerBottom{
+.footerBottom {
     height: 100%;
     width: 100%;
-    background-image: linear-gradient(to right, #1EB59F , #3881869C);
+    background-image: linear-gradient(to right, #1EB59F, #3881869C);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.footerBottomLeft{
+.footerBottomLeft {
     width: 40%;
     height: 100%;
     display: flex;
@@ -532,7 +550,7 @@ html, body {
     justify-content: center;
 }
 
-.footerBottomLeftChild{
+.footerBottomLeftChild {
     width: 40%;
     gap: 10px;
     display: flex;
@@ -540,34 +558,34 @@ html, body {
     align-items: center;
 }
 
-.footerBottomLeftChild img{
+.footerBottomLeftChild img {
     cursor: pointer;
 }
 
-.socialMediaIcons{
+.socialMediaIcons {
     display: flex;
     gap: 10px;
     width: 60%;
 }
 
-.footerLogo{
+.footerLogo {
     width: 130px;
 }
 
-.footerBottomRight{
+.footerBottomRight {
     width: 60%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.footerBottomRightTop{
+.footerBottomRightTop {
     height: 85%;
     width: 100%;
     display: flex;
 }
 
-.footerBottomRightTopLeft{
+.footerBottomRightTopLeft {
     height: 100%;
     width: 50%;
     display: flex;
@@ -575,7 +593,7 @@ html, body {
     align-items: center;
 }
 
-.footerBottomRightTopRight{
+.footerBottomRightTopRight {
     height: 100%;
     width: 50%;
     display: flex;
@@ -583,18 +601,18 @@ html, body {
     align-items: center;
 }
 
-.textHold{
+.textHold {
     width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.textHold h4{
+.textHold h4 {
     cursor: pointer;
 }
 
-.footerBottomRightBottom{
+.footerBottomRightBottom {
     height: 15%;
     width: 100%;
     display: flex;
@@ -602,14 +620,13 @@ html, body {
 }
 
 /* Courses main */
-.coursesMain{
+.coursesMain {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    display: none;
+    /* width: 90%; */
 }
 
-.coursesList{
+.coursesList {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 90%;
@@ -617,33 +634,32 @@ html, body {
     margin-top: 50px;
 }
 
-.coursesHeader{
+.coursesHeader {
     align-self: flex-start;
 }
 
-.coursesFooter{
+.coursesFooter {
     height: 50vh;
 }
 
 /* About main */
-.aboutMain{
+.aboutMain {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    /* width: 90%; */
     height: 400vh;
-    display: none;
 }
 
-    
-.aboutAbout{
+
+.aboutAbout {
     background-color: transparent;
 }
 
-.aboutAbout .aboutDivInformationChild{
+.aboutAbout .aboutDivInformationChild {
     color: black;
 }
 
-.specialities{
+.specialities {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     height: 50vh;
@@ -651,19 +667,19 @@ html, body {
     margin-top: 50px;
 }
 
-.specialityMission img{
+.specialityMission img {
     margin-left: 30px;
 }
 
-.specialities p{
+.specialities p {
     width: 60%;
 }
 
-.specialities h3{
+.specialities h3 {
     color: #00A98F;
 }
 
-.specialities div{
+.specialities div {
     margin: 20px;
     display: flex;
     flex-direction: column;
@@ -671,7 +687,7 @@ html, body {
     text-align: center;
 }
 
-.aboutJoinUs{
+.aboutJoinUs {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -680,14 +696,14 @@ html, body {
     margin-top: 50px;
 }
 
-.aboutJoinUsHeader{
+.aboutJoinUsHeader {
     width: 90%;
     height: 30%;
     display: flex;
     justify-content: center;
 }
 
-.aboutJoinUsBody{
+.aboutJoinUsBody {
     width: 90%;
     height: 70%;
     display: flex;
@@ -695,12 +711,12 @@ html, body {
     justify-content: space-between;
 }
 
-.aboutJoinUsBody p{
+.aboutJoinUsBody p {
     width: 50%;
 }
 
 /* contact */
-.contactDiv{
+.contactDiv {
     height: 100vh;
     width: 100%;
     display: flex;
@@ -709,39 +725,39 @@ html, body {
     display: none;
 }
 
-.contactMain{
+.contactMain {
     height: 80vh;
     width: 90%;
     display: flex;
 }
 
-.contactLeft{
+.contactLeft {
     width: 70%;
     height: 100%;
 }
 
-.contactLeftHeader{
+.contactLeftHeader {
     width: 100%;
     height: 15%;
 }
 
-.contactLeftBody{
+.contactLeftBody {
     width: 100%;
     height: 90%;
     display: flex;
     flex-direction: column;
 }
 
-.contactDesc{
+.contactDesc {
     width: 100%;
     height: 30%;
 }
 
-.contactDesc p{
+.contactDesc p {
     width: 70%;
 }
 
-.contactInfo{
+.contactInfo {
     width: 100%;
     height: 60%;
     display: flex;
@@ -749,23 +765,23 @@ html, body {
     gap: 10px;
 }
 
-.contactInfo div{
+.contactInfo div {
     display: flex;
     align-items: center;
     gap: 15px;
     width: 40%;
 }
 
-.address{
-    margin:0px;
+.address {
+    margin: 0px;
     align-self: flex-start;
 }
 
-.contactInfo img{
+.contactInfo img {
     height: 32px;
 }
 
-.contactRight{
+.contactRight {
     width: 30%;
     height: 100%;
     background-color: #2E2B2B;
@@ -774,7 +790,7 @@ html, body {
     justify-content: center;
 }
 
-.contactRight > div{
+.contactRight>div {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -782,7 +798,7 @@ html, body {
     align-content: center;
 }
 
-.contactParams{
+.contactParams {
     color: white;
     display: flex;
     flex-direction: column;
@@ -790,7 +806,8 @@ html, body {
     margin-top: 10px;
 }
 
-.contactParams input, .contactParams textarea{
+.contactParams input,
+.contactParams textarea {
     height: 30px;
     background-color: transparent;
     border-radius: 5px;
@@ -798,21 +815,21 @@ html, body {
     color: white;
 }
 
-.contactParams h4{
+.contactParams h4 {
     margin: 5px;
 }
 
-.contactLearnDesc{
+.contactLearnDesc {
     height: 80px;
 }
 
-.contactLearnDesc textarea{
+.contactLearnDesc textarea {
     height: 100%;
-    text-align:start;
+    text-align: start;
     resize: none;
 }
 
-.sendMessageBtn{
+.sendMessageBtn {
     background-color: white;
     width: 90%;
     height: 40px;
@@ -825,10 +842,10 @@ html, body {
     cursor: pointer;
 }
 
-.sendMessageBtn:hover{
+.sendMessageBtn:hover {
     background-color: rgb(233, 231, 231);
 }
 
-.sendMessageBtn:active{
+.sendMessageBtn:active {
     background-color: white;
 }

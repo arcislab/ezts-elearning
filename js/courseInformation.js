@@ -21,7 +21,7 @@ addEventListener("DOMContentLoaded", (event) => {
     btnBack.addEventListener('click', function () {
         history.back();
     });
-    btnQuizProceed.addEventListener('click', function(){
+    btnQuizProceed.addEventListener('click', function () {
         RequestQuiz();
     });
     if (dialogMain != undefined) {
@@ -32,7 +32,7 @@ addEventListener("DOMContentLoaded", (event) => {
     LoadInfo();
 });
 
-async function CheckQuiz(){
+async function CheckQuiz() {
     let url = `/quiz/check`
 
     try {
@@ -46,17 +46,17 @@ async function CheckQuiz(){
         if (response) {
             if (response.data.allowed !== undefined) {
                 const qAllow = response.data.allowed;
-                if(qAllow){
+                if (qAllow) {
                     if (dialogMain.style.visibility == 'hidden' || dialogMain.style.visibility == '') {
                         dialogMain.style.visibility = 'visible';
                     }
                     console.log(response.data.time);
-                    if(response.data.time !== null){
+                    if (response.data.time !== null) {
                         const txtQuizTime = dialogMain.querySelector('#txtQuizTime');
                         txtQuizTime.innerHTML = response.data.time;
                     }
                 }
-                else{
+                else {
                     if (dialogMain != undefined) {
                         dialogMain.style.visibility = 'hidden';
                     }
@@ -71,7 +71,7 @@ async function CheckQuiz(){
     }
 }
 
-async function RequestQuiz(){
+async function RequestQuiz() {
     let url = `/quiz/request`
 
     try {
@@ -83,7 +83,7 @@ async function RequestQuiz(){
         }
 
         if (response.status === 200) {
-            if(response.data.uuid != null){
+            if (response.data.uuid != null) {
                 localStorage.setItem('qId', response.data.uuid);
             }
             window.location.assign('quiz.html');
@@ -139,14 +139,14 @@ async function LoadInfo() {
                             progressReport.appendChild(topicInfo);
                             const btnExpand = topicInfo.querySelector('#btnExpand');
                             if (btnExpand !== undefined) {
-                                if(topic.access !== null){
-                                    if(topic.access){
+                                if (topic.access !== null) {
+                                    if (topic.access) {
                                         btnExpand.style.cursor = 'pointer';
-                                        btnExpand.addEventListener('click', async() => {
+                                        btnExpand.addEventListener('click', async () => {
                                             LoadCourse(topic.uuid, topicInfo, topic.provide_quiz);
                                         });
                                     }
-                                    else{
+                                    else {
                                         btnExpand.style.cursor = 'no-drop';
                                         const cardTitle = topicInfo.querySelector('.topicName');
                                         cardTitle.style.color = '#969696';
@@ -156,7 +156,7 @@ async function LoadInfo() {
                         }
                     });
                 }
-                else{
+                else {
                     console.log('No topics found')
                 }
             } else {
@@ -187,24 +187,24 @@ async function LoadCourse(uuid, topicInfo, qAllow) {
             while (courseContainer.firstChild) {
                 courseContainer.removeChild(courseContainer.firstChild);
             }
-            if (response.data.sub_topics?.length > 0) {
-                response.data.sub_topics.forEach(subtopic => {
-                    const topicInfo = GetSubTopicsCard(subtopic.topic_name);
+            if (response.data.data?.length > 0) {
+                response.data.data.forEach(subtopic => {
+                    const topicInfo = GetSubTopicsCard(subtopic.topic_name, subtopic.uuid, subtopic.video_url);
                     if (courseContainer !== undefined) {
                         courseContainer.appendChild(topicInfo);
                     }
                 });
-                
+
                 const btnQuiz = document.createElement('button');
                 btnQuiz.id = 'btnTakeQuiz'
                 btnQuiz.innerHTML = 'Take Quiz';
                 courseContainer.appendChild(btnQuiz);
-                if(!qAllow){
+                if (!qAllow) {
                     btnQuiz.style.cursor = 'not-allowed';
                     btnQuiz.disabled = true;
                 }
-                else{
-                    btnQuiz.addEventListener('click', function(){
+                else {
+                    btnQuiz.addEventListener('click', function () {
                         selectedTopic = uuid;
                         localStorage.setItem('t', selectedTopic);
                         CheckQuiz();
@@ -213,16 +213,36 @@ async function LoadCourse(uuid, topicInfo, qAllow) {
 
                 if (courseContainer !== undefined) {
                     console.log(courseContainer.style.display)
-                    if(courseContainer.style.display === '' || courseContainer.style.display === 'none'){
+                    if (courseContainer.style.display === '' || courseContainer.style.display === 'none') {
                         courseContainer.style.display = 'flex';
                     }
-                    else{
+                    else {
                         courseContainer.style.display = 'none';
                     }
                 }
             } else {
                 console.log('No information found.');
             }
+        }
+    } catch (error) {
+        console.error('Error fetching course types:', error);
+        return null;
+    }
+}
+
+async function CheckTopic(id) {
+    let url = `/quiz/check`
+
+    try {
+        const body = JSON.stringify({ course_topic: id });
+        const response = await CallApi(url, body);
+        if (response.status === 401) {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+            return;
+        }
+
+        if (response.status === 200) {
+            
         }
     } catch (error) {
         console.error('Error fetching course types:', error);

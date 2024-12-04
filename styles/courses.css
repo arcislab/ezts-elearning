@@ -1,0 +1,135 @@
+html, body {
+    height:100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+#main{
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+}
+
+.coursesDiv{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 90%;
+}
+
+.coursesDivTitle{
+    height: 20%;
+}
+
+.emptyLine{
+    width: 60px;
+    height: 5px;
+    background-color: #00A98F;
+    border-radius: 20px;
+}
+
+.coursesDivAction{
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.coursesDivList{
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 75%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.courseDiv{
+    border: 0.5px solid #2E2B2B26;
+    border-radius: 20px;
+    /* padding: 20px; */
+    height: 100%;
+    width: 100%;
+    justify-self: center;
+    align-self: center;
+}
+
+.courseThumbnail{
+    background-color: #2E2B2B;
+    width: 100%;
+    height: 30%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.courseThumbnail img{
+    height: 100%;
+}
+
+.courseInformation{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.courseInformation > div{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+    gap: 10px;
+}
+
+.enrollBtn{
+    background-color: #333743;
+    border-radius: 20px;
+    border: none;
+    height: 40px;
+    width: 120px;
+    color: white;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.enrollBtn:hover{
+    background-color: #505566;
+}
+
+.enrollBtn:active{
+    background-color: #202229;
+}
+.coursesMain{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    display: none;
+}
+
+.coursesList{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 90%;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.coursesHeader{
+    align-self: flex-start;
+}
+
+.coursesFooter{
+    height: 50vh;
+}

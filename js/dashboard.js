@@ -38,11 +38,14 @@ async function GetCourseTypes() {
             if (response.data.data?.length > 0) {
                 response.data.data.forEach(type => {
                     //Populate courses in stack control
-                    const div = document.createElement('p');
+                    const heading = document.createElement('p');
                     // console.log(htmlContent)
-                    if (div) {
-                        div.innerHTML = type.type;
-                        main.appendChild(div);
+                    if (heading) {
+                        heading.innerHTML = type.type;
+                        main.appendChild(heading);
+                        heading.addEventListener('click', async () => {
+                            window.location.href = `./courses.html?type=${type.uuid}`;
+                        });
                         // const btnEnroll = htmlContent.querySelector(".enrollBtn");
                         // btnEnroll.addEventListener('click', async () => {
                         //     console.log(`Enrolling for ${course.uuid}`);
@@ -259,5 +262,34 @@ async function GetOrders($userid) {
                 console.log('No orders found.');
             }
         }
+    }
+}
+
+const lgt = document.getElementById('Btnlgt');
+lgt.addEventListener('click', function(){
+    Lgt();
+});
+
+async function Lgt(){
+    let url = `/logout`;
+
+    try {
+        const response = await CallApi(url, null, 'GET');
+        if (response.status === 401) {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+            alert(response.data.message);
+            return;
+        }
+
+        if (response) {
+            if (response.status === 200) {
+                window.location.href = 'http://ezts.local/login.html'
+            } else {
+                console.error(`Error: ${response.status} - ${response.statusText}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching course types:', error);
+        return null;
     }
 }

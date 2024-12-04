@@ -106,12 +106,15 @@ function GetCourseInfoCard(topicName, duration, noOfSubTopics, noOfDemo) {
     return div;
 }
 
-function GetSubTopicsCard(title) {
+function GetSubTopicsCard(title, id, v) {
     const div = document.createElement('div');
     div.className = 'course';
 
     div.innerHTML = `
-        <div class="courseMain"></div>
+        <video class="courseMain" controls controlsList="nodownload" oncontextmenu="return false;" onplay="CheckTopic(${id})">
+            <source src="${v}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="title">
             <p>${title}</p>
         </div>`;
@@ -157,7 +160,7 @@ function GetResultCard(question, answers) {
                         <div id="options">`;
 
     answers.forEach(item => {
-        if(item.correct === 1){
+        if (item.correct === 1) {
             correctAnswer = item.answer;
             explaination = item.explaination;
         }

@@ -1,6 +1,7 @@
 const API_BASE_URL = 'http://ezts.local/api/v1';
 
 async function CallApi(url, jsonBody = null, method = 'POST') {
+    let rawResponseBody;
     try {
         url = `${API_BASE_URL}${url}`;
         const response = await fetch(url, {
@@ -18,7 +19,7 @@ async function CallApi(url, jsonBody = null, method = 'POST') {
             // Handle the error response if needed
             console.error(`Error: ${response.status} - ${response.statusText}`);
             if(response.status === 401){
-                window.location.href = 'ezts.local/login.html';
+                window.location.href = 'http://ezts.local/login.html';
             }
         }
         // if (!response.ok) {
@@ -30,7 +31,7 @@ async function CallApi(url, jsonBody = null, method = 'POST') {
         //     };
         // }
         
-        const rawResponseBody = await response.text();
+        rawResponseBody = await response.text();
         if (url.includes('redirect') && response.redirected) {
             // alert(rawResponseBody);
             window.location.href = response.url; // Redirect to the response URL
@@ -44,6 +45,7 @@ async function CallApi(url, jsonBody = null, method = 'POST') {
         };
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
+        console.error('Raw: ' , rawResponseBody);
         return {
             data: null,
             status: null,

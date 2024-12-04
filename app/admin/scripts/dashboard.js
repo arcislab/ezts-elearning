@@ -34,8 +34,9 @@ async function CallApi(url, jsonBody, method = null) {
         });
 
         console.log(`Calling: ${url}\nbody: ${jsonBody}`)
-        if(response.status === 401){
-            window.location.href = 'ezts.local/login.html';
+        if (response.status === 401) {
+            alert(response.statusText)
+            window.location.href = 'http://ezts.local/login.html';
         }
 
         if (!response.ok) {

@@ -187,7 +187,7 @@ async function QuizDialogEvent() {
             };
             response = await CallApi('/quiz/manage', JSON.stringify(jsonBody));
             // alert(response.data.uuid)
-            if(response.data.uuid !== null){
+            if (response.data.uuid !== null) {
                 quizSelected = response.data.uuid;
             }
         } else {
@@ -304,15 +304,15 @@ async function FetchCourseTopics(id) {
         if (courseTopics !== null) {
             let htmlContent = '';
             if (response) {
-                if (response.data.topics?.length > 0) {
-                    response.data.topics.forEach(topic => {
+                if (response.data.data?.length > 0) {
+                    response.data.data.forEach(topic => {
                         //Populate courses in stack control
                         htmlContent = GetCourses(topic.id, topic.name);
                         if (htmlContent) {
                             courseTopics.innerHTML += htmlContent;
                             // const btnEnroll = htmlContent.querySelector(".enrollBtn");
                             // btnEnroll.addEventListener('click', async () => {
-                                
+
                             // });
                         }
                     });

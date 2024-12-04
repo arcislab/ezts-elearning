@@ -50,6 +50,29 @@ class Authentication
         }
     }
 
+    function Logout()
+    {
+        // Destroy any session data if using PHP sessions
+        session_unset();  // Remove all session variables
+        session_destroy();  // Destroy the session
+
+        // Set the 'token' cookie with an expired time to delete it
+        setcookie("token", "", [
+            'expires' => time() - 3600,  // Expire one hour ago
+            'path' => '/',
+            'domain' => 'ezts.local',  // Match your cookie domain
+            'secure' => false,         // Set to true if using HTTPS
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+
+        // Return a response indicating logout success
+        return Response::json(200, [
+            'status' => 'success',
+            'message' => 'Logout successful'
+        ]);
+    }
+
     function RedirectUser($userid)
     {
         global $userController;

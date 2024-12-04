@@ -1,6 +1,6 @@
 addEventListener("DOMContentLoaded", (event) => {
     GetCourses();
-    GetBlogs();
+    // GetBlogs();
 });
 
 async function GetCourses() {
@@ -12,10 +12,10 @@ async function GetCourses() {
         let htmlContent = '';
         if (response) {
             if (response.data.data?.length > 0) {
-                response.data.data.forEach(item => {
-                    const course = item.course;
+                response.data.data.forEach(course => {
+                    // const course = item.course;
                     htmlContent = GetCourseCard(course.uuid, course.name, course.author, course.duration, 4, course.ap, course.dp);
-                    console.log(htmlContent)
+                    // console.log(htmlContent)
                     if (htmlContent) {
                         main.appendChild(htmlContent);
                         const btnEnroll = htmlContent.querySelector(".enrollBtn");

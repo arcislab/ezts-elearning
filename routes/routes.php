@@ -236,6 +236,14 @@ switch ($request) {
             }
         }
         break;
+    case '/api/v1/courses/video': //Test endpoint for aws video upload
+        if ($method == 'POST') {
+            if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
+                $awsController = new AwsS3();
+                $awsController->Upload($_FILES['video']);
+            }
+        }
+        break;
     case '/api/v1/courses/sub-topics': //Sub Topics
         if ($method == 'POST') {
             $course_topic = isset($data["course_topic"]) ? $data["course_topic"] : null;
@@ -246,24 +254,24 @@ switch ($request) {
             }
         }
         break;
-    case '/api/v1/courses/video': //Test endpoint for aws video upload
-        if ($method == 'POST') {
-            if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {
-                $awsController = new AwsS3();
-                $awsController->Upload($_FILES['video']);
-            }
-        }
-        break;
     case '/api/v1/courses/sub-topics/add': //Sub Topics add
         if ($method == 'POST') {
-            $topic = isset($data["topic"]) ? $data["topic"] : null;
-            $name = isset($data["name"]) ? $data["name"] : null;
+            $topic = isset($_POST["topic"]) ? $_POST["topic"] : null;
+            $name = isset($_POST["name"]) ? $_POST["name"] : null;
             $video = isset($_FILES["video"]) ? $_FILES["video"] : null;
-            $project = isset($data["project"]) ? $data["project"] : null;
-            $duration = isset($data["duration"]) ? $data["duration"] : null;
-            $demo = isset($data["demo"]) ? $data["demo"] : null;
+            $project = isset($_FILES["project"]) ? $_FILES["project"] : null;
+            $duration = isset($_POST["duration"]) ? $_POST["duration"] : null;
+            $demo = isset($_POST["demo"]) ? $_POST["demo"] : null;
             $userId = Authenticate(true);
             if (is_numeric($userId)) {
+                if (!$topic || !$name || !$video) {
+                    return Response::json(404, [
+                        'status' => 'error',
+                        'message' => 'Invalid request.',
+                        'topic' => $topic
+                    ]);
+                    exit;
+                }
                 echo $coursesController->AddSubTopic($topic, $name, $video, $project, $duration, $demo);
             }
         }
@@ -706,7 +714,7 @@ switch ($request) {
             } else {
                 $userId = Authenticate();
                 if (is_numeric($userId)) {
-                    echo $quizController->CheckIfQuizAllowed($data["course_topic"], $userId);
+                    echo $coursesController->CheckCourse($data["course_topic"], $userId);
                 }
             }
         }
@@ -726,6 +734,11 @@ switch ($request) {
             } else {
                 echo $authController->Login($data["mobile"], $data["otp"]);
             }
+        }
+        break;
+    case '/api/v1/logout':
+        if ($method == 'GET') {
+            echo $authController->Logout();
         }
         break;
     case '/api/v1/redirect':

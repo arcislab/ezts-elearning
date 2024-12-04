@@ -1,25 +1,67 @@
 // main button clicks
-const mainBar = document.getElementsByClassName("mainBar");
-const coursesMain = document.getElementsByClassName("coursesMain")[0];
-const aboutMain = document.getElementsByClassName("aboutMain")[0];
-const homeMain = document.getElementsByClassName("homeMain")[0];
+let currentSelection = 'h';
+const mainBars = document.querySelectorAll(".mainBar");
+const bars = document.querySelectorAll(".bar");
 
-if (mainBar.length > 0) {
-    const mainCourses = mainBar[0].addEventListener("click", function () {
-        coursesMain.style.display = 'flex';
-        aboutMain.style.display = 'none';
-        homeMain.style.display = 'none';
+mainBars.forEach(bar => {
+    bar.addEventListener('click', function () {
+        mainBars.forEach(b => b.classList.remove('expanded'));
+        bars.forEach(b => b.classList.remove('expanded'));
+
+        bar.classList.add('expanded');
+
+        bar.addEventListener('transitionend', function () {
+            bar.classList.remove('expanded');
+            let title = bar.querySelector('h1').innerHTML;
+
+            document.querySelectorAll('.bar').forEach(section => section.classList.remove('expanded'));
+
+            if (title === "Courses") {
+                document.querySelector('.coursesMain').classList.add('expanded');
+                ChangeTitleAcc(title);
+                currentSelection = 'c';
+            } else if (title === "About") {
+                document.querySelector('.aboutMain').classList.add('expanded');
+                ChangeTitleAcc(title);
+                currentSelection = 'a';
+            } else if (title === "Home") {
+                document.querySelector('.homeMain').classList.add('expanded');
+                ChangeTitleAcc(title);
+                currentSelection = 'h';
+            }
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }, { once: true });
     });
-    const mainAbout = mainBar[1].addEventListener("click", function () {
-        coursesMain.style.display = 'none';
-        aboutMain.style.display = 'flex';
-        homeMain.style.display = 'none';
-    });
-    const mainHome = mainBar[2].addEventListener("click", function () {
-        coursesMain.style.display = 'none';
-        aboutMain.style.display = 'none';
-        homeMain.style.display = 'flex';
-    });
+});
+
+function ChangeTitleAcc(callFrom) {
+    console.log(`Current selection: ${currentSelection} Call from: ${callFrom}`);
+    if (currentSelection === 'h') {
+        if (callFrom === 'Courses') {
+            document.querySelector('.coursesBar h1').innerHTML = 'About';
+            document.querySelector('.aboutBar h1').innerHTML = 'Home';
+        } else if (callFrom === 'About') {
+            document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+            document.querySelector('.aboutBar h1').innerHTML = 'Home';
+        }
+    } else if (currentSelection === 'a') {
+        if (callFrom === 'Courses') {
+            document.querySelector('.coursesBar h1').innerHTML = 'About';
+            document.querySelector('.aboutBar h1').innerHTML = 'Home';
+        } else if (callFrom === 'Home') {
+            document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+            document.querySelector('.aboutBar h1').innerHTML = 'About';
+        }
+    } else if (currentSelection === 'c') {
+        if (callFrom === 'About') {
+            document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+            document.querySelector('.aboutBar h1').innerHTML = 'Home';
+        } else if (callFrom === 'Home') {
+            document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+            document.querySelector('.aboutBar h1').innerHTML = 'About';
+        }
+    }
 }
 
 addEventListener("DOMContentLoaded", (event) => {
@@ -183,16 +225,16 @@ function BindOtpEvents() {
         return allFilled;
     }
 
-    async function CallL($mobile, $otp){
+    async function CallL($mobile, $otp) {
         let url = `/login`
         const body = JSON.stringify({ mobile: $mobile, otp: $otp });
-        
+
         try {
             const response = await CallApi(url, body);
             console.log(response)
             if (response.status >= 400) {
                 console.error(`Error: ${response.status} - ${response.data.message}`);
-                if(response.data.message === 'Invalid otp'){
+                if (response.data.message === 'Invalid otp') {
                     IncorrectOtpAnim();
                 }
                 return;
@@ -202,18 +244,18 @@ function BindOtpEvents() {
             // await CallApi(`/courses`, body);
             // localStorage.removeItem('mob');
             // window.location.assign("./app/dashboard.html");
-    
+
         } catch (error) {
             console.error('Error fetching login:', error);
             return null;
         }
     }
 
-    function IncorrectOtpAnim(){
+    function IncorrectOtpAnim() {
         otpInputs.forEach(input => {
             input.classList.add('error', 'shake');
         });
-        
+
         // Remove shake animation after it's done
         setTimeout(() => {
             otpInputs.forEach(input => {

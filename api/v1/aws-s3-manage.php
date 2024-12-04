@@ -104,17 +104,27 @@ class AwsS3
 
             $cloudFrontUrl = 'https://' . $distributionResult['Distribution']['DomainName'];
 
-            return Response::json(200, [
-                'status' => 'success',
-                'S3' => $s3Url,
-                'CF' => $cloudFrontUrl
-            ]);
+            // return Response::json(200, [
+            //     'status' => 'success',
+            //     'S3' => $s3Url,
+            //     'CF' => $cloudFrontUrl
+            // ]);
+
+            return [
+                'success',
+                $s3Url
+            ];
         } catch (AwsException $e) {
             // echo "Error: {$e->getMessage()}\n";
-            return Response::json(501, [
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ]);
+            // return Response::json(501, [
+            //     'status' => 'error',
+            //     'message' => $e->getMessage()
+            // ]);
+
+            return [
+                'error',
+                $e->getMessage()
+            ];
         }
     }
 }

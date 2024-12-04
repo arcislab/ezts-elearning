@@ -41,6 +41,25 @@ body::-webkit-scrollbar {
     margin-right: 20px;
 }
 
+#Btnlgt{
+    background-color: #2E2B2B;
+    border: none;
+    border-radius: 10px;
+    margin-right: 10px;
+    color: white;
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+}
+
+#Btnlgt:hover{
+    background-color: #4c4848;
+}
+
+#Btnlgt:active{
+    background-color: #2E2B2B;
+}
+
 #searchDiv {
     display: flex;
     align-items: center;

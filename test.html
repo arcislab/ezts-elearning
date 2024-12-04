@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test sliding</title>
+    <link rel="stylesheet" href="./styles/test.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="coursesMain bar">
+            <h1>This is courses</h1>
+        </div>
+        <div class="coursesBar mainBar">
+            <h1 class="barHeading">Courses</h1>
+        </div>
+
+        <div class="aboutMain bar">
+            <h1>This is about</h1>
+        </div>
+        <div class="aboutBar mainBar">
+            <h1 class="barHeading aboutHeading">About</h1>
+        </div>
+
+        <div class="homeMain bar expanded">
+            <h1>This is home</h1>
+        </div>
+    </div>
+</body>
+<script>
+    let currentSelection = 'h';
+    const mainBars = document.querySelectorAll(".mainBar");
+    const bars = document.querySelectorAll(".bar");
+    
+    mainBars.forEach(bar => {
+        bar.addEventListener('click', function () {
+            // Remove 'expanded' from all bars first
+            mainBars.forEach(b => b.classList.remove('expanded'));
+            bars.forEach(b => b.classList.remove('expanded'));
+
+            // Expand the clicked bar
+            bar.classList.add('expanded');
+
+            // Wait for the transition to end before expanding content
+            bar.addEventListener('transitionend', function () {
+                bar.classList.remove('expanded');
+                let title = bar.querySelector('h1').innerHTML;
+                
+                // Hide all content sections first
+                document.querySelectorAll('.bar').forEach(section => section.classList.remove('expanded'));
+
+                // Show the relevant content based on title
+                if (title === "Courses") {
+                    document.querySelector('.coursesMain').classList.add('expanded');
+                    ChangeTitleAcc(title);
+                    currentSelection = 'c';
+                } else if (title === "About") {
+                    document.querySelector('.aboutMain').classList.add('expanded');
+                    ChangeTitleAcc(title);
+                    currentSelection = 'a';
+                } else if (title === "Home") {
+                    document.querySelector('.homeMain').classList.add('expanded');
+                    ChangeTitleAcc(title);
+                    currentSelection = 'h';
+                }
+            }, { once: true }); // Ensure the event runs only once per click
+        });
+    });
+
+    function ChangeTitleAcc(callFrom) {
+        console.log(`Current selection: ${currentSelection} Call from: ${callFrom}`);
+        if (currentSelection === 'h') {
+            if (callFrom === 'Courses') {
+                document.querySelector('.coursesBar h1').innerHTML = 'About';
+                document.querySelector('.aboutBar h1').innerHTML = 'Home';
+            } else if (callFrom === 'About') {
+                document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+                document.querySelector('.aboutBar h1').innerHTML = 'Home';
+            }
+        } else if (currentSelection === 'a') {
+            if (callFrom === 'Courses') {
+                document.querySelector('.coursesBar h1').innerHTML = 'About';
+                document.querySelector('.aboutBar h1').innerHTML = 'Home';
+            } else if (callFrom === 'Home') {
+                document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+                document.querySelector('.aboutBar h1').innerHTML = 'About';
+            }
+        } else if (currentSelection === 'c') {
+            if (callFrom === 'About') {
+                document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+                document.querySelector('.aboutBar h1').innerHTML = 'Home';
+            } else if (callFrom === 'Home') {
+                document.querySelector('.coursesBar h1').innerHTML = 'Courses';
+                document.querySelector('.aboutBar h1').innerHTML = 'About';
+            }
+        }
+    }
+</script>
+
+</html>

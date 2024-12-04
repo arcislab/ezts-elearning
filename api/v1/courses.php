@@ -60,17 +60,20 @@ class Courses
     function GetCourses($count = null, $id = null, $uuid = null)
     {
         if ($count === null && $id === null) {
-            $query = "SELECT id AS uuid, `name`, author, duration, actual_price, discount_price, expiry FROM courses LIMIT 20";
+            // Get all courses
+            $query = "SELECT c.id AS uuid, ct.type AS `type`, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id LIMIT 20";
         } else if ($count !== null && $id === null) {
-            $query = "SELECT id AS uuid, `name`, author, duration, actual_price, discount_price, expiry FROM courses LIMIT ?";
+            $query = "SELECT c.id AS uuid, ct.type AS `type`, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id LIMIT ?";
         } else if ($count === null && $id !== null) {
-            $query = "SELECT ct.type AS 'Type', c.id AS uuid, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id WHERE course_type_id = ?";
+            // Get specific type courses
+            $query = "SELECT ct.type AS 'type', c.id AS uuid, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id WHERE course_type_id = ?";
         } else if ($count !== null && $id !== null) {
-            $query = "SELECT id AS uuid, `name`, author, duration, actual_price, discount_price, expiry FROM courses WHERE course_type_id = ? LIMIT ?";
+            $query = "SELECT ct.type AS 'type', c.id AS uuid, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id WHERE course_type_id = ? LIMIT ?";
         }
 
         if ($uuid !== null) {
-            $query = "SELECT id AS uuid, `name`, author, duration, actual_price, discount_price, expiry FROM courses WHERE id = ?";
+            // Get specific course
+            $query = "SELECT ct.type AS 'type', c.id AS uuid, c.name, c.author, c.duration, c.actual_price, c.discount_price, c.expiry FROM courses c INNER JOIN courses_types ct ON ct.id = c.course_type_id WHERE c.id = ?";
         }
 
         $stmt = $this->db->prepare($query);
@@ -104,6 +107,7 @@ class Courses
             foreach ($coursesResult as $course) {
                 $data[] = [
                     "uuid" => $course['uuid'],
+                    "type" => $course['type'],
                     "name" => $course['name'],
                     "author" => $course['author'],
                     "duration" => $course['duration'],
@@ -115,7 +119,6 @@ class Courses
 
             return Response::json(200, [
                 'status' => 'success',
-                'type' => (isset($coursesResult[0]["Type"]) && count($coursesResult) > 0) ? $coursesResult[0]["Type"] : null,
                 'data' => $data
             ]);
         } else {
@@ -131,38 +134,75 @@ class Courses
         global $quizController;
         if ($courseId !== null) {
             // $query = "SELECT id AS uuid, topic_name, content_url FROM courses_topics WHERE courses_id = ?";
-            $query = "SELECT ct.id, 
-                           ct.topic_name AS name, 
-                           SUM(cst.duration) AS duration, 
-                           (SELECT COUNT(*) 
-                            FROM courses_sub_topics 
-                            WHERE courses_topics_id = ct.id) AS total_sub_topics, 
-                           (SELECT COUNT(*) 
-                            FROM courses_sub_topics 
-                            WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
+            $query = "SELECT ct.id AS uuid, 
+                        c.name AS course, 
+                        t.type AS `type`,
+                        ct.topic_name AS name, 
+                        SUM(cst.duration) AS duration, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE courses_topics_id = ct.id) AS total_sub_topics, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
                     FROM courses_topics ct 
                     LEFT JOIN courses_sub_topics cst 
-                           ON cst.courses_topics_id = ct.id 
+                        ON cst.courses_topics_id = ct.id 
+                    INNER JOIN courses c
+                        ON c.id = ct.courses_id
+                    INNER JOIN courses_types t
+                        ON t.id = c.course_type_id
                     WHERE ct.courses_id = ? 
-                    GROUP BY ct.id, ct.topic_name;";
+                    GROUP BY ct.id, ct.topic_name
+                    ORDER BY course ASC;";
         }
 
         if ($uuid !== null) {
             // $query = "SELECT id AS uuid, topic_name, content_url FROM courses_topics WHERE id = ?";
-            $query = "SELECT ct.id, 
-                           ct.topic_name AS name, 
-                           SUM(cst.duration) AS duration, 
-                           (SELECT COUNT(*) 
-                            FROM courses_sub_topics 
-                            WHERE courses_topics_id = ct.id) AS total_sub_topics, 
-                           (SELECT COUNT(*) 
-                            FROM courses_sub_topics 
-                            WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
+            $query = "SELECT ct.id AS uuid, 
+                        c.name AS course, 
+                        t.type AS `type`, 
+                        ct.topic_name AS name, 
+                        SUM(cst.duration) AS duration, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE courses_topics_id = ct.id) AS total_sub_topics, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
                     FROM courses_topics ct 
-                    INNER JOIN courses_sub_topics cst 
+                    LEFT JOIN courses_sub_topics cst 
                            ON cst.courses_topics_id = ct.id 
+                    INNER JOIN courses c
+                        ON c.id = ct.courses_id
+                    INNER JOIN courses_types t
+                        ON t.id = c.course_type_id
                     WHERE ct.id = ? 
-                    GROUP BY ct.id, ct.topic_name;";
+                    GROUP BY ct.id, ct.topic_name
+                    ORDER BY course ASC;";
+        }
+
+        if (!$courseId && !$uuid) {
+            $query = "SELECT ct.id AS uuid, 
+                        c.name AS course, 
+                        t.type AS `type`, 
+                        ct.topic_name AS name, 
+                        SUM(cst.duration) AS duration, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE courses_topics_id = ct.id) AS total_sub_topics, 
+                        (SELECT COUNT(*) 
+                        FROM courses_sub_topics 
+                        WHERE demo = 1 AND courses_topics_id = ct.id) AS demo_videos 
+                    FROM courses_topics ct 
+                    LEFT JOIN courses_sub_topics cst 
+                           ON cst.courses_topics_id = ct.id 
+                    INNER JOIN courses c
+                        ON c.id = ct.courses_id
+                    INNER JOIN courses_types t
+                        ON t.id = c.course_type_id
+                    GROUP BY ct.id, ct.topic_name
+                    ORDER BY course ASC;";
         }
 
         $stmt = $this->db->prepare($query);
@@ -189,13 +229,13 @@ class Courses
                 $data = [];
                 foreach ($topics as $topic) {
                     $data[] = [
-                        "uuid" => $topic['id'],
+                        "uuid" => $topic['uuid'],
                         "name" => $topic['name'],
                         "duration" => $topic['duration'],
                         "total_sub_topics" => $topic['total_sub_topics'],
                         "demo_videos" => $topic['demo_videos'],
-                        "access" => $this->IsTopicLocked($topic['id'], $userId) == true ? false : true,
-                        "provide_quiz" => $quizController->CheckIfQuizAllowed($topic['id'], $userId, false)
+                        "access" => $this->IsTopicLocked($topic['uuid'], $userId) == true ? false : true,
+                        "provide_quiz" => $quizController->CheckIfQuizAllowed($topic['uuid'], $userId, false)
                     ];
                 }
 
@@ -207,7 +247,7 @@ class Courses
             } else {
                 return Response::json(200, [
                     'status' => 'success',
-                    'topics' => $topics
+                    'data' => $topics
                 ]);
             }
         } else {
@@ -231,12 +271,39 @@ class Courses
                 'message' => 'Topic is locked.'
             ]);
         } else {
-            if ($courseTopicId !== null) {
-                $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE courses_topics_id = ?";
+            if ($courseTopicId) {
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                        FROM courses_sub_topics cst 
+                        INNER JOIN courses_topics t 
+                        	ON t.id = cst.courses_topics_id
+                        INNER JOIN courses c
+                        	ON c.id = t.courses_id
+                        INNER JOIN courses_types ct
+                        	ON ct.id = c.course_type_id
+                        WHERE cst.courses_topics_id = ?";
             }
 
             if ($uuid !== null) {
-                $query = "SELECT id AS uuid, topic_name, video_url, project_url, duration, demo FROM courses_sub_topics WHERE id = ?";
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                        FROM courses_sub_topics cst 
+                        INNER JOIN courses_topics t 
+                        	ON t.id = cst.courses_topics_id
+                        INNER JOIN courses c
+                        	ON c.id = t.courses_id
+                        INNER JOIN courses_types ct
+                        	ON ct.id = c.course_type_id
+                        WHERE cst.id = ?";
+            }
+
+            if (!$courseTopicId && !$uuid) {
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                        FROM courses_sub_topics cst 
+                        INNER JOIN courses_topics t 
+                        	ON t.id = cst.courses_topics_id
+                        INNER JOIN courses c
+                        	ON c.id = t.courses_id
+                        INNER JOIN courses_types ct
+                        	ON ct.id = c.course_type_id";
             }
 
             $stmt = $this->db->prepare($query);
@@ -262,12 +329,40 @@ class Courses
 
                 return Response::json(200, [
                     'status' => 'success',
-                    'sub_topics' => $topics
+                    'data' => $topics
                 ]);
             } else {
                 return Response::json(500, [
                     'status' => 'error',
                     'message' => 'Failed to retrieve courses.'
+                ]);
+            }
+        }
+    }
+
+    function CheckCourse($courseTopicId, $userId)
+    {
+        if ($this->IsTopicLocked($courseTopicId, $userId)) {
+            return Response::json(403, [
+                'status' => 'error',
+                'message' => 'Topic is locked.'
+            ]);
+        } else {
+            if ($courseTopicId) {
+                $sqlHelp = new SqlHelper();
+                $query = "UPDATE courses_sub_topics_user SET `checked` = 1 WHERE courses_sub_topics_id = ? AND users_id = ?";
+                $result = $sqlHelp->executeQuery($query, 'ii', array($courseTopicId, $userId));
+            }
+
+            if ($result[0] === 200) {
+                return Response::json(200, [
+                    'status' => 'success',
+                    'data' => "Topic checked"
+                ]);
+            } else {
+                return Response::json(500, [
+                    'status' => 'error',
+                    'message' => 'Failed to check topic.'
                 ]);
             }
         }
@@ -603,16 +698,139 @@ class Courses
     //CRUD Sub Topics
     function AddSubTopic($topic, $name, $video, $project, $duration, $demo)
     {
-        $sqlHelp = new SqlHelper();
-        $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?)";
-        $result = $sqlHelp->executeQuery($query, 'sssss', array($topic, $name, $project, $duration, $demo));
-        $this->UploadCourseVideo($video);
-        return Response::json($result[0], $result[1]);
+        $videoResponse = $this->UploadCourseVideo($video);
+        if ($videoResponse[0] == "success") {
+            $sqlHelp = new SqlHelper();
+            $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `video_url`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?, ?)";
+            $result = $sqlHelp->executeQuery($query, 'ssssss', array($topic, $name, $videoResponse[1], $project, $duration, $demo));
+            $this->AddSubtopicUser($result[1]['uuid']);
+            return Response::json($result[0], $result[1]);
+        } else {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Failed to upload the video'
+            ]);
+        }
     }
 
-    function UploadCourseVideo($video) {
+    // Add to existing subtopics-user binding
+    function AddSubtopicUser($subtopicId)
+    {
+        $courseId = $this->GetCourseId($subtopicId);
+        if ($courseId === null) {
+            return Response::json(404, [
+                'status' => 'error',
+                'message' => 'Course not found for the provided subtopic.'
+            ]);
+        }
+
+        $users = $this->GetUsersWhoPurchasedCourses($courseId);
+        if (empty($users)) {
+            return Response::json(404, [
+                'status' => 'error',
+                'message' => 'No users found who purchased this course.'
+            ]);
+        }
+
+        $placeholders = implode(',', array_fill(0, count($users), '?')); // Create placeholders for IN clause
+        $query = "SELECT users_id FROM orders WHERE courses_id = ? AND users_id IN ($placeholders)";
+
+        $stmt = $this->db->prepare($query);
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        // Bind parameters: First bind $courseId, then bind all user IDs dynamically
+        $types = str_repeat('i', count($users) + 1); // 'i' for integer, for each placeholder
+        $params = array_merge([$courseId], $users); // Combine courseId and user IDs
+        $stmt->bind_param($types, ...$params); // Spread operator to pass all parameters
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $users = [];
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) { // Fetch rows as associative arrays
+                    $users[] = $row['users_id']; // Access 'users_id' directly
+                    $sqlHelp = new SqlHelper();
+                    $query = "INSERT INTO `courses_sub_topics_user`(courses_sub_topics_id, users_id) VALUES (?, ?)";
+                    $insertResult = $sqlHelp->executeQuery($query, 'ii', [$subtopicId, $row['users_id']]);
+
+                    // if (!$insertResult[0]) {
+                    //     return Response::json(500, [
+                    //         'status' => 'error',
+                    //         'message' => $insertResult[1]
+                    //     ]);
+                    // }
+                }
+            }
+            // return Response::json(200, [
+            //     'status' => 'success',
+            //     'message' => $users
+            // ]);
+        } else {
+            // return Response::json(500, [
+            //     'status' => 'error',
+            //     'message' => 'Query execution failed: ' . $stmt->error
+            // ]);
+        }
+    }
+
+    function GetCourseId($subtopicId)
+    {
+        $query = "SELECT c.id AS course_id FROM courses_sub_topics cst 
+                INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id
+                INNER JOIN courses c ON c.id = ct.courses_id
+                WHERE cst.id = ?;";
+        $stmt = $this->db->prepare($query);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        $stmt->bind_param('i', $subtopicId);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc(); // Fetch a single row
+            if ($row) {
+                return $row['course_id']; // Return true if count is greater than 0
+            }
+        }
+        return null;
+    }
+
+    function GetUsersWhoPurchasedCourses($courseId)
+    {
+        $query = "SELECT users_id FROM orders WHERE courses_id = ?;";
+        $stmt = $this->db->prepare($query);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        $stmt->bind_param('i', $courseId);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $rows = $result->fetch_all(MYSQLI_ASSOC);
+            return $rows;
+        }
+        return null;
+    }
+
+    function UploadCourseVideo($video)
+    {
         global $awsController;
-        $awsController->Upload($video);
+        return $awsController->Upload($video);
     }
 
     function UpdateSubTopic($id, $name, $video, $project, $duration, $demo)

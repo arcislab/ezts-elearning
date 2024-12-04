@@ -1,23 +1,27 @@
 const API_BASE_URL = 'http://ezts.local/api/v1';
 
-async function CallApi(url, jsonBody = null, met = null) {
+async function CallApi(url, reqBody = null, met = null, contentType = null) {
+    let rawResponseBody;
     try {
         url = `${API_BASE_URL}${url}`;
-        console.log(`Calling: ${met} : ${url}\nbody: ${jsonBody}`)
+        console.log(`CallingK: ${met} : ${url}\nbody: ${reqBody}`)
         const response = await fetch(url, {
             credentials: 'include', // the fix
             method: met == null ? 'POST' : met,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: jsonBody === null ? null : jsonBody,
+            body: reqBody === null ? null : reqBody,
         });
-
+        
+        if(reqBody instanceof FormData){
+            for (let [key, value] of reqBody.entries()) {
+                console.log(key, value);
+            }
+        }
+        
         if (response.status !== null && response.status >= 400) {
             // Handle the error response if needed
             console.error(`Error: ${response.status}`);
             if(response.status === 401){
-                window.location.href = 'ezts.local/login.html';
+                window.location.href = 'http://ezts.local/login.html';
             }
         }
         // if (!response.ok) {
@@ -29,7 +33,7 @@ async function CallApi(url, jsonBody = null, met = null) {
         //     };
         // }
 
-        const rawResponseBody = await response.text();
+        rawResponseBody = await response.text();
         // console.log(`Raw Res: ${rawResponseBody}`);
         const data = JSON.parse(rawResponseBody);
         console.log(data)
@@ -39,6 +43,7 @@ async function CallApi(url, jsonBody = null, met = null) {
         };
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error.message);
+        console.error('Raw: ' , rawResponseBody);
         return {
             data: null,
             status: null,
