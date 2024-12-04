@@ -244,6 +244,29 @@ switch ($request) {
             }
         }
         break;
+    case '/api/v1/get-sign': //Get aws s3 signed url
+        if ($method == 'GET') {
+            if (!isset($_GET['filekey'])) {
+                return Response::json(404, [
+                    'status' => 'error',
+                    'message' => 'File key is missing!'
+                ]);
+                exit;
+            }
+            $signedUrl = $awsController->GetSignedUrl($_GET['filekey']);
+            if($signedUrl){
+                return Response::json(200, [
+                    'status' => 'success',
+                    'sign' => $signedUrl
+                ]);
+            } else{
+                return Response::json(406, [
+                    'status' => 'error',
+                    'message' => 'Error while getting key'
+                ]);
+            }
+        }
+        break;
     case '/api/v1/courses/sub-topics': //Sub Topics
         if ($method == 'POST') {
             $course_topic = isset($data["course_topic"]) ? $data["course_topic"] : null;

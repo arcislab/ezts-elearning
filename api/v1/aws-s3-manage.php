@@ -7,19 +7,26 @@ use Aws\Exception\AwsException;
 
 class AwsS3
 {
+    public $bucketName = 'ap-south-1';
+    public $region = 'ezts-elearning';
+
+    function GetS3Client(){
+        return new S3Client([
+            'region'  => $this->region, // Replace with your S3 region
+            'version' => 'latest',
+            'credentials' => [
+                'key'    => 'AKIA3M7AC6UDK4PQPIHH',
+                'secret' => 'Bb5SkCp8872s/61FQj4aEyu51lbmCiAWvxoNSXqX',
+            ],
+        ]);
+    }
+
     function Upload($video)
     {
-        $s3 = new S3Client([
-            'region'  => 'ap-south-1', // Replace with your S3 region
-            'version' => 'latest',
-            'credentials' => [
-                'key'    => 'AKIA3M7AC6UDK4PQPIHH',
-                'secret' => 'Bb5SkCp8872s/61FQj4aEyu51lbmCiAWvxoNSXqX',
-            ],
-        ]);
+        $s3 = $this->GetS3Client();
 
         $cloudFront = new CloudFrontClient([
-            'region'  => 'ap-south-1', // Replace with your CloudFront region
+            'region'  => $this->region, // Replace with your CloudFront region
             'version' => 'latest',
             'credentials' => [
                 'key'    => 'AKIA3M7AC6UDK4PQPIHH',
@@ -27,7 +34,6 @@ class AwsS3
             ],
         ]);
 
-        $bucketName = 'ezts-elearning';
         $fileName = $video['name'];
         $fileTempPath = $video['tmp_name'];
 
@@ -37,7 +43,7 @@ class AwsS3
         try {
             // Upload file to S3
             $result = $s3->putObject([
-                'Bucket' => $bucketName,
+                'Bucket' => $this->bucketName,
                 'Key'    => "uploads/{$fileName}", // You can specify a folder path if needed
                 'SourceFile' => $fileTempPath,
                 'ACL'    => 'public-read', // Make it public to be accessible via CloudFront
@@ -56,8 +62,8 @@ class AwsS3
                     'Quantity' => 1,
                     'Items' => [
                         [
-                            'Id' => $bucketName,
-                            'DomainName' => "{$bucketName}.s3.amazonaws.com",
+                            'Id' => $this->bucketName,
+                            'DomainName' => "{$this->bucketName}.s3.amazonaws.com",
                             'OriginPath' => '',
                             'CustomHeaders' => [
                                 'Quantity' => 0,
@@ -69,7 +75,7 @@ class AwsS3
                     ],
                 ],
                 'DefaultCacheBehavior' => [
-                    'TargetOriginId' => $bucketName,
+                    'TargetOriginId' => $this->bucketName,
                     'ViewerProtocolPolicy' => 'redirect-to-https',
                     'AllowedMethods' => [
                         'Quantity' => 2,
@@ -125,6 +131,26 @@ class AwsS3
                 'error',
                 $e->getMessage()
             ];
+        }
+    }
+
+    // Get signed url for client to authorize uploading
+    function GetSignedUrl($keyName, $expiration = '+10 minutes'){
+        $s3 = $this->GetS3Client();
+        try {
+            $cmd = $s3->getCommand('PutObject', [
+                'Bucket' => $this->bucketName,
+                'Key' => $keyName,
+            ]);
+            
+            $request = $s3->createPresignedRequest($cmd, $expiration);
+    
+            // Return the signed URL
+            return (string)$request->getUri();
+        } catch (AwsException $e) {
+            // Handle error
+            error_log($e->getMessage());
+            return null;
         }
     }
 }
