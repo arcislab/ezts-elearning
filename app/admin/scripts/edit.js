@@ -74,7 +74,7 @@ function GetElements(response = null) {
                     </div>
                     <div>
                         <p>Duration</p>
-                        <input type="number" id="txtDuration" placeholder="Enter duration in hours" value="${response?.duration ?? ''}">
+                        <input type="number" style="cursor: default;" id="txtDuration" placeholder="Enter duration in hours" value="${response?.duration ?? ''}">
                     </div>
                     <div>
                         <p>Actual price</p>
