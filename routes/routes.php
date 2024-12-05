@@ -301,6 +301,7 @@ switch ($request) {
         break;
     case '/api/v1/courses/sub-topics/update': //Sub Topics update
         if ($method == 'POST') {
+            $topic = isset($_POST["topic"]) ? $_POST["topic"] : null;
             $id = isset($data["uuid"]) ? $data["uuid"] : null;
             $name = isset($data["name"]) ? $data["name"] : null;
             $video = isset($data["video"]) ? $data["video"] : null;
