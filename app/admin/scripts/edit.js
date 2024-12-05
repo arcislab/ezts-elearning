@@ -407,8 +407,12 @@ function SerializeData() {
         const formData = new FormData();
         formData.append('topic', topicId.value);
         formData.append('name', nameInput.value);
-        formData.append('video', videoInput.files.length > 0 ? encodeURIComponent(videoInput.files[0].name) : null);
-        formData.append('project',  projectInput.files.length > 0 ? encodeURIComponent(projectInput.files[0].name) : null);
+        if(videoInput.files.length > 0){
+            formData.append('video', encodeURIComponent(videoInput.files[0].name));
+        }
+        if(projectInput.files.length > 0){
+            formData.append('project', encodeURIComponent(projectInput.files[0].name));
+        }
         formData.append('duration', durationInput.value);
         formData.append('demo', demoInput);
         if (uuid) {

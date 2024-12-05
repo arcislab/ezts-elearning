@@ -828,7 +828,7 @@ class Courses
     function UpdateSubTopic($id, $topic, $name, $video, $project, $duration, $demo)
     {
         $sqlHelp = new SqlHelper();
-        if ($video) {
+        if ($video !== null) {
             $query = "UPDATE `courses_sub_topics` SET `topic_name` = ?, courses_topics_id = ?, video_url = ?, project_url = ?, duration = ?, demo = ? WHERE id = ?";
             $result = $sqlHelp->executeQuery($query, 'sissssi', array($name, $topic, $video, $project, $duration, $demo, $id));
         } else {
