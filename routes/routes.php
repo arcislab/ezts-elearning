@@ -302,12 +302,12 @@ switch ($request) {
     case '/api/v1/courses/sub-topics/update': //Sub Topics update
         if ($method == 'POST') {
             $topic = isset($_POST["topic"]) ? $_POST["topic"] : null;
-            $id = isset($data["uuid"]) ? $data["uuid"] : null;
-            $name = isset($data["name"]) ? $data["name"] : null;
-            $video = isset($data["video"]) ? $data["video"] : null;
-            $project = isset($data["project"]) ? $data["project"] : null;
-            $duration = isset($data["duration"]) ? $data["duration"] : null;
-            $demo = isset($data["demo"]) ? $data["demo"] : null;
+            $id = isset($_POST["uuid"]) ? $_POST["uuid"] : null;
+            $name = isset($_POST["name"]) ? $_POST["name"] : null;
+            $video = isset($_POST["video"]) ? $_POST["video"] : null;
+            $project = isset($_FILES["project"]) ? $_FILES["project"] : null;
+            $duration = isset($_POST["duration"]) ? $_POST["duration"] : null;
+            $demo = isset($_POST["demo"]) ? $_POST["demo"] : null;
             $userId = Authenticate(true);
             if (is_numeric($userId)) {
                 echo $coursesController->UpdateSubTopic($id, $topic, $name, $video, $project, $duration, $demo);
