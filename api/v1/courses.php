@@ -825,11 +825,16 @@ class Courses
         return $awsController->Upload($video);
     }
 
-    function UpdateSubTopic($id, $name, $video, $project, $duration, $demo)
+    function UpdateSubTopic($id, $topic, $name, $video, $project, $duration, $demo)
     {
         $sqlHelp = new SqlHelper();
-        $query = "UPDATE `courses_sub_topics` SET `topic_name` = ?, video_url = ?, project_url = ?, duration = ?, demo = ? WHERE id = ?";
-        $result = $sqlHelp->executeQuery($query, 'sssssi', array($name, $video, $project, $duration, $demo, $id));
+        if ($video) {
+            $query = "UPDATE `courses_sub_topics` SET `topic_name` = ?, courses_topics_id = ?, video_url = ?, project_url = ?, duration = ?, demo = ? WHERE id = ?";
+            $result = $sqlHelp->executeQuery($query, 'sissssi', array($name, $topic, $video, $project, $duration, $demo, $id));
+        } else {
+            $query = "UPDATE `courses_sub_topics` SET `topic_name` = ?, courses_topics_id = ?, project_url = ?, duration = ?, demo = ? WHERE id = ?";
+            $result = $sqlHelp->executeQuery($query, 'sisssi', array($name, $topic, $project, $duration, $demo, $id));
+        }
         return Response::json($result[0], $result[1]);
     }
 

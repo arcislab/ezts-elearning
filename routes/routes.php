@@ -254,12 +254,12 @@ switch ($request) {
                 exit;
             }
             $signedUrl = $awsController->GetSignedUrl($_GET['filekey']);
-            if($signedUrl){
+            if ($signedUrl) {
                 return Response::json(200, [
                     'status' => 'success',
                     'sign' => $signedUrl
                 ]);
-            } else{
+            } else {
                 return Response::json(406, [
                     'status' => 'error',
                     'message' => 'Error while getting key'
@@ -309,7 +309,7 @@ switch ($request) {
             $demo = isset($data["demo"]) ? $data["demo"] : null;
             $userId = Authenticate(true);
             if (is_numeric($userId)) {
-                echo $coursesController->UpdateSubTopic($id, $name, $video, $project, $duration, $demo);
+                echo $coursesController->UpdateSubTopic($id, $topic, $name, $video, $project, $duration, $demo);
             }
         }
         break;
