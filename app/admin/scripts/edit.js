@@ -1,22 +1,6 @@
 const main = document.getElementById('main-content');
 const btnAction = document.querySelector('#main-foot button');
 let currentStat;
-btnAction.addEventListener('click', function () {
-    SendData();
-});
-
-const dialogMain = document.querySelector('.dialogMain');
-dialogMain.addEventListener('click', function () {
-    dialogMain.style.visibility = 'hidden';
-});
-
-const btnOk = document.getElementById('btnOK');
-btnOk.addEventListener('click', function () {
-    dialogMain.style.visibility = 'hidden';
-    if (currentStat === 1) {
-        window.close();
-    }
-});
 
 let type;
 let uuid;
@@ -52,6 +36,28 @@ function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
+btnAction.addEventListener('click', function () {
+    if (type === "sub-topics") {
+        if (document.getElementById("txtVideo").files.length > 0) {
+            InitiateDialog(0, 'Uploading course video');
+            GSU();
+        } else {
+            InitiateDialog(0, 'Uploading course');
+            SendData();
+        }
+    } else {
+        SendData();
+    }
+});
+
+const dialogMain = document.querySelector('.dialogMain');
+const btnOk = document.getElementById('btnOK');
+btnOk.addEventListener('click', function () {
+    dialogMain.style.visibility = 'hidden';
+    if (currentStat === 1) {
+        window.close();
+    }
+});
 
 function GetElements(response = null) {
     if (type === "types") {
@@ -188,6 +194,40 @@ async function SendData() {
     const response = await CallApi(GetEP(uuid ? 'u' : 'i'), body, null, contentType);
     if (response.status === 200) {
         InitiateDialog(1, response.data.message, false);
+    }
+    else {
+        console.log(`Code: ${response.status}\nResponse: ${response.data.message}`);
+        InitiateDialog(-1, response.data.message, false);
+    }
+    return response;
+}
+
+async function GSU() {
+    const videoInput = document.getElementById("txtVideo");
+    const response = await CallApi(`/get-sign?filekey=${encodeURIComponent(videoInput.files[0].name)}`, null, 'GET');
+    if (response.status === 200) {
+        try {
+            console.log(response);
+            console.log(response.data.sign);
+            const uploadResponse = await fetch(response.data.sign, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': videoInput.files[0].type // Set file type
+                },
+                body: videoInput.files[0] // Actual file blob
+            });
+
+            if (!uploadResponse.ok) {
+                InitiateDialog(-1, 'Upload failed', false);
+                // throw new Error('Upload failed: ' + uploadResponse.statusText);
+                // throw new Error('Upload failed');
+            }
+
+            InitiateDialog(0, 'Uploading course data', false);
+            SendData();
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
     }
     else {
         console.log(`Code: ${response.status}\nResponse: ${response.data.message}`);
