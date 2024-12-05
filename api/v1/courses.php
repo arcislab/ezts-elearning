@@ -272,7 +272,7 @@ class Courses
             ]);
         } else {
             if ($courseTopicId) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                         	ON t.id = cst.courses_topics_id
@@ -284,7 +284,7 @@ class Courses
             }
 
             if ($uuid !== null) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                         	ON t.id = cst.courses_topics_id
@@ -296,7 +296,7 @@ class Courses
             }
 
             if (!$courseTopicId && !$uuid) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                         	ON t.id = cst.courses_topics_id

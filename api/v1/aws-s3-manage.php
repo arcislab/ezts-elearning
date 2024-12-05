@@ -9,6 +9,7 @@ class AwsS3
 {
     public $bucketName = 'ezts-elearning';
     public $region = 'ap-south-1';
+    public $distributionDomain = 'dw1larvlv4nev.cloudfront.net';
 
     function GetS3Client(){
         return new S3Client([
