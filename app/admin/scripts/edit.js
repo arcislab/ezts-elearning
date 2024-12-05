@@ -357,7 +357,6 @@ function SerializeData() {
 
         return JSON.stringify(result);
     } else if (type === "sub-topics") {
-        InitiateDialog(0, 'Uploading course');
         const topicId = document.getElementById("txtTopic");
         const nameInput = document.getElementById("txtName");
         const videoInput = document.getElementById("txtVideo");
@@ -368,7 +367,7 @@ function SerializeData() {
         const formData = new FormData();
         formData.append('topic', topicId.value);
         formData.append('name', nameInput.value);
-        formData.append('video', videoInput.files[0]);
+        formData.append('video', encodeURIComponent(videoInput.files[0].name));
         formData.append('project', projectInput.value[0]);
         formData.append('duration', durationInput.value);
         formData.append('demo', demoInput);

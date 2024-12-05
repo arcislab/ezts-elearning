@@ -281,7 +281,7 @@ switch ($request) {
         if ($method == 'POST') {
             $topic = isset($_POST["topic"]) ? $_POST["topic"] : null;
             $name = isset($_POST["name"]) ? $_POST["name"] : null;
-            $video = isset($_FILES["video"]) ? $_FILES["video"] : null;
+            $video = isset($_POST["video"]) ? $_POST["video"] : null;
             $project = isset($_FILES["project"]) ? $_FILES["project"] : null;
             $duration = isset($_POST["duration"]) ? $_POST["duration"] : null;
             $demo = isset($_POST["demo"]) ? $_POST["demo"] : null;

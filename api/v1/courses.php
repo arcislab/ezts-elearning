@@ -698,19 +698,11 @@ class Courses
     //CRUD Sub Topics
     function AddSubTopic($topic, $name, $video, $project, $duration, $demo)
     {
-        $videoResponse = $this->UploadCourseVideo($video);
-        if ($videoResponse[0] == "success") {
-            $sqlHelp = new SqlHelper();
-            $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `video_url`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?, ?)";
-            $result = $sqlHelp->executeQuery($query, 'ssssss', array($topic, $name, $videoResponse[1], $project, $duration, $demo));
-            $this->AddSubtopicUser($result[1]['uuid']);
-            return Response::json($result[0], $result[1]);
-        } else {
-            return Response::json(500, [
-                'status' => 'error',
-                'message' => 'Failed to upload the video'
-            ]);
-        }
+        $sqlHelp = new SqlHelper();
+        $query = "INSERT INTO `courses_sub_topics`(`courses_topics_id`, `topic_name`, `video_url`, `project_url`, `duration`, `demo`) VALUES (?, ?, ?, ?, ?, ?)";
+        $result = $sqlHelp->executeQuery($query, 'ssssss', array($topic, $name, $video, $project, $duration, $demo));
+        // $this->AddSubtopicUser($result[1]['uuid']);
+        return Response::json($result[0], $result[1]);
     }
 
     // Add to existing subtopics-user binding
