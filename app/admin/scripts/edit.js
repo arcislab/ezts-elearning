@@ -362,7 +362,7 @@ function SerializeData() {
         const videoInput = document.getElementById("txtVideo");
         const projectInput = document.getElementById("txtProject");
         const durationInput = document.getElementById("txtDuration");
-        const demoInput = document.getElementById("demoYes").checked ? true : false;
+        const demoInput = document.getElementById("demoYes").checked ? 1 : 0;
 
         const formData = new FormData();
         formData.append('topic', topicId.value);
