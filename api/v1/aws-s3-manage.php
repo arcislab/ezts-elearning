@@ -7,8 +7,8 @@ use Aws\Exception\AwsException;
 
 class AwsS3
 {
-    public $bucketName = 'ap-south-1';
-    public $region = 'ezts-elearning';
+    public $bucketName = 'ezts-elearning';
+    public $region = 'ap-south-1';
 
     function GetS3Client(){
         return new S3Client([
