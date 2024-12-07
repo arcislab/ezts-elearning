@@ -728,21 +728,6 @@ switch ($request) {
             }
         }
         break;
-    case '/api/v1/quiz/check':
-        if ($method == 'POST') {
-            if (!isset($data["course_topic"])) {
-                return Response::json(404, [
-                    'status' => 'error',
-                    'message' => 'Topic is null.'
-                ]);
-            } else {
-                $userId = Authenticate();
-                if (is_numeric($userId)) {
-                    echo $coursesController->CheckCourse($data["course_topic"], $userId);
-                }
-            }
-        }
-        break;
     case '/api/v1/login':
         if ($method == 'POST') {
             if (!isset($data["mobile"])) {

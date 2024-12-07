@@ -359,35 +359,6 @@ class Courses
         }
     }
 
-
-    function CheckCourse($courseTopicId, $userId)
-    {
-        if ($this->IsTopicLocked($courseTopicId, $userId)) {
-            return Response::json(403, [
-                'status' => 'error',
-                'message' => 'Topic is locked.'
-            ]);
-        } else {
-            if ($courseTopicId) {
-                $sqlHelp = new SqlHelper();
-                $query = "UPDATE courses_sub_topics_user SET `checked` = 1 WHERE courses_sub_topics_id = ? AND users_id = ?";
-                $result = $sqlHelp->executeQuery($query, 'ii', array($courseTopicId, $userId));
-            }
-
-            if ($result[0] === 200) {
-                return Response::json(200, [
-                    'status' => 'success',
-                    'data' => "Topic checked"
-                ]);
-            } else {
-                return Response::json(500, [
-                    'status' => 'error',
-                    'message' => 'Failed to check topic.'
-                ]);
-            }
-        }
-    }
-
     function EnrolledCourses($usersId)
     {
         $query = "SELECT c.id AS uuid, c.name AS name, DATE_FORMAT(o.date, '%d-%m-%Y') AS start_date, DATE_FORMAT(DATE_ADD(o.date, INTERVAL c.expiry DAY), '%d-%m-%Y') AS end_date FROM courses c INNER JOIN orders o ON o.courses_id = c.id WHERE o.users_id = ?";
@@ -433,7 +404,7 @@ class Courses
                              INNER JOIN courses_sub_topics cst 
                              ON cst.id = cstu.courses_sub_topics_id 
                              WHERE cst.courses_topics_id = c.id 
-                             AND cstu.checked = 1) AS checked,
+                             AND cstu.video_checked_seconds >= (cst.duration - 20)) AS checked,
                             (SELECT COUNT(*) 
                              FROM courses_sub_topics 
                              WHERE courses_topics_id = c.id) AS total_subtopics
@@ -667,7 +638,17 @@ class Courses
 
     function IsSubtopicChecked($subtopicId, $userId)
     {
-        $query = "SELECT checked FROM courses_sub_topics_user WHERE courses_sub_topics_id = ? AND users_id = ?";
+        $query = "SELECT 
+	                CASE WHEN
+	                	cstu.video_checked_seconds >= (cst.duration - 20)
+                        THEN 0
+                        ELSE 1
+	                END AS checked
+                FROM courses_sub_topics_user cstu
+                INNER JOIN courses_sub_topics cst ON cst.id = cstu.courses_sub_topics_id
+                WHERE courses_sub_topics_id = ? 
+                AND users_id = ?";
+
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('ii', $subtopicId, $userId);
 

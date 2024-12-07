@@ -518,12 +518,10 @@ class Quiz
                         (SELECT COUNT(*) FROM courses_sub_topics_user cstu 
                          INNER JOIN courses_sub_topics cst 
                          ON cst.id = cstu.courses_sub_topics_id 
-                         WHERE cstu.checked = 1 
+                         WHERE cstu.video_checked_seconds >= (cst.duration - 20) 
                          AND cst.courses_topics_id = ct.id AND cstu.users_id = $usersId) >= 
-                        (SELECT COUNT(*) FROM courses_sub_topics_user cstu 
-                         INNER JOIN courses_sub_topics cst 
-                         ON cst.id = cstu.courses_sub_topics_id 
-                         WHERE cst.courses_topics_id = ct.id AND cstu.users_id = $usersId)
+                        (SELECT COUNT(*) FROM courses_sub_topics cst
+                         WHERE cst.courses_topics_id = ct.id)
                     THEN TRUE
                     ELSE FALSE
                 END AS Result
