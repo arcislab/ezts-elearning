@@ -272,38 +272,38 @@ class Courses
             ]);
         } else {
             if ($courseTopicId) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
-                        	ON t.id = cst.courses_topics_id
+                            ON t.id = cst.courses_topics_id
                         INNER JOIN courses c
-                        	ON c.id = t.courses_id
+                            ON c.id = t.courses_id
                         INNER JOIN courses_types ct
-                        	ON ct.id = c.course_type_id
+                            ON ct.id = c.course_type_id
                         WHERE cst.courses_topics_id = ?";
             }
 
             if ($uuid !== null) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
-                        	ON t.id = cst.courses_topics_id
+                            ON t.id = cst.courses_topics_id
                         INNER JOIN courses c
-                        	ON c.id = t.courses_id
+                            ON c.id = t.courses_id
                         INNER JOIN courses_types ct
-                        	ON ct.id = c.course_type_id
+                            ON ct.id = c.course_type_id
                         WHERE cst.id = ?";
             }
 
             if (!$courseTopicId && !$uuid) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, CONCAT('https://dw1larvlv4nev.cloudfront.net/', cst.video_url) AS video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
-                        	ON t.id = cst.courses_topics_id
+                            ON t.id = cst.courses_topics_id
                         INNER JOIN courses c
-                        	ON c.id = t.courses_id
+                            ON c.id = t.courses_id
                         INNER JOIN courses_types ct
-                        	ON ct.id = c.course_type_id";
+                            ON ct.id = c.course_type_id";
             }
 
             $stmt = $this->db->prepare($query);
@@ -325,7 +325,20 @@ class Courses
 
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
-                $topics = $result->fetch_all(MYSQLI_ASSOC);
+                $topics = [];
+
+                // Process each row and replace the video_url with a signed URL
+                while ($row = $result->fetch_assoc()) {
+                    global $awsController;
+
+                    // Generate the signed URL
+                    if (!empty($row['video_url'])) {
+                        $rawVideoUrl = 'https://dw1larvlv4nev.cloudfront.net/' . $row['video_url'];
+                        $row['video_url'] = $awsController->GetCFSignedUrl($rawVideoUrl);
+                    }
+
+                    $topics[] = $row;
+                }
 
                 return Response::json(200, [
                     'status' => 'success',
@@ -339,6 +352,7 @@ class Courses
             }
         }
     }
+
 
     function CheckCourse($courseTopicId, $userId)
     {

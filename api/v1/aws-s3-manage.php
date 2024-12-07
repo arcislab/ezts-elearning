@@ -11,7 +11,8 @@ class AwsS3
     public $region = 'ap-south-1';
     public $distributionDomain = 'dw1larvlv4nev.cloudfront.net';
 
-    function GetS3Client(){
+    function GetS3Client()
+    {
         return new S3Client([
             'region'  => $this->region, // Replace with your S3 region
             'version' => 'latest',
@@ -136,16 +137,17 @@ class AwsS3
     }
 
     // Get signed url for client to authorize uploading
-    function GetSignedUrl($keyName, $expiration = '+10 minutes'){
+    function GetS3SignedUrl($keyName, $expiration = '+10 minutes')
+    {
         $s3 = $this->GetS3Client();
         try {
             $cmd = $s3->getCommand('PutObject', [
                 'Bucket' => $this->bucketName,
                 'Key' => $keyName,
             ]);
-            
+
             $request = $s3->createPresignedRequest($cmd, $expiration);
-    
+
             // Return the signed URL
             return (string)$request->getUri();
         } catch (AwsException $e) {
@@ -153,5 +155,27 @@ class AwsS3
             error_log($e->getMessage());
             return null;
         }
+    }
+
+
+    public $privateKeyPath = './app/admin/secret/cloudfront key.pem';
+    public $keyPairId = 'APKA3M7AC6UDOOOEWRUI';
+
+    function GetCFSignedUrl($cloudfrontUrl)
+    {
+        $expireTime = time() + 60;
+        $cloudfront = new CloudFrontClient([
+            'version' => 'latest',
+            'region'  => $this->region
+        ]);
+
+        $signedUrl = $cloudfront->getSignedUrl([
+            'url'         => $cloudfrontUrl,
+            'expires'     => $expireTime,
+            'private_key' => $this->privateKeyPath,
+            'key_pair_id' => $this->keyPairId
+        ]);
+
+        return $signedUrl;
     }
 }

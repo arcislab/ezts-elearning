@@ -253,7 +253,7 @@ switch ($request) {
                 ]);
                 exit;
             }
-            $signedUrl = $awsController->GetSignedUrl($_GET['filekey']);
+            $signedUrl = $awsController->GetS3SignedUrl($_GET['filekey']);
             if ($signedUrl) {
                 return Response::json(200, [
                     'status' => 'success',
