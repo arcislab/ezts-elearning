@@ -511,7 +511,7 @@ class Quiz
 
     function CheckIfQuizAllowed($topicId, $usersId, $returnJson = true)
     {
-        //Calculation: Total sub-topics - Total sub-topics checked
+        //Calculation: Total sub-topics checked >= Total sub-topics
         $query = "SELECT ct.id AS `Topic Id`, q.time AS time,
                 CASE 
                     WHEN 

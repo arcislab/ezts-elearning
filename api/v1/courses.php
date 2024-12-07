@@ -547,9 +547,9 @@ class Courses
         } else {
             //TODO: Remove the below logic and add logic to check if user has passed a quiz or not in this topic
             if ($quizController->CheckIfQuizAllowed($topicId, $userId, false)) {
-                return true;
-            } else {
                 return false;
+            } else {
+                return true;
             }
         }
     }
