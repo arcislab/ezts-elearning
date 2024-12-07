@@ -141,7 +141,7 @@ class Courses
                         c.name AS course, 
                         t.type AS `type`,
                         ct.topic_name AS name, 
-                        SUM(cst.duration) AS duration, 
+                        TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') AS duration, 
                         (SELECT COUNT(*) 
                         FROM courses_sub_topics 
                         WHERE courses_topics_id = ct.id) AS total_sub_topics, 
@@ -166,7 +166,7 @@ class Courses
                         c.name AS course, 
                         t.type AS `type`, 
                         ct.topic_name AS name, 
-                        SUM(cst.duration) AS duration, 
+                        TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') AS duration, 
                         (SELECT COUNT(*) 
                         FROM courses_sub_topics 
                         WHERE courses_topics_id = ct.id) AS total_sub_topics, 
@@ -190,7 +190,7 @@ class Courses
                         c.name AS course, 
                         t.type AS `type`, 
                         ct.topic_name AS name, 
-                        SUM(cst.duration) AS duration, 
+                        TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') AS duration, 
                         (SELECT COUNT(*) 
                         FROM courses_sub_topics 
                         WHERE courses_topics_id = ct.id) AS total_sub_topics, 
@@ -275,7 +275,7 @@ class Courses
             ]);
         } else {
             if ($courseTopicId) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                             ON t.id = cst.courses_topics_id
@@ -287,7 +287,7 @@ class Courses
             }
 
             if ($uuid !== null) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                             ON t.id = cst.courses_topics_id
@@ -299,7 +299,7 @@ class Courses
             }
 
             if (!$courseTopicId && !$uuid) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, cst.duration, cst.demo 
+                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
                         FROM courses_sub_topics cst 
                         INNER JOIN courses_topics t 
                             ON t.id = cst.courses_topics_id
@@ -497,7 +497,8 @@ class Courses
     function GetCourseInfo($userId, $courseId)
     {
         if ($this->CheckIfPurchased($userId, $courseId)) {
-            $query = "SELECT c.id As id, c.name AS name, c.duration AS duration, 
+            $query = "SELECT c.id As id, c.name AS name,
+            (SELECT TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id) AS duration,
             (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id AND cst.video_url IS NOT NULL AND cst.video_url <> '') AS total_videos,
             (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.courses_id = c.id WHERE cst.courses_topics_id = ct.id AND cst.project_url IS NOT NULL AND cst.project_url <> '') AS total_projects,
             (SELECT COUNT(*) FROM courses_topics WHERE courses_id = c.id AND content_url IS NOT NULL) AS downloadable_content
