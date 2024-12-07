@@ -152,14 +152,12 @@ function BindCourseFile(event) {
         video.onloadedmetadata = function () {
             window.URL.revokeObjectURL(video.src); // Release the object URL after getting metadata
             const duration = video.duration;
-            const hours = Math.floor(duration / 3600).toString().padStart(2, '0');
-            const minutes = Math.floor((duration % 3600) / 60).toString().padStart(2, '0');
-            const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
+            const totalSeconds = Math.floor(duration); // Rounding to the nearest second
             const parent = event.target.parentElement.parentElement;
             if (parent) {
                 console.log(parent);
                 if (parent.querySelector("#txtDuration")) {
-                    parent.querySelector("#txtDuration").value = `${hours}:${minutes}:${seconds}`;
+                    parent.querySelector("#txtDuration").value = totalSeconds;
                 }
             }
         };

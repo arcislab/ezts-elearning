@@ -277,6 +277,16 @@ switch ($request) {
             }
         }
         break;
+    case '/api/v1/courses/t': //Update course video time
+        if ($method == 'POST') {
+            $seconds = isset($data["t"]) ? $data["t"] : null;
+            $subtopicId = isset($data["s"]) ? $data["s"] : null;
+            $userId = Authenticate();
+            if (is_numeric($userId)) {
+                echo $coursesController->UpdateSubtopicCheckedTime($seconds, $subtopicId, $userId);
+            }
+        }
+        break;
     case '/api/v1/courses/sub-topics/add': //Sub Topics add
         if ($method == 'POST') {
             $topic = isset($_POST["topic"]) ? $_POST["topic"] : null;

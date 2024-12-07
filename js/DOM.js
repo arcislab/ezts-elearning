@@ -111,9 +111,8 @@ function GetSubTopicsCard(title, id, v) {
     div.className = 'course';
 
     div.innerHTML = `
-        <video class="courseMain" controls controlsList="nodownload" oncontextmenu="return false;" onplay="CheckTopic(${id}) controlslist="nodownload"">
+        <video class="courseMain" controls controlsList="nodownload" oncontextmenu="return false;" onplay="ManageVideo(this)" v="${id}" controlslist="nodownload">
             <source src="${v}" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
         <div class="title">
             <p>${title}</p>

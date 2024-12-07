@@ -230,20 +230,30 @@ async function LoadCourse(uuid, topicInfo, qAllow) {
     }
 }
 
-async function CheckTopic(id) {
-    let url = `/quiz/check`
+async function ManageVideo(element) {
+    if (element) {
+        const subtopicId = element.getAttribute('v');
+        if (subtopicId) {
+            if (!element.paused && !element.ended) {
+                // Declare intervalId outside to manage clearInterval later
+                const intervalId = setInterval(() => {
+                    SendTimeUpdate(element.currentTime.toFixed(1), subtopicId);
+                }, 15000);
+
+                // Clear the interval when video pauses or ends
+                element.addEventListener('pause', () => clearInterval(intervalId));
+                element.addEventListener('ended', () => clearInterval(intervalId));
+            }
+        }
+    }
+}
+
+async function SendTimeUpdate(time, subtopic){
+    let url = `/courses/t`
 
     try {
-        const body = JSON.stringify({ course_topic: id });
+        const body = JSON.stringify({ t: time, s: subtopic });
         const response = await CallApi(url, body);
-        if (response.status === 401) {
-            console.error(`Error: ${response.status} - ${response.statusText}`);
-            return;
-        }
-
-        if (response.status === 200) {
-            
-        }
     } catch (error) {
         console.error('Error fetching course types:', error);
         return null;

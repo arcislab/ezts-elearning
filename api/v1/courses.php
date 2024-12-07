@@ -676,6 +676,14 @@ class Courses
         }
     }
 
+    function UpdateSubtopicCheckedTime($seconds, $subtopicId, $userId)
+    {
+        $sqlHelp = new SqlHelper();
+        $query = "UPDATE courses_sub_topics_user SET `video_checked_seconds` = ? WHERE courses_sub_topics_id = ? AND users_id = ?";
+        $result = $sqlHelp->executeQuery($query, 'iii', array($seconds, $subtopicId, $userId));
+        return Response::json($result[0], $result[1]);
+    }
+
     function GetExpiry($usersId)
     {
         $query = "SELECT DATE_FORMAT(DATE_ADD(o.date, INTERVAL c.expiry DAY), '%d-%m-%Y') AS expiry FROM courses c INNER JOIN orders o ON o.courses_id = c.id WHERE o.users_id = ?";
