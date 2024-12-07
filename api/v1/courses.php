@@ -1,4 +1,7 @@
 <?php
+
+use Aws\ElastiCache\Exception\ElastiCacheException;
+
 require_once './api/helpers/MySqlCommands.php';
 require_once './api/v1/quiz.php';
 require_once './api/v1/user.php';
@@ -330,11 +333,14 @@ class Courses
                 // Process each row and replace the video_url with a signed URL
                 while ($row = $result->fetch_assoc()) {
                     global $awsController;
-
-                    // Generate the signed URL
-                    if (!empty($row['video_url'])) {
-                        $rawVideoUrl = 'https://dw1larvlv4nev.cloudfront.net/' . $row['video_url'];
-                        $row['video_url'] = $awsController->GetCFSignedUrl($rawVideoUrl);
+                    if (!$this->IsSubtopicLocked($row['uuid'], $userId)) {
+                        // Generate the signed URL
+                        if (!empty($row['video_url'])) {
+                            $rawVideoUrl = 'https://dw1larvlv4nev.cloudfront.net/' . $row['video_url'];
+                            $row['video_url'] = $awsController->GetCFSignedUrl($rawVideoUrl);
+                        }
+                    } else {
+                        $row['video_url'] = null;
                     }
 
                     $topics[] = $row;
@@ -554,6 +560,18 @@ class Courses
         }
     }
 
+    function IsSubtopicLocked($subtopicId, $userId)
+    {
+        if ($this->IsSubtopicDemo($subtopicId)) {
+        } else {
+            if ($this->IsPreviousChecked($subtopicId, $userId)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
     //Check if topic is first in the list of topics so that we can prevent it from being locked as the first topic should be accessible to user
     function IsTopicFirst($topicId)
     {
@@ -561,8 +579,7 @@ class Courses
           FROM courses_topics ct
           INNER JOIN courses c ON c.id = ct.courses_id
           WHERE ct.courses_id = (
-              SELECT courses_id FROM courses_topics WHERE id = ?
-          )";
+              SELECT courses_id FROM courses_topics WHERE id = ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $topicId);
 
@@ -579,6 +596,96 @@ class Courses
                 $data = $result->fetch_assoc();
                 $lowestTopicId = $data['LowestTopicId'];
                 return $topicId == $lowestTopicId ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function IsSubtopicDemo($subtopicId)
+    {
+        $query = "SELECT demo FROM courses_sub_topics WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $subtopicId);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc();
+                return $data['demo'] == 1 ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function IsPreviousChecked($subtopicId, $userId)
+    {
+        $query = "SELECT MAX(id) AS id FROM courses_sub_topics WHERE id < ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $subtopicId);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc();
+                if ($data['id']) {
+                    if ($this->IsSubtopicChecked($data['id'], $userId)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function IsSubtopicChecked($subtopicId, $userId)
+    {
+        $query = "SELECT checked FROM courses_sub_topics_user WHERE courses_sub_topics_id = ? AND users_id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $subtopicId, $userId);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc();
+                if ($data['checked']) {
+                    return $data['checked'] == 1 ? true : false;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
