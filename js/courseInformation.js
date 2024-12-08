@@ -101,8 +101,14 @@ async function LoadInfo() {
     let url = `/courses/info`
 
     try {
-        const body = JSON.stringify({ course: getQueryParam('course') });
-        const response = await CallApi(url, body);
+        let response;
+        if (UserLoggedIn()) {
+            const body = JSON.stringify({ course: getQueryParam('course') });
+            response = await CallApi(url, body);
+        } else {
+            url += `?course=${getQueryParam('course')}`;
+            response = await CallApi(url, null, 'GET');
+        }
         if (response.status === 401) {
             console.error(`Error: ${response.status} - ${response.statusText}`);
             return;
@@ -173,8 +179,14 @@ async function LoadCourse(uuid, topicInfo, qAllow) {
     let url = `/courses/sub-topics`
 
     try {
-        const body = JSON.stringify({ course_topic: uuid });
-        const response = await CallApi(url, body);
+        let response;
+        if (UserLoggedIn()) {
+            const body = JSON.stringify({ course_topic: uuid });
+            response = await CallApi(url, body);
+        } else {
+            url += `?course_topic=${uuid}`;
+            response = await CallApi(url, null, 'GET');
+        }
         if (response.status === 401) {
             console.error(`Error: ${response.status} - ${response.statusText}`);
             return;
@@ -248,7 +260,7 @@ async function ManageVideo(element) {
     }
 }
 
-async function SendTimeUpdate(time, subtopic){
+async function SendTimeUpdate(time, subtopic) {
     let url = `/courses/t`
 
     try {

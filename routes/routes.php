@@ -149,9 +149,18 @@ switch ($request) {
             } else {
                 $userId = Authenticate();
                 if (is_numeric($userId)) {
-                    echo $coursesController->GetCourseInfo($userId, $data["course"]);
+                    echo $coursesController->GetCourseInfo($data["course"], $userId);
                 }
             }
+        } else if ($method == 'GET') {
+            if (!isset($_GET['course'])) {
+                return Response::json(404, [
+                    'status' => 'error',
+                    'message' => 'Course is not defined.'
+                ]);
+                exit;
+            }
+            echo $coursesController->GetCourseInfo($_GET['course']);
         }
         break;
     case '/api/v1/courses/add': //Courses add
@@ -275,6 +284,15 @@ switch ($request) {
             if (is_numeric($userId)) {
                 echo $coursesController->SubTopics($course_topic, $uuid, $userId);
             }
+        } else if ($method == 'GET') {
+            if (!isset($_GET['course_topic'])) {
+                return Response::json(404, [
+                    'status' => 'error',
+                    'message' => 'Topic is not defined.'
+                ]);
+                exit;
+            }
+            echo $coursesController->SubTopics($_GET['course_topic']);
         }
         break;
     case '/api/v1/courses/t': //Update course video time

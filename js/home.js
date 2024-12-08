@@ -20,7 +20,7 @@ async function GetCourses() {
                         main.appendChild(htmlContent);
                         const btnEnroll = htmlContent.querySelector(".enrollBtn");
                         btnEnroll.addEventListener('click', async () => {
-                            console.log(`Enrolling for ${course.uuid}`);
+                            window.location.assign(`./app/courseInformation.html?course=${encodeURIComponent(course.uuid)}`);
                         });
                     }
                 });
@@ -48,7 +48,6 @@ async function GetBlogs(){
                         main.appendChild(htmlContent);
                         const btnEnroll = htmlContent.querySelector(".enrollBtn");
                         btnEnroll.addEventListener('click', async () => {
-                            console.log(`Enrolling for ${course.uuid}`);
                         });
                     }
                 });

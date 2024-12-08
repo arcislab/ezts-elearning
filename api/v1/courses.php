@@ -132,7 +132,7 @@ class Courses
         }
     }
 
-    function Topics($courseId, $uuid, $userId, $returnArray = false)
+    function Topics($courseId, $uuid, $userId = null, $returnArray = false)
     {
         global $quizController;
         if ($courseId !== null) {
@@ -231,15 +231,27 @@ class Courses
             if ($returnArray) {
                 $data = [];
                 foreach ($topics as $topic) {
-                    $data[] = [
-                        "uuid" => $topic['uuid'],
-                        "name" => $topic['name'],
-                        "duration" => $topic['duration'],
-                        "total_sub_topics" => $topic['total_sub_topics'],
-                        "demo_videos" => $topic['demo_videos'],
-                        "access" => $this->IsTopicLocked($topic['uuid'], $userId) == true ? false : true,
-                        "provide_quiz" => $quizController->CheckIfQuizAllowed($topic['uuid'], $userId, false)
-                    ];
+                    if ($userId) {
+                        $data[] = [
+                            "uuid" => $topic['uuid'],
+                            "name" => $topic['name'],
+                            "duration" => $topic['duration'],
+                            "total_sub_topics" => $topic['total_sub_topics'],
+                            "demo_videos" => $topic['demo_videos'],
+                            "access" => $this->IsTopicLocked($topic['uuid'], $userId) == true ? false : true,
+                            "provide_quiz" => $quizController->CheckIfQuizAllowed($topic['uuid'], $userId, false)
+                        ];
+                    } else {
+                        $data[] = [
+                            "uuid" => $topic['uuid'],
+                            "name" => $topic['name'],
+                            "duration" => $topic['duration'],
+                            "total_sub_topics" => $topic['total_sub_topics'],
+                            "demo_videos" => $topic['demo_videos'],
+                            "access" => true,
+                            "provide_quiz" => false
+                        ];
+                    }
                 }
 
                 // return Response::json(200, [
@@ -265,16 +277,18 @@ class Courses
         }
     }
 
-    function SubTopics($courseTopicId, $uuid, $userId)
+    function SubTopics($courseTopicId, $uuid = null, $userId = null)
     {
-        $purchased = $this->CheckIfPurchased($userId, $courseTopicId);
-        if ($purchased) {
-            global $userController;
-            if ($this->IsTopicLocked($courseTopicId, $userId) && !$userController->IsUserAdmin($userId)) {
-                return Response::json(403, [
-                    'status' => 'error',
-                    'message' => 'Topic is locked.'
-                ]);
+        if ($userId) {
+            $purchased = $this->CheckIfPurchased($userId, $courseTopicId);
+            if ($purchased) {
+                global $userController;
+                if ($this->IsTopicLocked($courseTopicId, $userId) && !$userController->IsUserAdmin($userId)) {
+                    return Response::json(403, [
+                        'status' => 'error',
+                        'message' => 'Topic is locked.'
+                    ]);
+                }
             }
         }
 
@@ -337,7 +351,7 @@ class Courses
             // Process each row and replace the video_url with a signed URL
             while ($row = $result->fetch_assoc()) {
                 global $awsController;
-                if ($purchased) {
+                if (isset($purchased) && $purchased) {
                     if (!$this->IsSubtopicLocked($row['uuid'], $userId)) {
                         // Generate the signed URL
                         if (!empty($row['video_url'])) {
@@ -347,13 +361,13 @@ class Courses
                     } else {
                         $row['video_url'] = null;
                     }
-                } else{
-                    if($row['demo'] === 1){
+                } else {
+                    if ($row['demo'] === 1) {
                         if (!empty($row['video_url'])) {
                             $rawVideoUrl = 'https://dw1larvlv4nev.cloudfront.net/' . $row['video_url'];
                             $row['video_url'] = $awsController->GetCFSignedUrl($rawVideoUrl);
                         }
-                    } else{
+                    } else {
                         $row['video_url'] = null;
                     }
                 }
@@ -479,7 +493,7 @@ class Courses
         }
     }
 
-    function GetCourseInfo($userId, $courseId)
+    function GetCourseInfo($courseId, $userId = null)
     {
         $query = "SELECT c.id As id, c.name AS name,
         (SELECT TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id) AS duration,
@@ -502,9 +516,9 @@ class Courses
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
                 $info = $result->fetch_assoc();
-                return Response::json(200, [
-                    'status' => 'success',
-                    'data' => [
+                $data = [];
+                if ($userId) {
+                    $data = [
                         'course_name' => $info["name"],
                         'total_videos' => $info["total_videos"],
                         'total_projects' => $info["total_projects"],
@@ -512,7 +526,21 @@ class Courses
                         'downloadable_content' => $info["downloadable_content"],
                         'expiry' => $this->GetExpiry($userId),
                         'topics' => $this->Topics($courseId, null, $userId, true)
-                    ]
+                    ];
+                } else {
+                    $data = [
+                        'course_name' => $info["name"],
+                        'total_videos' => $info["total_videos"],
+                        'total_projects' => $info["total_projects"],
+                        'duration' => $info["duration"],
+                        'downloadable_content' => $info["downloadable_content"],
+                        'topics' => $this->Topics($courseId, null, $userId, true)
+                    ];
+                }
+
+                return Response::json(200, [
+                    'status' => 'success',
+                    'data' => $data
                 ]);
             }
         } else {

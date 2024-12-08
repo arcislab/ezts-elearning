@@ -53,6 +53,13 @@ async function CallApi(url, jsonBody = null, method = 'POST') {
     }
 }
 
+function UserLoggedIn() {
+    const cookieString = document.cookie
+        .split('; ')
+        .find(row => row.startsWith(`token=`));
+    return cookieString ? true : false;
+}
+
 // function CallApi(url, jsonBody = null) {
 //     return new Promise((resolve, reject) => {
 //         const xhr = new XMLHttpRequest();
