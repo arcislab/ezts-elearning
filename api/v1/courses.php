@@ -267,72 +267,77 @@ class Courses
 
     function SubTopics($courseTopicId, $uuid, $userId)
     {
-        global $userController;
-        if ($this->IsTopicLocked($courseTopicId, $userId) && !$userController->IsUserAdmin($userId)) {
-            return Response::json(403, [
-                'status' => 'error',
-                'message' => 'Topic is locked.'
-            ]);
-        } else {
-            if ($courseTopicId) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
-                        FROM courses_sub_topics cst 
-                        INNER JOIN courses_topics t 
-                            ON t.id = cst.courses_topics_id
-                        INNER JOIN courses c
-                            ON c.id = t.courses_id
-                        INNER JOIN courses_types ct
-                            ON ct.id = c.course_type_id
-                        WHERE cst.courses_topics_id = ?";
-            }
-
-            if ($uuid !== null) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
-                        FROM courses_sub_topics cst 
-                        INNER JOIN courses_topics t 
-                            ON t.id = cst.courses_topics_id
-                        INNER JOIN courses c
-                            ON c.id = t.courses_id
-                        INNER JOIN courses_types ct
-                            ON ct.id = c.course_type_id
-                        WHERE cst.id = ?";
-            }
-
-            if (!$courseTopicId && !$uuid) {
-                $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
-                        FROM courses_sub_topics cst 
-                        INNER JOIN courses_topics t 
-                            ON t.id = cst.courses_topics_id
-                        INNER JOIN courses c
-                            ON c.id = t.courses_id
-                        INNER JOIN courses_types ct
-                            ON ct.id = c.course_type_id";
-            }
-
-            $stmt = $this->db->prepare($query);
-
-            if ($stmt === false) {
-                return Response::json(500, [
+        $purchased = $this->CheckIfPurchased($userId, $courseTopicId);
+        if ($purchased) {
+            global $userController;
+            if ($this->IsTopicLocked($courseTopicId, $userId) && !$userController->IsUserAdmin($userId)) {
+                return Response::json(403, [
                     'status' => 'error',
-                    'message' => 'Query preparation failed: ' . $this->db->error
+                    'message' => 'Topic is locked.'
                 ]);
             }
+        }
 
-            if ($courseTopicId !== null) {
-                $stmt->bind_param('i', $courseTopicId);
-            }
+        if ($courseTopicId) {
+            $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
+                FROM courses_sub_topics cst 
+                INNER JOIN courses_topics t 
+                    ON t.id = cst.courses_topics_id
+                INNER JOIN courses c
+                    ON c.id = t.courses_id
+                INNER JOIN courses_types ct
+                    ON ct.id = c.course_type_id
+                WHERE cst.courses_topics_id = ?";
+        }
 
-            if ($uuid !== null) {
-                $stmt->bind_param('i', $uuid);
-            }
+        if ($uuid !== null) {
+            $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
+                FROM courses_sub_topics cst 
+                INNER JOIN courses_topics t 
+                    ON t.id = cst.courses_topics_id
+                INNER JOIN courses c
+                    ON c.id = t.courses_id
+                INNER JOIN courses_types ct
+                    ON ct.id = c.course_type_id
+                WHERE cst.id = ?";
+        }
 
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                $topics = [];
+        if (!$courseTopicId && !$uuid) {
+            $query = "SELECT cst.id AS uuid, ct.type AS 'type', c.name AS course, t.topic_name AS topic, cst.topic_name, cst.video_url, cst.project_url, TIME_FORMAT(SEC_TO_TIME(COALESCE(cst.duration, 0)), '%i:%s') AS duration, cst.demo 
+                FROM courses_sub_topics cst 
+                INNER JOIN courses_topics t 
+                    ON t.id = cst.courses_topics_id
+                INNER JOIN courses c
+                    ON c.id = t.courses_id
+                INNER JOIN courses_types ct
+                    ON ct.id = c.course_type_id";
+        }
 
-                // Process each row and replace the video_url with a signed URL
-                while ($row = $result->fetch_assoc()) {
-                    global $awsController;
+        $stmt = $this->db->prepare($query);
+
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
+
+        if ($courseTopicId !== null) {
+            $stmt->bind_param('i', $courseTopicId);
+        }
+
+        if ($uuid !== null) {
+            $stmt->bind_param('i', $uuid);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $topics = [];
+
+            // Process each row and replace the video_url with a signed URL
+            while ($row = $result->fetch_assoc()) {
+                global $awsController;
+                if ($purchased) {
                     if (!$this->IsSubtopicLocked($row['uuid'], $userId)) {
                         // Generate the signed URL
                         if (!empty($row['video_url'])) {
@@ -342,20 +347,29 @@ class Courses
                     } else {
                         $row['video_url'] = null;
                     }
-
-                    $topics[] = $row;
+                } else{
+                    if($row['demo'] === 1){
+                        if (!empty($row['video_url'])) {
+                            $rawVideoUrl = 'https://dw1larvlv4nev.cloudfront.net/' . $row['video_url'];
+                            $row['video_url'] = $awsController->GetCFSignedUrl($rawVideoUrl);
+                        }
+                    } else{
+                        $row['video_url'] = null;
+                    }
                 }
 
-                return Response::json(200, [
-                    'status' => 'success',
-                    'data' => $topics
-                ]);
-            } else {
-                return Response::json(500, [
-                    'status' => 'error',
-                    'message' => 'Failed to retrieve courses.'
-                ]);
+                $topics[] = $row;
             }
+
+            return Response::json(200, [
+                'status' => 'success',
+                'data' => $topics
+            ]);
+        } else {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Failed to retrieve courses.'
+            ]);
         }
     }
 
@@ -467,52 +481,44 @@ class Courses
 
     function GetCourseInfo($userId, $courseId)
     {
-        if ($this->CheckIfPurchased($userId, $courseId)) {
-            $query = "SELECT c.id As id, c.name AS name,
-            (SELECT TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id) AS duration,
-            (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id AND cst.video_url IS NOT NULL AND cst.video_url <> '') AS total_videos,
-            (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.courses_id = c.id WHERE cst.courses_topics_id = ct.id AND cst.project_url IS NOT NULL AND cst.project_url <> '') AS total_projects,
-            (SELECT COUNT(*) FROM courses_topics WHERE courses_id = c.id AND content_url IS NOT NULL) AS downloadable_content
-            FROM courses c
-            WHERE c.id = ?";
-            $stmt = $this->db->prepare($query);
-            $stmt->bind_param('i', $courseId);
+        $query = "SELECT c.id As id, c.name AS name,
+        (SELECT TIME_FORMAT(SEC_TO_TIME(SUM(COALESCE(cst.duration, 0))), '%H:%i') FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id) AS duration,
+        (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.id = cst.courses_topics_id WHERE ct.courses_id = c.id AND cst.video_url IS NOT NULL AND cst.video_url <> '') AS total_videos,
+        (SELECT COUNT(*) FROM courses_sub_topics cst INNER JOIN courses_topics ct ON ct.courses_id = c.id WHERE cst.courses_topics_id = ct.id AND cst.project_url IS NOT NULL AND cst.project_url <> '') AS total_projects,
+        (SELECT COUNT(*) FROM courses_topics WHERE courses_id = c.id AND content_url IS NOT NULL) AS downloadable_content
+        FROM courses c
+        WHERE c.id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $courseId);
 
-            if ($stmt === false) {
-                return Response::json(500, [
-                    'status' => 'error',
-                    'message' => 'Query preparation failed: ' . $this->db->error
-                ]);
-            }
+        if ($stmt === false) {
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Query preparation failed: ' . $this->db->error
+            ]);
+        }
 
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                if ($result->num_rows > 0) {
-                    $info = $result->fetch_assoc();
-                    return Response::json(200, [
-                        'status' => 'success',
-                        'data' => [
-                            'course_name' => $info["name"],
-                            'total_videos' => $info["total_videos"],
-                            'total_projects' => $info["total_projects"],
-                            'duration' => $info["duration"],
-                            'downloadable_content' => $info["downloadable_content"],
-                            'expiry' => $this->GetExpiry($userId),
-                            'topics' => $this->Topics($courseId, null, $userId, true)
-
-                        ]
-                    ]);
-                }
-            } else {
-                return Response::json(500, [
-                    'status' => 'error',
-                    'message' => 'Failed to retrieve courses.'
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $info = $result->fetch_assoc();
+                return Response::json(200, [
+                    'status' => 'success',
+                    'data' => [
+                        'course_name' => $info["name"],
+                        'total_videos' => $info["total_videos"],
+                        'total_projects' => $info["total_projects"],
+                        'duration' => $info["duration"],
+                        'downloadable_content' => $info["downloadable_content"],
+                        'expiry' => $this->GetExpiry($userId),
+                        'topics' => $this->Topics($courseId, null, $userId, true)
+                    ]
                 ]);
             }
         } else {
-            return Response::json(200, [
-                'status' => 'success',
-                'message' => 'Course not purchased'
+            return Response::json(500, [
+                'status' => 'error',
+                'message' => 'Failed to retrieve courses.'
             ]);
         }
     }
@@ -708,11 +714,14 @@ class Courses
         return 0;
     }
 
-    function CheckIfPurchased($userId, $courseId)
+    function CheckIfPurchased($userId, $courseTopicId)
     {
-        $query = "SELECT id FROM orders WHERE courses_id = ? AND users_id = ?";
+        $query = "SELECT o.id FROM orders o 
+                INNER JOIN courses c ON c.id = o.courses_id 
+                INNER JOIN courses_topics ct ON ct.courses_id = c.id 
+                WHERE ct.id = ? AND users_id = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ii', $courseId, $userId);
+        $stmt->bind_param('ii', $courseTopicId, $userId);
 
         if ($stmt === false) {
             return Response::json(500, [
