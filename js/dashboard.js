@@ -121,7 +121,7 @@ async function GetEnrolledCourses() {
                         const btnTraining = htmlContent.querySelector('.courseInfo button');
                         if (btnTraining !== undefined) {
                             btnTraining.addEventListener('click', function () {
-                                window.location.assign(`./courseInformation.html?user=${encodeURIComponent(localStorage.getItem("u"))}&course=${encodeURIComponent(course.uuid)}`);
+                                window.location.assign(`./courseInformation.html?course=${encodeURIComponent(course.uuid)}`);
                             });
                         }
                     }
