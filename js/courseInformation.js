@@ -9,6 +9,7 @@ const btnBack = document.getElementById('btnBack');
 const progressReport = document.getElementById('progressReport');
 const btnQuizProceed = document.getElementById('btnQuizProceed');
 const dialogMain = document.getElementsByClassName('dialogMain')[0];
+const btnEnroll = document.getElementById('btnEnroll');
 
 let selectedTopic;
 
@@ -16,6 +17,14 @@ function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
+
+btnEnroll.addEventListener('click', function () {
+    if (UserLoggedIn()) {
+        window.location.assign(`./orderPlace.php?user=${localStorage.getItem("u")}&course=${getQueryParam('course')}&name=${courseName.innerHTML}`);
+    } else {
+        window.location.assign(`../login.html?redirect=orderPlace.php&user=${localStorage.getItem("u")}&course=${getQueryParam('course')}&name=${courseName.innerHTML}`);
+    }
+});
 
 addEventListener("DOMContentLoaded", (event) => {
     btnBack.addEventListener('click', function () {
