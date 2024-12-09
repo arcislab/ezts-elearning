@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="./styles/home.css">
+</head>
+
+<body>
+    <div class="main">
+        <button id="btnCourses">Manage Courses</button>
+        <button id="btnQuizzes">Manage Quizzes</button>
+    </div>
+    <script>
+        const btnCourses = document.getElementById('btnCourses');
+        const btnQuizzes = document.getElementById('btnQuizzes');
+
+        // Home button bind
+        if (btnCourses != undefined) {
+            btnCourses.addEventListener('click', function () {
+                window.location.assign('dashboard2.html');
+            });
+        }
+        if (btnQuizzes != undefined) {
+            btnQuizzes.addEventListener('click', function () {
+                window.location.assign('manage quiz.html');
+            });
+        }
+    </script>
+</body>
+
+</html>

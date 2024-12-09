@@ -1,0 +1,92 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+}
+
+/* main */
+.main {
+    height: 95vh;
+    width: 95vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* head */
+.head {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#btnBack {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+/* body */
+.body {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#imgProfile{
+    height: 64px;
+    width: 64px;
+}
+
+.data {
+    width: 80%;
+    height: 60%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.dataGroup{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    border: 1px solid #CECECE;
+    border-radius: 5px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.emailAddressGroup{
+    grid-column: span 2;
+}
+
+#btnContinue{
+    width: 80%;
+    height: 40px;
+    margin-top: 50px;
+    background-color: #00A98F;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#btnContinue:hover{
+    background-color: #1dc5ac;
+}
+
+#btnContinue:active{
+    background-color: #00A98F;
+}

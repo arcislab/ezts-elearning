@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZ - Management</title>
+    <link rel="stylesheet" href="styles/quiz.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="selection">
+            <h2>Select course</h2>
+            <select name="courses" id="courses"></select>
+            <br>
+            <h2>Select course topic</h2>
+            <select name="courseTopics" id="courseTopics"></select>
+            <br>
+            <!-- <h2>Select course sub-topic</h2>
+            <select name="courseSubTopics" id="courseSubTopics"></select> -->
+        </div>
+        <br>
+        <button id="btnProceed">Proceed</button>
+    </div>
+
+    <div class="quizesMain">
+        <div class="head">
+            <button id="btnBack">Back</button>
+            <h2 id="quizzesFor">Quizzes Management</h2>
+            <div>
+                <button id="btnCreateQuiz">Create New Quiz</button>
+                <button id="btnAdd">Add New Question</button>
+            </div>
+        </div>
+        <div class="questionsList">
+            <!-- <div class="courseType">
+                <div class="info">
+                    <p>Course Type</p>
+                </div>
+                <div class="controls">
+                    <div class="controlsChild">
+                        <button class="btnViewAnswers">View Answers</button>
+                        <button class="btnEdit">Edit</button>
+                        <button class="btnDelete">Delete</button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="dialogMain">
+        <div class="dialog">
+            <div id="dialogBody">
+                <!-- <div class="newQuizDOM">
+                    <h2>Create Quiz</h2>
+                    <br>
+                    <h3>Grand Quiz?</h3>
+                    <div style="display: flex;">
+                        <label for="radioYes">Yes</label><input id="radioYes" type="radio" name="grandTest" value="Yes">
+                        <label for="radioNo" style="margin-left: 10px;">No</label><input id="radioNo" type="radio" name="grandTest" value="No" checked>
+                    </div>
+                    <h3>Time (in minutes)</h3>
+                    <input type="number" id="txtTime">
+                </div> -->
+                
+                <!-- <div class="newQuestionDOM">
+                    <div class="questionDiv">
+                        <h3>Enter question</h3>
+                        <textarea type="text" rows="10"></textarea>
+                    </div>
+                </div> -->
+
+                <!-- <div class="newQuestionDOM">
+                    <div class="questionDiv">
+                        <h3>Enter answer</h3>
+                        <textarea type="text"></textarea>
+                    </div>
+                    <div>
+                        <label for="">Correct Answer</label>
+                        <input type="radio" id="correctAnswer" name="correctAnswer">
+                    </div>
+                    <div>
+                        <h3>Concept Video</h3>
+                        <select name="txtConceptVideo" id="txtConceptVideo">
+                            <option value="Option 1">Option 1</option>
+                            <option value="Option 2">Option 2</option>
+                            <option value="Option 3">Option 3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h3>Explaination</h3>
+                        <textarea id="txtExplaination" type="text"></textarea>
+                    </div>
+                </div> -->
+            </div>
+            <div id="dialogFoot">
+                <button id="btnAddAnswer">Add Answer</button>
+                <button id="btnDialogAdd">Add</button>
+            </div>
+        </div>
+    </div>
+    <script src="scripts/DOM.js"></script>
+    <script src="scripts/call.js"></script>
+    <script src="scripts/quiz.js"></script>
+</body>
+
+</html>

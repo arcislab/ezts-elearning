@@ -1,0 +1,94 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+/* Main */
+.main {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    position: relative;
+}
+
+/* Bars */
+.mainBar {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100vh;
+    width: 5%;
+    cursor: pointer;
+    overflow: hidden;
+    top: 0;
+    /* Adjust top position as needed */
+    z-index: 1;
+    /* Ensures the bar stays on top of the content */
+    position: sticky;
+    transition: width 0.3s ease;
+}
+
+.bar {
+    width: 0%;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.bar.expanded {
+    width: 90%;
+}
+
+.mainBar.expanded {
+    width: 90%;
+}
+
+.barHeading {
+    transform: rotate(-90deg);
+    color: white;
+    margin-bottom: 60px;
+    width: 40%;
+}
+
+.coursesBar {
+    background-color: #00A98F;
+    overflow: hidden;
+}
+
+.coursesBar:hover {
+    background-color: #01816e;
+}
+
+.aboutBar {
+    background-color: #A5E9E1;
+    overflow: hidden;
+}
+
+.aboutBar:hover {
+    background-color: #b7f1eb;
+}
+
+.aboutHeading {
+    color: black;
+}
+
+.homeBar {
+    background-color: #2E2B2B;
+    width: 0%;
+}
+
+.homeBar:hover {
+    background-color: #423e3e;
+}
+
+/* Home */
+.homeMain {
+    display: flex;
+    flex-direction: column;
+    /* width: 90%; */
+    height: 700vh;
+    /* display: none; */
+}

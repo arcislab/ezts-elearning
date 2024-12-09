@@ -1,0 +1,570 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+/* main */
+.main {
+    width: 100%;
+}
+
+/* head */
+.head {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #09AD94;
+    position: sticky;
+    top: 0;
+}
+
+.head>img {
+    height: 30px;
+}
+
+#logo {
+    margin-left: 20px;
+}
+
+#profilePic {
+    margin-right: 20px;
+}
+
+#Btnlgt{
+    background-color: #2E2B2B;
+    border: none;
+    border-radius: 10px;
+    margin-right: 10px;
+    color: white;
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+}
+
+#Btnlgt:hover{
+    background-color: #4c4848;
+}
+
+#Btnlgt:active{
+    background-color: #2E2B2B;
+}
+
+#searchDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60%;
+    width: 40%;
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+}
+
+#searchDiv img {
+    cursor: pointer;
+    margin-right: 10px;
+    height: 20px;
+}
+
+#txtSearch {
+    height: 50%;
+    width: 90%;
+    margin-left: 20px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: white;
+}
+
+#txtSearch::placeholder {
+    color: rgb(226, 225, 225);
+    opacity: 1;
+    /* Firefox */
+}
+
+#txtSearch::-ms-input-placeholder {
+    /* Edge 12 -18 */
+    color: rgb(226, 225, 225);
+}
+
+/* body */
+.body {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* categories */
+.categories {
+    height: 50px;
+    width: 100%;
+    background-color: #FDF6F6;
+    display: flex;
+    justify-content: center;
+}
+
+.categoriesChild {
+    height: 100%;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.categoriesChild p {
+    cursor: pointer;
+}
+
+/* greet */
+.greet {
+    margin-top: 20px;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    gap: 20px;
+}
+
+.greet h2 {
+    margin-left: 30px;
+}
+
+/* Statistics */
+.statistics {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    height: 20vh;
+    width: 80%;
+}
+
+.statistics div {
+    height: 100%;
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    background-color: #2E2B2B;
+    border: none;
+    border-radius: 10px;
+}
+
+.statistics div div {
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.statistics div div h1,
+.statistics div div h2 {
+    margin-left: 20px;
+}
+
+/* enrollment */
+.enrollment{
+    margin-top: 50px;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr;
+    align-items: center;
+    color: white;
+}
+
+.enrollment .heading{
+    width: 100%;
+    height: 50px;
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr;
+    align-items: center;
+    background-color: #2E2B2B;
+}
+
+.enrollment .heading h4{
+    margin: 0;
+    margin-left: 20px;
+}
+
+.enrollment .body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    grid-column: span 6;
+}
+
+.enrollment .body .courseInfo{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr;
+    height: 80px;
+    align-items: center;
+    color: black;
+    grid-column: span 6;
+}
+
+.enrollment .body button{
+    width: 80%;
+    height: 60%;
+    border: none;
+    color: white;
+    background-color: #2E2B2B;
+    cursor: pointer;
+}
+
+.enrollment .body button:hover{
+    background-color: #474343;
+}
+
+.enrollment .body button:active{
+    background-color: #2E2B2B;
+}
+
+/* banner */
+.banner {
+    margin-top: 50px;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Popular and featured courses */
+.popular,
+.featured {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 70%;
+    height: 100vh;
+}
+
+.coursesDivList {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    height: 80%;
+    align-items: center;
+    gap: 30px;
+}
+
+.courseDiv {
+    border: 0.5px solid #2E2B2B26;
+    border-radius: 20px;
+    /* padding: 20px; */
+    height: 80%;
+    width: 33.33%;
+    justify-self: center;
+    align-self: center;
+}
+
+.courseThumbnail {
+    background-color: #2E2B2B;
+    width: 100%;
+    height: 30%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.courseThumbnail img {
+    height: 100%;
+}
+
+.courseInformation {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.courseInformation>div {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+    gap: 10px;
+}
+
+.enrollBtn {
+    background-color: #333743;
+    border-radius: 20px;
+    border: none;
+    height: 40px;
+    width: 120px;
+    color: white;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.enrollBtn:hover {
+    background-color: #505566;
+}
+
+.enrollBtn:active {
+    background-color: #202229;
+}
+
+.selectedCategoryMain {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selectedCategoryHead {
+    width: 100vw;
+    height: 20%;
+    background-color: #00a98f;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    color: white;
+}
+
+.selectedCategoryHead img {
+    height: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.headline {
+    align-self: flex-start;
+    margin: 0;
+}
+
+/* Courses container */
+.selectedPopularCourses,
+.selectedFeaturedCourses,
+.selectedAllCourses,
+.bookMarkedCourses {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.coursesContainer {
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+/* Courses Info */
+.courseInfoMain {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.courseInfoHead {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Orders */
+.ordersMain,
+.certificatesMain {
+    width: 90vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.ordersMain>h2 {
+    align-self: flex-start;
+    margin-bottom: 50px;
+}
+
+.ordersMain::-webkit-scrollbar,
+.certificatesMain::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.ordersList {
+    width: 95%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.orderDetails {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderDetails h2,
+.orderDetails p {
+    margin: 0;
+}
+
+.orderInfo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
+
+#txtCourseName {
+    grid-column: span 2;
+}
+
+#txtAuthor {
+    align-self: flex-start;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.paymentDetails {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 80%;
+    border: 1px solid black;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.paymentDetails div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.paymentDetails hr {
+    width: 95%;
+    border: 1px solid black;
+}
+
+.paymentDetails h3,
+.paymentDetails p {
+    margin: 0;
+}
+
+.downloadInvoiceContainer {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnDownloadInvoice,
+#btnDownloadCertificate {
+    border: none;
+    border-radius: 5px;
+    background-color: #13B19A;
+    color: white;
+    height: 40px;
+    width: 150px;
+    cursor: pointer;
+}
+
+#btnDownloadInvoice:hover,
+#btnDownloadCertificate:hover {
+    background-color: rgb(99, 194, 201)
+}
+
+#btnDownloadInvoice:active,
+#btnDownloadCertificate:active {
+    background-color: #13B19A;
+}
+
+/* Certificates */
+.certificatesMain {
+    align-items: flex-start;
+}
+
+.certificateDetails {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.certificateDetails img {
+    height: 40px;
+    width: 40px;
+}
+
+#btnDownloadCertificate {
+    margin-left: 30px;
+}
+
+/* Leadership board */
+.leadershipMain{
+    margin-top: 20px;
+    height: 100%;
+    width: 80%;
+}
+
+.leadershipHead{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 120px;
+    width: 100%;
+    gap: 30px;
+}
+
+.leadershipHead div{
+    height: 100%;
+    width: 100%;
+    background-color: #00A98F99;
+}
+
+.leadershipBody{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.leadershipColumn{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.leadershipList{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 60vh;
+    width: 100%;
+    grid-column: span 3;
+    margin-top: 20px;
+    overflow-y: auto;
+}
+
+.leadershipList::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.leadershipBody *{
+    justify-self: center;
+    align-items: center;
+}

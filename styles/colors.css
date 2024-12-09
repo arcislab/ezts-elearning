@@ -1,0 +1,851 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+/* Main */
+.main {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    position: relative;
+}
+
+/* Bars */
+.mainBar {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100vh;
+    width: 5%;
+    cursor: pointer;
+    overflow: hidden;
+    top: 0;
+    /* Adjust top position as needed */
+    z-index: 1;
+    /* Ensures the bar stays on top of the content */
+    position: sticky;
+    transition: width 0.3s ease;
+}
+
+.bar {
+    width: 0%;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.bar.expanded {
+    width: 90%;
+}
+
+.mainBar.expanded {
+    width: 90%;
+}
+
+.coursesBar {
+    background-color: #00A98F;
+    overflow: hidden;
+}
+
+.coursesBar:hover {
+    background-color: #01816e;
+}
+
+.aboutBar {
+    background-color: #A5E9E1;
+    overflow: hidden;
+}
+
+.aboutBar:hover {
+    background-color: #b7f1eb;
+}
+
+.homeBar {
+    background-color: #2E2B2B;
+    width: 0px;
+}
+
+.homeBar:hover {
+    background-color: #423e3e;
+}
+
+/* Home */
+.homeMain {
+    display: flex;
+    flex-direction: column;
+    /* width: 90%; */
+    height: 700vh;
+    /* display: none; */
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    height: 20vh;
+    min-height: 80px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    margin-left: 20px;
+    height: 60%;
+}
+
+.getStartedBtn {
+    border-radius: 20px;
+    border: none;
+    width: 130px;
+    height: 40px;
+    background-color: #2E2B2B;
+    color: white;
+    margin-left: auto;
+    margin-right: 50px;
+    cursor: pointer;
+}
+
+.getStartedBtn:hover {
+    background-color: #534f4f;
+}
+
+.introDiv {
+    display: flex;
+    height: 80vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.informationDiv {
+    width: 50%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.informationDivChild {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin-left: 20px;
+    height: 100%;
+}
+
+.informationDivChild>button {
+    border-radius: 20px;
+    border: none;
+    width: 130px;
+    height: 40px;
+    background-color: #2E2B2B;
+    color: white;
+    cursor: pointer;
+}
+
+.informationImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 50%;
+}
+
+.developerImage {
+    height: 160px;
+    width: 280px;
+}
+
+.aboutDiv {
+    background-color: #2E2B2B;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.aboutDivImage {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.aboutLogo {
+    color: white;
+    width: 300px;
+    height: 200px;
+}
+
+.aboutDivInformation {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aboutDivInformationChild {
+    height: 50%;
+    width: 70%;
+    color: white;
+    /* display: flex; */
+}
+
+.aboutDivInformationChild>button {
+    border-radius: 20px;
+    border: none;
+    width: 130px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.clientsDiv {
+    margin-top: 20px;
+    display: flex;
+    width: 90%;
+    height: 50vh;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+.clientsDivTitle {
+    width: 25%;
+    font-size: 30px;
+}
+
+.clientsLogos {
+    display: flex;
+    align-items: center;
+    gap: 10%;
+    width: 75%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.clientsLogos>li>img {
+    height: 100px;
+}
+
+.statisticsDiv {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 90%;
+    height: 50vh;
+    border-radius: 10px;
+    background-color: #2E2B2B;
+    color: white;
+}
+
+.statisticsDiv>div {
+    width: 33.33%;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 32px;
+    position: relative;
+}
+
+
+.statisticsDiv>div>h3 {
+    z-index: 1;
+    line-height: 60px;
+}
+
+.circles {
+    background-color: #00A98F;
+    border-radius: 100%;
+    height: 70px;
+    width: 70px;
+    position: absolute;
+}
+
+.coursesDiv {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 90%;
+}
+
+.coursesDivTitle {
+    height: 20%;
+}
+
+.emptyLine {
+    width: 60px;
+    height: 5px;
+    background-color: #00A98F;
+    border-radius: 20px;
+}
+
+.coursesDivAction {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.seeAllBtn {
+    border: 1px solid #00A98F;
+    border-radius: 20px;
+    height: 30px;
+    width: 80px;
+    color: #00A98F;
+    cursor: pointer;
+    background-color: transparent;
+    align-self: flex-end;
+    margin-right: 20px;
+}
+
+.seeAllBtn:hover {
+    background-color: #00A98F;
+    color: white;
+}
+
+.seeAllBtn:active {
+    border: 1px solid #00A98F;
+    color: #00A98F;
+    background-color: transparent;
+}
+
+.coursesDivList {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 75%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.courseDiv {
+    border: 0.5px solid #2E2B2B26;
+    border-radius: 20px;
+    /* padding: 20px; */
+    height: 100%;
+    width: 100%;
+    justify-self: center;
+    align-self: center;
+}
+
+.courseThumbnail {
+    background-color: #2E2B2B;
+    width: 100%;
+    height: 30%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.courseThumbnail img {
+    height: 100%;
+}
+
+.courseInformation {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.courseInformation>div {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+    gap: 10px;
+}
+
+.enrollBtn {
+    background-color: #333743;
+    border-radius: 20px;
+    border: none;
+    height: 40px;
+    width: 120px;
+    color: white;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.enrollBtn:hover {
+    background-color: #505566;
+}
+
+.enrollBtn:active {
+    background-color: #202229;
+}
+
+.barHeading {
+    transform: rotate(-90deg);
+    color: white;
+    margin-bottom: 60px;
+    width: 40%;
+}
+
+.aboutHeading {
+    color: black;
+}
+
+/* Join us */
+
+.joinus {
+    margin-top: 80px;
+    background-color: #2E2B2B;
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    color: white;
+}
+
+.joinusHead {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.joinusBody {
+    height: 70%;
+    width: 100%;
+    display: flex;
+}
+
+.bodyLeft {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.bodyLeft img {
+    height: 100%;
+}
+
+.bodyRight {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bodyRight p {
+    width: 80%;
+}
+
+.bodyRight button {
+    border-radius: 20px;
+    border: none;
+    width: 130px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+/* Blogs */
+
+.readMoreBtn {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+/* footer */
+.footer {
+    margin-top: 50px;
+    height: 100vh;
+    width: 100%;
+    color: white;
+}
+
+.footerTop {
+    height: 50%;
+    width: 100%;
+    background-color: #2E2B2B;
+    display: flex;
+}
+
+.footerTopLeft {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerTopRight {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.footerTopRightButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 70%;
+    height: 20%;
+}
+
+.footerTopRightButtons button {
+    background-color: #00A98F;
+    cursor: pointer;
+    color: white;
+    width: 400px;
+    border: none;
+    border-radius: 10px;
+}
+
+.footerTopRightButtons button:hover {
+    background-color: #1fbda5;
+}
+
+.footerTopRightButtons button:active {
+    background-color: #00A98F;
+}
+
+.footerBottom {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(to right, #1EB59F, #3881869C);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerBottomLeft {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footerBottomLeftChild {
+    width: 40%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footerBottomLeftChild img {
+    cursor: pointer;
+}
+
+.socialMediaIcons {
+    display: flex;
+    gap: 10px;
+    width: 60%;
+}
+
+.footerLogo {
+    width: 130px;
+}
+
+.footerBottomRight {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.footerBottomRightTop {
+    height: 85%;
+    width: 100%;
+    display: flex;
+}
+
+.footerBottomRightTopLeft {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerBottomRightTopRight {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textHold {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.textHold h4 {
+    cursor: pointer;
+}
+
+.footerBottomRightBottom {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Courses main */
+.coursesMain {
+    display: flex;
+    flex-direction: column;
+    /* width: 90%; */
+}
+
+.coursesList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 90%;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.coursesHeader {
+    align-self: flex-start;
+}
+
+.coursesFooter {
+    height: 50vh;
+}
+
+/* About main */
+.aboutMain {
+    display: flex;
+    flex-direction: column;
+    /* width: 90%; */
+    height: 400vh;
+}
+
+
+.aboutAbout {
+    background-color: transparent;
+}
+
+.aboutAbout .aboutDivInformationChild {
+    color: black;
+}
+
+.specialities {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 50vh;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.specialityMission img {
+    margin-left: 30px;
+}
+
+.specialities p {
+    width: 60%;
+}
+
+.specialities h3 {
+    color: #00A98F;
+}
+
+.specialities div {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.aboutJoinUs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50vh;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.aboutJoinUsHeader {
+    width: 90%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+.aboutJoinUsBody {
+    width: 90%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.aboutJoinUsBody p {
+    width: 50%;
+}
+
+/* contact */
+.contactDiv {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+}
+
+.contactMain {
+    height: 80vh;
+    width: 90%;
+    display: flex;
+}
+
+.contactLeft {
+    width: 70%;
+    height: 100%;
+}
+
+.contactLeftHeader {
+    width: 100%;
+    height: 15%;
+}
+
+.contactLeftBody {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contactDesc {
+    width: 100%;
+    height: 30%;
+}
+
+.contactDesc p {
+    width: 70%;
+}
+
+.contactInfo {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contactInfo div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 40%;
+}
+
+.address {
+    margin: 0px;
+    align-self: flex-start;
+}
+
+.contactInfo img {
+    height: 32px;
+}
+
+.contactRight {
+    width: 30%;
+    height: 100%;
+    background-color: #2E2B2B;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.contactRight>div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
+    align-content: center;
+}
+
+.contactParams {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-top: 10px;
+}
+
+.contactParams input,
+.contactParams textarea {
+    height: 30px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid #FDF6F6;
+    color: white;
+}
+
+.contactParams h4 {
+    margin: 5px;
+}
+
+.contactLearnDesc {
+    height: 80px;
+}
+
+.contactLearnDesc textarea {
+    height: 100%;
+    text-align: start;
+    resize: none;
+}
+
+.sendMessageBtn {
+    background-color: white;
+    width: 90%;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.sendMessageBtn:hover {
+    background-color: rgb(233, 231, 231);
+}
+
+.sendMessageBtn:active {
+    background-color: white;
+}

@@ -1,0 +1,189 @@
+html,
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    width: 50%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.head {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.head h2 {
+    margin-left: 10px;
+}
+
+.head #btnBack {
+    margin-right: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+.head #btnAdd {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.main .body {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    overflow-y: scroll;
+}
+
+.main .body::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+/* Course type holder */
+.selectors {
+    margin-bottom: 2px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.info {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.info:hover {
+    background-color: #cfcfcf;
+}
+
+.info:active {
+    background-color: #f1f1f1;
+}
+
+.info p {
+    margin-left: 10px;
+}
+
+.controls {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.controlsChild {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.controlsChild button {
+    cursor: pointer;
+}
+
+/* dialog */
+.dialogMain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    visibility: hidden;
+}
+
+.dialog{
+    height: 70%;
+    width: 50%;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog .head{
+    width: 100%;
+    height: 10%;
+}
+
+.dialog .head h3{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.dialog .body{
+    width: 90%;
+    height: 70%;
+    overflow-y: scroll;
+}
+
+.dialog .body > div{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.dialog .foot{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.dialog .foot button{
+    margin-right: 20px;
+    border: none;
+    border-radius: 10px;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    background-color: #2d83a5;
+    color: white;
+}
+
+.dialog .foot button:hover{
+    background-color: #4693b1;
+}
+
+.dialog .foot button:active{
+    background-color: #2d83a5;
+}

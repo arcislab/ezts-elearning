@@ -1,0 +1,94 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* main */
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    height: 80vh;
+    align-items: center;
+}
+
+h2 {
+    color: #00A98F;
+}
+
+h3 {
+    color: black;
+}
+
+.otpMessgae {
+    color: #444444;
+}
+
+.main div{
+    height: 30%;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.otpInput{
+    border: none;
+    border-bottom: 1px solid #C6F1EC;
+    width: 20%;
+    text-align: center;
+    font-size: 100px;
+    color: #00A98F;
+    outline: none;
+}
+
+.otpInput:focus{
+    border: none;
+    border-bottom: 3px solid #00A98F;
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.error {
+    border-color: red;
+    color: red;
+}
+
+button{
+    border: none;
+    border-radius: 20px;
+    background-color: #00A98F;
+    color: white;
+    width: 40%;
+    height: 40px;
+    margin-top: 50px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #0fcaae;
+}
+
+button:active{
+    background-color: #00A98F;
+}
+
+.otpRetryMessage{
+    color: #777777;
+}

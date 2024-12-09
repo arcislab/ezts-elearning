@@ -1,0 +1,105 @@
+html, body {
+    height:100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* main */
+.main{
+    height: 80vh;
+    width: 80vw;
+    display: flex;
+    align-items: center;
+}
+
+/* main left */
+.mainLeft{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* main right */
+.mainRight{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainRight div{
+    width: 60%;
+}
+
+.mainRight div p{
+    color: #2E2B2B;
+}
+
+.mainRight input{
+    border: none;
+    border-bottom: 2px solid #2E2B2B;
+    width: 100%;
+    height: 40px;
+    font-size: large;
+}
+
+.mainRight input:active{
+    border: none;
+    border-bottom: 2px solid #2E2B2B;
+}
+
+.lineBreak{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+}
+
+hr{
+    width: 40%;
+}
+
+button{
+    width: 40%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.btnContinue{
+    margin-top: 50px;
+    background-color: #A5E9E1;
+    color: #388186;
+}
+
+.btnContinue:hover{
+    background-color: #97d4cd;
+    color: #388186;
+}
+
+.btnContinue:active{
+    background-color: #A5E9E1;
+}
+
+.btnGoogle{
+    background-color: #2E2B2B;
+    color: white;
+}
+
+.btnGoogle:hover{
+    background-color: #464141;
+}
+
+.btnGoogle:active{
+    background-color: #2E2B2B;
+}
+
