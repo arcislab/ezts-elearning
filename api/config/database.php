@@ -4,7 +4,7 @@ class Database {
 
     public static function connect() {
         if (!self::$connection) {
-            self::$connection = new mysqli('localhost', 'root', '', 'ezts_elearn');
+            self::$connection = new mysqli('localhost', 'root', 'Phpmy@dm1n', 'ezts_elearn');
             if (self::$connection->connect_error) {
                 die('Database connection failed: ' . self::$connection->connect_error);
             }
