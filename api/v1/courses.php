@@ -2,10 +2,10 @@
 
 use Aws\ElastiCache\Exception\ElastiCacheException;
 
-require_once './api/helpers/MySqlCommands.php';
-require_once './api/v1/quiz.php';
-require_once './api/v1/user.php';
-require_once './api/v1/aws-s3-manage.php';
+require_once __DIR__ .'/../helpers/MySqlCommands.php';
+require_once __DIR__ .'/../v1/quiz.php';
+require_once __DIR__ .'/../v1/user.php';
+require_once __DIR__ .'/../v1/aws-s3-manage.php';
 
 $quizController = new Quiz();
 $userController = new User();

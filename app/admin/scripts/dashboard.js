@@ -1,7 +1,7 @@
 
 let currentSelection;
 const bodyElement = document.getElementsByClassName('body')[0];
-const API_BASE_URL = 'http://ezts.local/api/v1';
+const API_BASE_URL = 'http://148.135.137.222/api/v1';
 
 const btnAdd = document.querySelector('.head #btnAdd');
 const btnBack = document.querySelector('.head #btnBack');
@@ -36,7 +36,7 @@ async function CallApi(url, jsonBody, method = null) {
         console.log(`Calling: ${url}\nbody: ${jsonBody}`)
         if (response.status === 401) {
             alert(response.statusText)
-            window.location.href = 'http://ezts.local/login.html';
+            window.location.href = 'http://148.135.137.222/login.html';
         }
 
         if (!response.ok) {

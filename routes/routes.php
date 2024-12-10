@@ -1,17 +1,17 @@
 <?php
-require_once './api/config/env.php';
-require_once './api/v1/autofill.php';
-require_once './api/v1/bookmarks.php';
-require_once './api/v1/courses.php';
-require_once './api/v1/notifications.php';
-require_once './api/v1/orders.php';
-require_once './api/v1/quiz.php';
-require_once './api/v1/user.php';
-require_once './api/v1/leader.php';
-require_once './api/v1/authen.php';
+require_once __DIR__ .'/../api/config/env.php';
+require_once __DIR__ .'/../api/v1/autofill.php';
+require_once __DIR__ .'/../api/v1/bookmarks.php';
+require_once __DIR__ .'/../api/v1/courses.php';
+require_once __DIR__ .'/../api/v1/notifications.php';
+require_once __DIR__ .'/../api/v1/orders.php';
+require_once __DIR__ .'/../api/v1/quiz.php';
+require_once __DIR__ .'/../api/v1/user.php';
+require_once __DIR__ .'/../api/v1/leader.php';
+require_once __DIR__ .'/../api/v1/authen.php';
 
 //headers
-header("Access-Control-Allow-Origin: http://ezts.local");
+header("Access-Control-Allow-Origin: http://148.135.137.222");
 header("Access-Control-Allow-Credentials: true");
 // header("Access-Control-Allow-Origin: *"); // Allow all origins, or specify your front-end origin
 header("Access-Control-Allow-Methods: POST, PUT, GET, DELETE, OPTIONS");

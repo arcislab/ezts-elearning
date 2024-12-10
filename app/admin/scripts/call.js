@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://ezts.local/api/v1';
+const API_BASE_URL = 'http://148.135.137.222/api/v1';
 
 async function CallApi(url, reqBody = null, met = null, contentType = null) {
     let rawResponseBody;
@@ -21,7 +21,7 @@ async function CallApi(url, reqBody = null, met = null, contentType = null) {
             // Handle the error response if needed
             console.error(`Error: ${response.status}`);
             if(response.status === 401){
-                window.location.href = 'http://ezts.local/login.html';
+                window.location.href = 'http://148.135.137.222/login.html';
             }
         }
         // if (!response.ok) {

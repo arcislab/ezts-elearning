@@ -49,7 +49,7 @@ addEventListener("DOMContentLoaded", () => {
 
                     if (response) {
                         if (response.status === 200) {
-                            window.location.href = 'http://ezts.local/login.html'
+                            window.location.href = 'http://148.135.137.222/login.html'
                         } else {
                             console.error(`Error: ${response.status} - ${response.statusText}`);
                         }
@@ -64,7 +64,7 @@ addEventListener("DOMContentLoaded", () => {
 
     if (actionButton) {
         actionButton.addEventListener('click', function () {
-            window.open(`http://ezts.local/app/admin/manage.html?type=${currentSelection}`, '_blank').focus();
+            window.open(`http://148.135.137.222/app/admin/manage.html?type=${currentSelection}`, '_blank').focus();
         });
     }
 });
@@ -165,7 +165,7 @@ function PopulateActionColumn(cellAction, item, selection) {
     updateIcon.title = "Update";
     updateIcon.addEventListener('click', async () => {
         const selectedUUID = item.uuid;
-        window.open(`http://ezts.local/app/admin/manage.html?type=${selection}&uuid=${selectedUUID}`, '_blank').focus();
+        window.open(`http://148.135.137.222/app/admin/manage.html?type=${selection}&uuid=${selectedUUID}`, '_blank').focus();
     });
 
     const deleteIcon = document.createElement('img');

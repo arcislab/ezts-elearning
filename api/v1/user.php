@@ -1,5 +1,5 @@
 <?php
-require_once './api/helpers/MySqlCommands.php';
+require_once __DIR__ .'/../helpers/MySqlCommands.php';
 
 class User
 {

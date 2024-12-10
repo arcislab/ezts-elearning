@@ -1,7 +1,7 @@
 <?php
-require_once './api/helpers/MySqlCommands.php';
-require_once './api/config/authSecurity.php';
-require_once './api/v1/user.php';
+require_once __DIR__ .'/../helpers/MySqlCommands.php';
+require_once __DIR__ .'/../config/authSecurity.php';
+require_once __DIR__ .'/../v1/user.php';
 $userController = new User();
 
 class Authentication
@@ -24,7 +24,7 @@ class Authentication
                 setcookie("token", $token, [
                     'expires' => time() + 86400,
                     'path' => '/',
-                    'domain' => 'ezts.local',
+                    'domain' => '148.135.137.222',
                     'secure' => false,         // No HTTPS in local development
                     'httponly' => true,        // Still keep HttpOnly for security
                     'samesite' => 'Lax'        // Use 'Lax' for typical scenarios
@@ -60,7 +60,7 @@ class Authentication
         setcookie("token", "", [
             'expires' => time() - 3600,  // Expire one hour ago
             'path' => '/',
-            'domain' => 'ezts.local',  // Match your cookie domain
+            'domain' => '148.135.137.222',  // Match your cookie domain
             'secure' => false,         // Set to true if using HTTPS
             'httponly' => true,
             'samesite' => 'Lax'
@@ -77,10 +77,10 @@ class Authentication
     {
         global $userController;
         if ($userController->IsUserAdmin($userid)) {
-            header("Location: http://ezts.local/app/admin/home.html");
+            header("Location: http://148.135.137.222/app/admin/home.html");
             exit();
         } else {
-            header("Location: http://ezts.local/app/dashboard.html");
+            header("Location: http://148.135.137.222/app/dashboard.html");
             exit();
         }
     }

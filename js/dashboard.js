@@ -283,7 +283,7 @@ async function Lgt(){
 
         if (response) {
             if (response.status === 200) {
-                window.location.href = 'http://ezts.local'
+                window.location.href = 'http://148.135.137.222'
             } else {
                 console.error(`Error: ${response.status} - ${response.statusText}`);
             }

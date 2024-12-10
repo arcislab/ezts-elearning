@@ -1,6 +1,6 @@
 <?php
-require_once './api/config/database.php';
-require_once './api/helpers/Response.php';
+require_once __DIR__ .'/../config/database.php';
+require_once __DIR__ .'/../helpers/Response.php';
 
 class Autofill
 {
