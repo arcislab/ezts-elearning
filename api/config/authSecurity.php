@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require __DIR__ .'/../../vendor/autoload.php';
 require_once __DIR__ .'/../v1/user.php';
 
 use Firebase\JWT\ExpiredException;
