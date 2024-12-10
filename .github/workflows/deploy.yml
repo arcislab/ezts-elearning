@@ -23,8 +23,8 @@ jobs:
       - name: Deploy to production server (if Production branch)
         if: github.ref == 'refs/heads/Production'
         run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip "
-            cd /var/www/html/ezts/directory/prod &&
+          ssh -o StrictHostKeyChecking=root@148.135.137.222"
+            cd /var/www/html/ezts/prod &&
             git pull origin Production &&
             # Any other commands like npm install, build, etc.
           "
@@ -32,8 +32,8 @@ jobs:
       - name: Deploy to development server (if Development branch)
         if: github.ref == 'refs/heads/Development'
         run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip "
-            cd /var/www/html/ezts/directory/dev &&
+          ssh -o StrictHostKeyChecking=root@148.135.137.222"
+            cd /var/www/html/ezts/dev &&
             git pull origin Development &&
             # Any other commands like npm install, build, etc.
           "
@@ -41,8 +41,8 @@ jobs:
       - name: Deploy to staging server (if Staging branch)
         if: github.ref == 'refs/heads/Staging'
         run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip "
-            cd /var/www/html/ezts/directory/stage &&
+          ssh -o StrictHostKeyChecking=root@148.135.137.222"
+            cd /var/www/html/ezts/stage &&
             git pull origin Staging &&
             # Any other commands like npm install, build, etc.
           "
