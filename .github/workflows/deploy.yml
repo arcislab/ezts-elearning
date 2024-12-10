@@ -1,0 +1,47 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - Production
+      - Development
+      - Staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key for server access
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to production server (if Production branch)
+        if: github.ref == 'refs/heads/Production'
+        run: |
+          ssh -o StrictHostKeyChecking=no user@your-server-ip "
+            cd /var/www/html/ezts/directory/prod &&
+            git pull origin Production &&
+            # Any other commands like npm install, build, etc.
+          "
+
+      - name: Deploy to development server (if Development branch)
+        if: github.ref == 'refs/heads/Development'
+        run: |
+          ssh -o StrictHostKeyChecking=no user@your-server-ip "
+            cd /var/www/html/ezts/directory/dev &&
+            git pull origin Development &&
+            # Any other commands like npm install, build, etc.
+          "
+
+      - name: Deploy to staging server (if Staging branch)
+        if: github.ref == 'refs/heads/Staging'
+        run: |
+          ssh -o StrictHostKeyChecking=no user@your-server-ip "
+            cd /var/www/html/ezts/directory/stage &&
+            git pull origin Staging &&
+            # Any other commands like npm install, build, etc.
+          "
